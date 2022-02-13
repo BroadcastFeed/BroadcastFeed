@@ -9,7 +9,7 @@
 #define PORT     8080
 #define MAXLINE 1024
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { //For now the syntax is ./client <IP ADDRESS>
     int sockfd;
     char buffer[MAXLINE];
     char *hello = "Hello from client";

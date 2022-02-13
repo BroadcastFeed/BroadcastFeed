@@ -1,0 +1,3 @@
+/home/ern1e/Documents/aulas/redes/INF01151-BroadcastFeed/client/CMakeFiles/client.dir
+/home/ern1e/Documents/aulas/redes/INF01151-BroadcastFeed/client/CMakeFiles/edit_cache.dir
+/home/ern1e/Documents/aulas/redes/INF01151-BroadcastFeed/client/CMakeFiles/rebuild_cache.dir
