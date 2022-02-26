@@ -35,8 +35,10 @@ client/CMakeCache.txt
 client/CMakeFiles
 client/cmake_install.cmake
 client/client
+client/Makefile
 
 server/CMakeCache.txt
 server/CMakeFiles
 server/cmake_install.cmake
 server/server
+server/Makefile
