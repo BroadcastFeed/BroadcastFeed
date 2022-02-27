@@ -8,6 +8,14 @@ std::string Profile::getName(){
     return this.username;
 }
 
+std::vector<Profile> getFollowers(){
+    return this.followers;
+}
+
+std::vector<Notification> getNotifications(){
+    return this.notifications;
+}
+
 void Profile::addFollower(Profile newFollower){
     this.followers.push_back(newFollower);
 }

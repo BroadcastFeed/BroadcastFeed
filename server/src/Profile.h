@@ -15,6 +15,8 @@ class Profile {
 
         Profile(std::string username);
         std::string getName();
+        std::vector<Profile> getFollowers();
+        std::vector<Notification> getNotifications();
         void addFollower(Profile newFollower);
         void addNotification(Notification newNotification);
         Notification removeNotification();
