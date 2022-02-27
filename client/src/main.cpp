@@ -11,13 +11,14 @@
 #define PORT     8080
 #define MAXSIZE 1024
 
-//for now the syntax is ./client <IP ADDRESS>
+//for now the syntax is ./client <username> <IP ADDRESS>
 
 int main(int argc, char** argv) { 
-    if (argc != 2) {
+    if (argc != 3) {
         exit(EXIT_FAILURE);
     }
-    char* ipAddress = argv[1]; 
+    char* username = argv[1];
+    char* ipAddress = argv[2];
     
 
     int socketDescriptor; // unique name identificator for socket
