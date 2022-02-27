@@ -21,6 +21,8 @@ class Profile {
         std::vector<Notification> getNotifications();
         void addFollower(Profile newFollower);
         void addNotification(Notification newNotification);
+        void startSession();
+        void endSession();
         Notification removeNotification();
 }
 

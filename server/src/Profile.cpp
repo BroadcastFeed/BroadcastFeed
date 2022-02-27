@@ -34,3 +34,11 @@ Notification Profile::removeNotification(){ //assuming a queue implementation of
     this.notifications.erase(this.notifications.begin());
     return firstElement;
 }
+
+void startSession(){
+    this.activeSessions++;
+}
+
+void endSession(){
+    this.activeSessions--;
+}
