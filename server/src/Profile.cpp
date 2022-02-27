@@ -1,6 +1,6 @@
 #include "Profile.h"
 
-Profile(std::string username){
+Profile::Profile(std::string username){
     this.username = username;
 }
 
