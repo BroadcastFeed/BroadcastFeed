@@ -8,6 +8,6 @@ class State{
         std::vector<Profile> users;
 
     public:
-        void addUser(Profile user);
+        void addUser(std::string newUsername);
         std::vector<Profile> getUsers();
 }
