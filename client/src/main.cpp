@@ -4,49 +4,52 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <cstring>
+#include <string>
 #include <arpa/inet.h>
+#include <iostream>
 
 #define PORT     8080
-#define MAXLINE 1024
+#define MAXSIZE 1024
 
-int main(int argc, char** argv) { //For now the syntax is ./client <IP ADDRESS>
-    int sockfd;
-    char buffer[MAXLINE];
-    char *hello = "Hello from client";
-    struct sockaddr_in     servaddr;
+//for now the syntax is ./client <IP ADDRESS>
 
+int main(int argc, char** argv) { 
     if (argc != 2) {
         exit(EXIT_FAILURE);
     }
+    char* ipAddress = argv[1]; 
+    
 
-    char* ipAddress = argv[1];
-
-    // Creating socket file descriptor
-    if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) {
-        perror("socket creation failed");
+    int socketDescriptor; // unique name identificator for socket
+    //instanciate UDP socket
+    if ((socketDescriptor = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0 ) {
+        perror("Socket creation failed!");
         exit(EXIT_FAILURE);
     }
+     
+    struct sockaddr_in serverAddress; //instanciate socket address struct
 
-    memset(&servaddr, 0, sizeof(servaddr));
+    memset(&serverAddress, 0, sizeof(serverAddress)); 
+    // filling server information
+    serverAddress.sin_family = AF_INET; //ipv4 family
+    serverAddress.sin_port = htons(PORT); //converts port value to proper format
+    serverAddress.sin_addr.s_addr = inet_addr(ipAddress); //converts ip to proper format
+    unsigned int serverStructLength = sizeof(serverAddress);
 
-    // Filling server information
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(PORT);
-    servaddr.sin_addr.s_addr = inet_addr(ipAddress);
+    char buffer[MAXSIZE];
+    std::string message = "Hello from client";
 
-    int n, len;
+    if (sendto(socketDescriptor, message.data(), message.length(),
+        MSG_CONFIRM, (struct sockaddr*) &serverAddress,
+        sizeof(serverAddress)) < 0)
+        std::cout << "Erro!";
+    std::cout << "Message sent!" << std::endl;
 
-    sendto(sockfd, (const char *)hello, strlen(hello),
-           MSG_CONFIRM, (const struct sockaddr *) &servaddr,
-           sizeof(servaddr));
-    printf("Hello message sent.\n");
+    recvfrom(socketDescriptor, buffer, MAXSIZE,
+        MSG_WAITALL, (struct sockaddr*) &serverAddress,
+        &serverStructLength);
+    std::cout << "Server: " << buffer << std::endl;
 
-    n = recvfrom(sockfd, (char *)buffer, MAXLINE,
-                 MSG_WAITALL, (struct sockaddr *) &servaddr,
-                 reinterpret_cast<socklen_t *>(&len));
-    buffer[n] = '\0';
-    printf("Server : %s\n", buffer);
-
-    close(sockfd);
+    close(socketDescriptor);
     return 0;
 }
