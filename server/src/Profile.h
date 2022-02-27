@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "Notification.h"
 
 class Profile {
 
@@ -8,11 +9,14 @@ class Profile {
 
         std::string username;
         std::vector<Profile> followers;
+        std::vector<Notification> notifications;
 
     public:
 
         Profile(std::string username);
         std::string getName();
         void addFollower(Profile newFollower);
+        void addNotification(Notification newNotification);
+        Notification removeNotification();
 }
 
