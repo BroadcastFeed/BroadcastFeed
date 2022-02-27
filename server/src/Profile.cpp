@@ -36,9 +36,13 @@ Notification Profile::removeNotification(){ //assuming a queue implementation of
 }
 
 void startSession(){
-    this.activeSessions++;
+    if (this.activeSessions < 2){ //otherwise, session is refused
+        this.activeSessions++;
+    }
 }
 
 void endSession(){
-    this.activeSessions--;
+    if (this.activeSessions >0){
+        this.activeSessions--;
+    }
 }
