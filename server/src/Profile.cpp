@@ -1,5 +1,9 @@
 #include "Profile.h"
 
+Profile(std::string username){
+    this.username = username;
+}
+
 std::string Profile::getName(){
     return this.username;
 }

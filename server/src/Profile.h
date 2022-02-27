@@ -11,6 +11,7 @@ class Profile {
 
     public:
 
+        Profile(std::string username);
         std::string getName();
         void addFollower(Profile newFollower);
 }
