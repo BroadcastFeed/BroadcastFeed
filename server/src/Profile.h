@@ -7,6 +7,7 @@ class Profile {
 
     private:
 
+        int activeSessions;
         std::string username;
         std::vector<Profile> followers;
         std::vector<Notification> notifications;
@@ -14,6 +15,7 @@ class Profile {
     public:
 
         Profile(std::string username);
+        int getActiveSessions();
         std::string getName();
         std::vector<Profile> getFollowers();
         std::vector<Notification> getNotifications();

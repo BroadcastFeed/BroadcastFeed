@@ -2,6 +2,11 @@
 
 Profile::Profile(std::string username){
     this.username = username;
+    this.activeSessions = 0;
+}
+
+int Profile::getActiveSessions(){
+    return this.activeSessions;
 }
 
 std::string Profile::getName(){
