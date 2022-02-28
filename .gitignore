@@ -44,3 +44,5 @@ server/cmake_install.cmake
 server/server
 server/Makefile
 server/build/*
+
+.idea/*
