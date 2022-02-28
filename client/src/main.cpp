@@ -1,12 +1,4 @@
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <cstdio>
-#include <cstdlib>
-#include <unistd.h>
-#include <cstring>
-#include <string>
-#include <iostream>
+#include "CommunicationManager.h"
 
 #define MAXSIZE 1024
 
@@ -20,39 +12,6 @@ int main(int argc, char** argv) {
     char* ipAddress = argv[2];
     unsigned int port = atoi(argv[3]);
     
-
-    int socketDescriptor; // unique name identificator for socket
-    //instanciate UDP socket
-    if ((socketDescriptor = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0 ) {
-        perror("Socket creation failed!");
-        exit(EXIT_FAILURE);
-    }
-     
-    struct sockaddr_in serverAddress; //instanciate socket address struct
-
-    memset(&serverAddress, 0, sizeof(serverAddress)); 
-    // filling server information
-    serverAddress.sin_family = AF_INET; //ipv4 family
-    serverAddress.sin_port = htons(port); //converts port value to proper format
-    serverAddress.sin_addr.s_addr = inet_addr(ipAddress); //converts ip to proper format
-    unsigned int serverStructLength = sizeof(serverAddress);
-
-    char buffer[MAXSIZE];
-    std::cout << "Session Started for profile " << username << std::endl;
-    std::string message;
-    std::getline(std::cin, message);
-
-    if (sendto(socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &serverAddress,
-        sizeof(serverAddress)) < 0)
-        std::cout << "Erro!";
-    std::cout << "Message sent!" << std::endl;
-
-    recvfrom(socketDescriptor, buffer, MAXSIZE,
-        MSG_WAITALL, (struct sockaddr*) &serverAddress,
-        &serverStructLength);
-    std::cout << "Server: " << buffer << std::endl;
-
-    close(socketDescriptor);
-    return 0;
+    CommunicationManager communicationManager(username, ipAddress, port);
+    communicationManager.initiateConnection();
 }
