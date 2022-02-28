@@ -8,10 +8,10 @@ class CommunicationManager{
         unsigned int port;
 
     public:
-        CommunicationManager(char* username, char* ipAddress, unsigned int port);
+        CommunicationManager(char* ipAddress, unsigned int port);
         char* getUsername();
         char* getIpAddress();
         unsigned int getPort();
-        void initiateConnection();
+        void initiateConnection(std::string message);
         int sendMessage(std::string message);
 };

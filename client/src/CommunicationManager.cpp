@@ -11,14 +11,9 @@
 
 #define MAXSIZE 1024
 
-CommunicationManager::CommunicationManager(char* username, char* ipAddress, unsigned int port){
-    this->username = username;
+CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
     this->ipAddress = ipAddress;
     this->port = port;
-}
-
-char* CommunicationManager::getUsername(){
-    return this->username;
 }
 
 char* CommunicationManager::getIpAddress(){
@@ -29,7 +24,7 @@ unsigned int CommunicationManager::getPort(){
     return this->port;
 }
 
-void CommunicationManager::initiateConnection(){
+void CommunicationManager::initiateConnection(std::string message){
 
     int socketDescriptor; // unique name identificator for socket
     //instanciate UDP socket
@@ -48,9 +43,6 @@ void CommunicationManager::initiateConnection(){
     unsigned int serverStructLength = sizeof(serverAddress);
 
     char buffer[MAXSIZE];
-    std::cout << "Session Started for profile " << username << std::endl;
-    std::string message;
-    std::getline(std::cin, message);
 
     if (sendto(socketDescriptor, message.data(), message.length(),
         MSG_CONFIRM, (struct sockaddr*) &serverAddress,

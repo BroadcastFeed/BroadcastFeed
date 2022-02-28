@@ -1,4 +1,5 @@
 #include "CommunicationManager.h"
+#include "Interface.h"
 
 #define MAXSIZE 1024
 
@@ -12,6 +13,10 @@ int main(int argc, char** argv) {
     char* ipAddress = argv[2];
     unsigned int port = atoi(argv[3]);
     
-    CommunicationManager communicationManager(username, ipAddress, port);
-    communicationManager.initiateConnection();
+    Interface interface;
+    interface.startSession(username);
+    std::string message = interface.requestMessage();
+
+    CommunicationManager communicationManager(ipAddress, port);
+    communicationManager.initiateConnection(message);
 }
