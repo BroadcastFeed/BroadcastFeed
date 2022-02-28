@@ -8,16 +8,16 @@
 #include <iostream>
 #include <errno.h>
 
-#define PORT     8080
 #define MAXSIZE 1024
 
-//for now, the syntax is ./server <IP ADDRESS>
+//for now, the syntax is ./server <IP ADDRESS> <PORT>
 
 int main(int argc, char** argv) { 
-    if (argc != 2) {
+    if (argc != 3) {
         exit(EXIT_FAILURE);
     }
     char* ipAddress = argv[1];
+    unsigned int port = atoi(argv[2]);
     
     int socketDescriptor; //unique name identificator for socket
     //instanciate UDP socket
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     // filling server information
     serverAddress.sin_family    = AF_INET; // ipv4 family
     serverAddress.sin_addr.s_addr = inet_addr(ipAddress); //converts port value to proper format
-    serverAddress.sin_port = htons(PORT); //converts ip to proper format
+    serverAddress.sin_port = htons(port); //converts ip to proper format
     unsigned int serverStructLength = sizeof(serverAddress);
 
     // Bind the socket with the server address

@@ -1,24 +1,24 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <cstdio>
 #include <cstdlib>
 #include <unistd.h>
 #include <cstring>
 #include <string>
-#include <arpa/inet.h>
 #include <iostream>
 
-#define PORT     8080
 #define MAXSIZE 1024
 
-//for now the syntax is ./client <username> <IP ADDRESS>
+//for now the syntax is ./client <USERNAME> <IP ADDRESS> <PORT>
 
 int main(int argc, char** argv) { 
-    if (argc != 3) {
+    if (argc != 4) {
         exit(EXIT_FAILURE);
     }
     char* username = argv[1];
     char* ipAddress = argv[2];
+    unsigned int port = atoi(argv[3]);
     
 
     int socketDescriptor; // unique name identificator for socket
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     memset(&serverAddress, 0, sizeof(serverAddress)); 
     // filling server information
     serverAddress.sin_family = AF_INET; //ipv4 family
-    serverAddress.sin_port = htons(PORT); //converts port value to proper format
+    serverAddress.sin_port = htons(port); //converts port value to proper format
     serverAddress.sin_addr.s_addr = inet_addr(ipAddress); //converts ip to proper format
     unsigned int serverStructLength = sizeof(serverAddress);
 
