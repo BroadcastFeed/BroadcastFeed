@@ -3,4 +3,6 @@ project(client)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(client src/main.cpp)
+file(GLOB SOURCES src/*.cpp)
+
+add_executable(client src/main.cpp ${SOURCES})
