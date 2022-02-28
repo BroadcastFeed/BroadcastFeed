@@ -38,7 +38,9 @@ int main(int argc, char** argv) {
     unsigned int serverStructLength = sizeof(serverAddress);
 
     char buffer[MAXSIZE];
-    std::string message = "Hello from client";
+    std::cout << "Session Started for profile " << username << std::endl;
+    std::string message;
+    std::getline(std::cin, message);
 
     if (sendto(socketDescriptor, message.data(), message.length(),
         MSG_CONFIRM, (struct sockaddr*) &serverAddress,
