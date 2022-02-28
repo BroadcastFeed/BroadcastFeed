@@ -12,57 +12,46 @@
 #define MAXSIZE 1024
 
 CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
-    this->ipAddress =ipAddress;
-    this->port = port;
-}
-
-char* CommunicationManager::getIpAddress(){
-    return this->ipAddress;
-}
-
-unsigned int CommunicationManager::getPort(){
-    return this->port;
-}
-
-void CommunicationManager::runServer(){
-    int socketDescriptor; //unique name identificator for socket
     //instanciate UDP socket
-    if ( (socketDescriptor = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0 ) {
+    this->socketDescriptor = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if ( this->socketDescriptor  <  0 ) {
         perror("socket creation failed");
         exit(EXIT_FAILURE);
     }
 
-    struct sockaddr_in serverAddress, clientAddress;
-    memset(&clientAddress, 0, sizeof(clientAddress));
-    memset(&serverAddress, 0, sizeof(serverAddress));
+    memset(&(this->serverAddress), 0, sizeof(this->serverAddress));
 
     // filling server information
-    serverAddress.sin_family    = AF_INET; // ipv4 family
-    serverAddress.sin_addr.s_addr = inet_addr(this->getIpAddress()); //converts port value to proper format
-    serverAddress.sin_port = htons(this->getPort()); //converts ip to proper format
-    unsigned int serverStructLength = sizeof(serverAddress);
+    this->serverAddress.sin_family    = AF_INET; // ipv4 family
+    this->serverAddress.sin_addr.s_addr = inet_addr(ipAddress); //converts port value to proper format
+    this->serverAddress.sin_port = htons(port); //converts ip to proper format
 
     // Bind the socket with the server address
-    if ( bind(socketDescriptor, (const struct sockaddr *)&serverAddress,
-        sizeof(serverAddress)) < 0 ) {
+    if ( bind(socketDescriptor, (const struct sockaddr *) &(this->serverAddress),
+        sizeof(this->serverAddress)) < 0 ) {
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
+}
 
+sockaddr_in CommunicationManager::acceptConnection(){
+    unsigned int serverStructLength = sizeof(this->serverAddress);
+    struct sockaddr_in clientAddress;
+    memset(&clientAddress, 0, sizeof(clientAddress));
     char buffer[MAXSIZE];
-
-    int len = sizeof(clientAddress);  //len is value/result
-
-    recvfrom(socketDescriptor, buffer, MAXSIZE,
+    recvfrom(this->socketDescriptor, buffer, MAXSIZE,
         MSG_WAITALL, (struct sockaddr*) &clientAddress,
         &serverStructLength);
     std::cout << "Client: " << buffer << std::endl;
+    
+    return clientAddress;
+}
 
-    std::string response = "Hello from server";
+void CommunicationManager::handleConnection(sockaddr_in clientAddress){
+    std::string response = "Bem-vinde";
     sendto(socketDescriptor, response.c_str(), response.length(),
         MSG_CONFIRM, (struct sockaddr*) &clientAddress,
-        len);
+        sizeof(clientAddress));
     std::cout << "Response sent." << std::endl;
-
-    //return 0;
+    
 }

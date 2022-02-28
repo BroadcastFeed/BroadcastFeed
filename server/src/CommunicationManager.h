@@ -1,12 +1,12 @@
 #include <string>
+#include <netinet/in.h>
 
 class CommunicationManager{
     private:
-        char* ipAddress;
-        unsigned int port;
+        unsigned int socketDescriptor;
+        struct sockaddr_in serverAddress;
     public:
         CommunicationManager(char* ipAddress, unsigned int port);
-        char* getIpAddress();
-        unsigned int getPort();
-        void runServer();
+        sockaddr_in acceptConnection();
+        void handleConnection(sockaddr_in clientAddress);
 };
