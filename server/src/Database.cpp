@@ -1,6 +1,6 @@
-#include "State.h"
+#include "Database.h"
 
-void State::addUser(std::string newUsername){
+void Database::addUser(std::string newUsername){
     bool alreadyExists = false;
     for (auto & profile : this->users){
         if (newUsername == profile.getName()){
@@ -13,6 +13,6 @@ void State::addUser(std::string newUsername){
     }
 }
 
-std::vector<Profile> State::getUsers(){
+std::vector<Profile> Database::getUsers(){
     return  this->users;
 }

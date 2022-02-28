@@ -3,7 +3,7 @@
 #include <vector>
 #include "Profile.h"
 
-class State{
+class Database{
     private:
         std::vector<Profile> users;
 

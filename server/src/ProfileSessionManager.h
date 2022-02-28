@@ -1,11 +1,11 @@
 #pragma once
-#include "State.h"
+#include "Database.h"
 #include "Profile.h"
 #include "Notification.h"
 
 class ProfileSessionManager{
     private:
-        State database;
+        Database database;
 
     public:
 };
