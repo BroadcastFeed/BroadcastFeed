@@ -1,29 +1,29 @@
 #include "Packet.h"
 
 Packet::Packet(int type, int seqNum, int length, int timestamp, std::string message){
-    this.type = type;
-    this.seqNum = seqNum;
-    this.length = length;
-    this.timestamp = timestamp;
-    this.message = message;
+    this->type = type;
+    this->seqNum = seqNum;
+    this->length = length;
+    this->timestamp = timestamp;
+    this->message = message;
 }
 
 int Packet::getType(){
-    return this.type;
+    return this->type;
 }
 
 int Packet::getSeqNum(){
-    return this.seqNum;
+    return this->seqNum;
 }
 
 int Packet::getLength(){
-    return this.length;
+    return this->length;
 }
 
 int Packet::getTimestamp(){
-    return this.timestamp;
+    return this->timestamp;
 }
 
 std::string Packet::getMessage(){
-    return this.message;
+    return this->message;
 }

@@ -10,4 +10,4 @@ class State{
     public:
         void addUser(std::string newUsername);
         std::vector<Profile> getUsers();
-}
+};

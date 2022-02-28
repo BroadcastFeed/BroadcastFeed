@@ -18,4 +18,4 @@ class Notification{
         std::string getMessage();
         void decreasePendingReaders();
 
-}
+};

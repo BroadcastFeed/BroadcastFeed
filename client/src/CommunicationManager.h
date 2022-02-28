@@ -4,4 +4,4 @@
 class CommunicationManager{
     public:
         int sendMessage(std::string message);
-}
+};

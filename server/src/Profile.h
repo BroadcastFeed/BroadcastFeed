@@ -24,5 +24,5 @@ class Profile {
         void startSession();
         void endSession();
         Notification removeNotification();
-}
+};
 

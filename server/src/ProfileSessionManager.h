@@ -8,4 +8,4 @@ class ProfileSessionManager{
         State database;
 
     public:
-}
+};

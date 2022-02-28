@@ -1,33 +1,33 @@
 #include "Notification.h"
 
 Notification::Notification(int id, int timestamp, int length, int pendingReaders, std::string message){
-    this.id = id;
-    this.timestamp = timestamp;
-    this.length = length;
-    this.pendingReaders = pendingreaders;
-    this.message = message;
+    this->id = id;
+    this->timestamp = timestamp;
+    this->length = length;
+    this->pendingReaders = pendingReaders;
+    this->message = message;
 }
 
-Notification::getId(){
-    return this.id;
+int Notification::getId(){
+    return this->id;
 }
 
-Notification::getTimestamp(){
-    return this.timestamp;
+int Notification::getTimestamp(){
+    return this->timestamp;
 }
 
-Notification::getLength(){
-    return this.length;
+int Notification::getLength(){
+    return this->length;
 }
 
-Notification::getPendingReaders(){
-    return this.pendingReaders;
+int Notification::getPendingReaders(){
+    return this->pendingReaders;
 }
 
-Notification::getMessage(){
-    return this.message;
+std::string Notification::getMessage(){
+    return this->message;
 }
 
-Notification::decreasePendingReaders(){
-    this.pendingReaders--;
+void Notification::decreasePendingReaders(){
+    this->pendingReaders--;
 }
