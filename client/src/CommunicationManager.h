@@ -12,6 +12,5 @@ class CommunicationManager{
         char* getUsername();
         char* getIpAddress();
         unsigned int getPort();
-        void initiateConnection(std::string message);
-        int sendMessage(std::string message);
+        void sendMessage(std::string message);
 };

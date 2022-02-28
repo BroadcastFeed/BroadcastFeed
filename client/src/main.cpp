@@ -15,8 +15,10 @@ int main(int argc, char** argv) {
     
     Interface interface;
     interface.startSession(username);
-    std::string message = interface.requestMessage();
 
-    CommunicationManager communicationManager(ipAddress, port);
-    communicationManager.initiateConnection(message);
+    while(true){
+        std::string message = interface.requestMessage();
+        CommunicationManager communicationManager(ipAddress, port);
+        communicationManager.sendMessage(message);
+    }
 }

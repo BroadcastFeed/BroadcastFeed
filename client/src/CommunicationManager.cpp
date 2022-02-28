@@ -24,7 +24,7 @@ unsigned int CommunicationManager::getPort(){
     return this->port;
 }
 
-void CommunicationManager::initiateConnection(std::string message){
+void CommunicationManager::sendMessage(std::string message){
 
     int socketDescriptor; // unique name identificator for socket
     //instanciate UDP socket
@@ -57,9 +57,5 @@ void CommunicationManager::initiateConnection(std::string message){
 
     close(socketDescriptor);
     //return 0;
-}
-
-int CommunicationManager::sendMessage(std::string message){
-    return 0;
 }
 
