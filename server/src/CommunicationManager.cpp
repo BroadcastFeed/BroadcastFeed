@@ -23,8 +23,8 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
 
     // filling server information
     this->serverAddress.sin_family    = AF_INET; // ipv4 family
-    this->serverAddress.sin_addr.s_addr = inet_addr(ipAddress); //converts port value to proper format
-    this->serverAddress.sin_port = htons(port); //converts ip to proper format
+    this->serverAddress.sin_addr.s_addr = inet_addr(ipAddress); 
+    this->serverAddress.sin_port = htons(port); 
 
     // Bind the socket with the server address
     if ( bind(socketDescriptor, (const struct sockaddr *) &(this->serverAddress),
@@ -34,7 +34,7 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
     }
 }
 
-sockaddr_in CommunicationManager::acceptConnection(){
+sockaddr_in CommunicationManager::listen(){
     unsigned int serverStructLength = sizeof(this->serverAddress);
     struct sockaddr_in clientAddress;
     memset(&clientAddress, 0, sizeof(clientAddress));
