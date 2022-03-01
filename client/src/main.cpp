@@ -1,5 +1,6 @@
 #include "CommunicationManager.h"
 #include "Interface.h"
+#include "Packet.h"
 
 #define MAXSIZE 1024
 
@@ -19,6 +20,7 @@ int main(int argc, char** argv) {
     while(true){
         std::string message = interface.requestMessage();
         CommunicationManager communicationManager(ipAddress, port);
-        communicationManager.sendMessage(message);
+        Packet packet(1,1,2,3,"fibonacci"); //message for testing
+        communicationManager.send(packet);
     }
 }

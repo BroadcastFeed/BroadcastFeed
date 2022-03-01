@@ -1,8 +1,9 @@
+#pragma once 
 #include <string>
 
 class Packet{
     private:
-        int type;
+        unsigned short type;
         int seqNum;
         int length;
         int timestamp;
@@ -15,5 +16,5 @@ class Packet{
         int getLength();
         int getTimestamp();
         std::string getMessage();
-
+        operator std::string() const; 
 };

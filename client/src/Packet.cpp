@@ -1,4 +1,5 @@
 #include "Packet.h"
+#include <iostream>
 
 Packet::Packet(int type, int seqNum, int length, int timestamp, std::string message){
     this->type = type;
@@ -26,4 +27,14 @@ int Packet::getTimestamp(){
 
 std::string Packet::getMessage(){
     return this->message;
+}
+
+Packet::operator std::string() const { 
+    std::string str;
+    str += "Type: " + std::to_string(this->type) + "\n";
+    str += "Seqn: " + std::to_string(this->seqNum) + "\n";
+    str += "Length: " + std::to_string(this->length) + "\n";
+    str += "Timestamp: " + std::to_string(this->timestamp) + "\n";
+    str += "Message: " + this->message;
+    return str; 
 }
