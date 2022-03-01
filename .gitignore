@@ -46,3 +46,8 @@ server/Makefile
 server/build/*
 
 .idea/*
+client/.vscode/c_cpp_properties.json
+client/.vscode/launch.json
+client/.vscode/tasks.json
+server/.vscode/launch.json
+server/.vscode/settings.json

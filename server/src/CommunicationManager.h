@@ -7,6 +7,6 @@ class CommunicationManager{
         struct sockaddr_in serverAddress;
     public:
         CommunicationManager(char* ipAddress, unsigned int port);
-        sockaddr_in acceptConnection();
+        sockaddr_in listen();
         void handleConnection(sockaddr_in clientAddress);
 };

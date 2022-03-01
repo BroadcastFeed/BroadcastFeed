@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     
     CommunicationManager communicationManager(ipAddress, port);
     while(true){
-        sockaddr_in clientAddress = communicationManager.acceptConnection();
+        sockaddr_in clientAddress = communicationManager.listen();
         std::thread clientThread(&CommunicationManager::handleConnection,communicationManager,clientAddress);
         clientThread.join();
     }
