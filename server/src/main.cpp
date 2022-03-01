@@ -1,4 +1,5 @@
 #include <netinet/in.h>
+#include <thread>
 #include "CommunicationManager.h"
 
 //the syntax is ./server <IP ADDRESS> <PORT>
@@ -11,6 +12,9 @@ int main(int argc, char** argv) {
     unsigned int port = atoi(argv[2]);
     
     CommunicationManager communicationManager(ipAddress, port);
-    sockaddr_in clientAddress = communicationManager.acceptConnection();
-    communicationManager.handleConnection(clientAddress);
+    while(true){
+        sockaddr_in clientAddress = communicationManager.acceptConnection();
+        std::thread clientThread(&CommunicationManager::handleConnection,communicationManager,clientAddress);
+        clientThread.join();
+    }
 }

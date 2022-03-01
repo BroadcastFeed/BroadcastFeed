@@ -42,7 +42,7 @@ void CommunicationManager::sendMessage(std::string message){
     serverAddress.sin_addr.s_addr = inet_addr(ipAddress); //converts ip to proper format
     unsigned int serverStructLength = sizeof(serverAddress);
 
-    char buffer[MAXSIZE];
+    char buffer[MAXSIZE] = "";
 
     if (sendto(socketDescriptor, message.data(), message.length(),
         MSG_CONFIRM, (struct sockaddr*) &serverAddress,

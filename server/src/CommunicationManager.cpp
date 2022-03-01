@@ -38,7 +38,7 @@ sockaddr_in CommunicationManager::acceptConnection(){
     unsigned int serverStructLength = sizeof(this->serverAddress);
     struct sockaddr_in clientAddress;
     memset(&clientAddress, 0, sizeof(clientAddress));
-    char buffer[MAXSIZE];
+    char buffer[MAXSIZE] = "";
     recvfrom(this->socketDescriptor, buffer, MAXSIZE,
         MSG_WAITALL, (struct sockaddr*) &clientAddress,
         &serverStructLength);
@@ -48,10 +48,9 @@ sockaddr_in CommunicationManager::acceptConnection(){
 }
 
 void CommunicationManager::handleConnection(sockaddr_in clientAddress){
-    std::string response = "Bem-vinde";
+    static std::string response = "Bem-vinde";
     sendto(socketDescriptor, response.c_str(), response.length(),
         MSG_CONFIRM, (struct sockaddr*) &clientAddress,
         sizeof(clientAddress));
-    std::cout << "Response sent." << std::endl;
-    
+    std::cout << response << std::endl; 
 }
