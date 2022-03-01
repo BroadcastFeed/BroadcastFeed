@@ -8,6 +8,7 @@
 class ProfileSessionManager{
     private:
         Database database;
+        std::vector activeUsers;
 
     public:
         void addUser(std::string username);
