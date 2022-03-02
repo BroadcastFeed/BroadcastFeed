@@ -28,7 +28,8 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
 }
 
 void CommunicationManager::send(Packet packet){
-    sendto(socketDescriptor, &packet, sizeof(packet),
+    std::string message = packet.serialize();
+    sendto(socketDescriptor, message.data(), message.length(),
         MSG_CONFIRM, (struct sockaddr*) &serverAddress,
         sizeof(serverAddress));
 }

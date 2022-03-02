@@ -38,11 +38,11 @@ Packet CommunicationManager::listen(){
     unsigned int serverStructLength = sizeof(this->serverAddress);
     struct sockaddr_in clientAddress;
     memset(&clientAddress, 0, sizeof(clientAddress));
-    Packet packet(0,0,0,0,"");
-    recvfrom(this->socketDescriptor, &packet, sizeof(packet),
+    char buffer[MAXSIZE] = "";
+    recvfrom(this->socketDescriptor, buffer, MAXSIZE,
         MSG_WAITALL, (struct sockaddr*) &clientAddress,
         &serverStructLength);
-    return packet;
+    return Packet(buffer);
 }
 
 void CommunicationManager::handleConnection(sockaddr_in clientAddress){

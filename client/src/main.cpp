@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     while(true){
         std::string message = interface.requestMessage();
         CommunicationManager communicationManager(ipAddress, port);
-        Packet packet(1,1,2,3,"fibonacci"); //message for testing
+        Packet packet(1,1,2,3,message); //message for testing
         communicationManager.send(packet);
     }
 }
