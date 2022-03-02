@@ -34,7 +34,7 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
     }
 }
 
-sockaddr_in CommunicationManager::listen(){
+Packet CommunicationManager::listen(){
     unsigned int serverStructLength = sizeof(this->serverAddress);
     struct sockaddr_in clientAddress;
     memset(&clientAddress, 0, sizeof(clientAddress));
@@ -42,9 +42,7 @@ sockaddr_in CommunicationManager::listen(){
     recvfrom(this->socketDescriptor, buffer, MAXSIZE,
         MSG_WAITALL, (struct sockaddr*) &clientAddress,
         &serverStructLength);
-    std::cout << "Client: " << buffer << std::endl;
-    
-    return clientAddress;
+    return Packet(buffer);
 }
 
 void CommunicationManager::handleConnection(sockaddr_in clientAddress){
