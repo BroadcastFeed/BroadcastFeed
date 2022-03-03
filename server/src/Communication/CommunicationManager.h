@@ -14,6 +14,7 @@ public:
     CommunicationManager(char *ipAddress, unsigned int port);
 
     Packet listen();
+    Packet putTimestamp(Packet packet, float timestamp);
 
     void handleConnection(sockaddr_in clientAddress);
 };

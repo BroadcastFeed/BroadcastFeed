@@ -6,16 +6,16 @@ class Packet{
         int type;
         int seqNum;
         int length;
-        int timestamp;
+        float timestamp;
         std::string message;
 
     public:
-        Packet(int type, int seqNum, int length, int timestamp, std::string message);
+        Packet(int type, int seqNum, int length, float timestamp, std::string message);
         Packet(std::string serializedPacket);
         int getType();
         int getSeqNum();
         int getLength();
-        int getTimestamp();
+        float getTimestamp();
         std::string getMessage();
         std::string serialize();
         operator std::string() const; 

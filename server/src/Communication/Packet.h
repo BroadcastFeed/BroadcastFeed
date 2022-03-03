@@ -1,33 +1,22 @@
-#pragma once
-
+#pragma once 
 #include <string>
 
-using std::string;
+class Packet{
+    private:
+        int type;
+        int seqNum;
+        int length;
+        float timestamp;
+        std::string message;
 
-class Packet {
-private:
-    unsigned short type;
-    int seqNum;
-    int length;
-    int timestamp;
-    string message;
-
-public:
-    Packet(int type, int seqNum, int length, int timestamp, string message);
-
-    Packet(string serializedPacket);
-
-    int getType();
-
-    int getSeqNum();
-
-    int getLength();
-
-    int getTimestamp();
-
-    string getMessage();
-
-    string serialize();
-
-    operator string() const;
+    public:
+        Packet(int type, int seqNum, int length, float timestamp, std::string message);
+        Packet(std::string serializedPacket);
+        int getType();
+        int getSeqNum();
+        int getLength();
+        float getTimestamp();
+        std::string getMessage();
+        std::string serialize();
+        operator std::string() const; 
 };

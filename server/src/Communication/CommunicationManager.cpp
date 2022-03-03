@@ -45,6 +45,11 @@ Packet CommunicationManager::listen() {
     return Packet(buffer);
 }
 
+Packet CommunicationManager::putTimestamp(Packet packet, float timestamp) {
+    Packet newPacket = Packet(packet.getType(), packet.getSeqNum(), packet.getLength(), timestamp, packet.getMessage());
+    return newPacket;
+}
+
 void CommunicationManager::handleConnection(sockaddr_in clientAddress) {
     static std::string response = "Bem-vinde";
     sendto(socketDescriptor, response.c_str(), response.length(),

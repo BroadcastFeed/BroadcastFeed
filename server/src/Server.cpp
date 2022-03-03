@@ -5,3 +5,7 @@ Server::Server(char* ipAddress, unsigned int port) : communicationManager(ipAddr
 Packet Server::listen(){
     return this->communicationManager.listen();
 }
+
+Packet Server::putTimestamp(Packet packet, float timestamp){
+    return this->communicationManager.putTimestamp(packet, timestamp);
+}
