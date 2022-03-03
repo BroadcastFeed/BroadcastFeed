@@ -14,4 +14,5 @@ private:
     ProfileSessionManager profileSessionManager;
 public:
     Server(char* ipAddress, unsigned int port);
+    Packet listen();
 };

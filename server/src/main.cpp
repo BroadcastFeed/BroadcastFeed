@@ -16,9 +16,8 @@ int main(int argc, char **argv) {
 
     Server server(ipAddress, port);
 
-    //CommunicationManager communicationManager(ipAddress, port);
     while (true) {
-        //Packet packet = communicationManager.listen();
-        //std::cout << (std::string) packet;
+        Packet packet = server.listen();
+        std::cout << (std::string) packet;
     }
 }
