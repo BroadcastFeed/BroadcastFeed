@@ -14,11 +14,13 @@ int main(int argc, char** argv) {
     
     Interface interface;
     interface.startSession(username);
-
+    
+    int seqn = 0;
     while(true){
         std::string message = interface.requestMessage();
         CommunicationManager communicationManager(ipAddress, port);
-        Packet packet(1,1,2,3,message); //message for testing
+        Packet packet = communicationManager.createPacket(message, seqn); //message for testing
         communicationManager.send(packet);
+        seqn++;
     }
 }
