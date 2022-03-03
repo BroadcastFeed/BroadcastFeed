@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 
-#include "Session/Packet.h"
-#include "Communication/CommunicationManager.h"
+#include "Communication/Packet.h"
+#include "Server.h"
 
 //the syntax is ./server <IP ADDRESS> <PORT>
 
@@ -14,9 +14,11 @@ int main(int argc, char **argv) {
     char *ipAddress = argv[1];
     unsigned int port = atoi(argv[2]);
 
-    CommunicationManager communicationManager(ipAddress, port);
+    Server server(ipAddress, port);
+
+    //CommunicationManager communicationManager(ipAddress, port);
     while (true) {
-        Packet packet = communicationManager.listen();
-        std::cout << (std::string) packet;
+        //Packet packet = communicationManager.listen();
+        //std::cout << (std::string) packet;
     }
 }

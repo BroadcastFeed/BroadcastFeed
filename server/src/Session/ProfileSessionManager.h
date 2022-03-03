@@ -3,18 +3,21 @@
 #include <string>
 #include <vector>
 #include "../Database/Database.h"
-#include "Profile.h"
+#include "../Profile/Profile.h"
 #include "../Notification/Notification.h"
+
+using std::vector;
+using std::string;
 
 class ProfileSessionManager {
 private:
     Database database;
-    std::vector<Profile> activeUsers;
+    vector<Profile> activeUsers;
 
 public:
-    void addUser(std::string username);
+    void addUser(string username);
 
-    bool userIsActive(std::string username);
+    bool userIsActive(string username);
 
-    void login(std::string username);
+    void login(string username);
 };

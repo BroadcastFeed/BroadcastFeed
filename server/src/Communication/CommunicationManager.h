@@ -1,7 +1,8 @@
-#include <string>
-#include <netinet/in.h>
+#pragma once
 
-#include "../Session/Packet.h"
+#include <string>
+#include "Packet.h"
+#include <netinet/in.h>
 
 using std::string;
 

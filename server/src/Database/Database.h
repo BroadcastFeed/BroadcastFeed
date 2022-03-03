@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "../Session/Profile.h"
+#include "../Profile/Profile.h"
 
 using std::string;
 using std::vector;
