@@ -1,5 +1,5 @@
 #pragma once
-#include "Profile.h"
+#include "../Session/Profile.h"
 #include "Notification.h"
 
 class NotificationManager{

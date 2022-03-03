@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Profile.h"
+#include "../Session/Profile.h"
 
 class Database{
     private:

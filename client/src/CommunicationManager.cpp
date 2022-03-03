@@ -12,7 +12,7 @@
 #define MAXSIZE 1024
 
 CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
-    //instanciate UDP socket
+    //instantiate UDP socket
     this->socketDescriptor = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if ( this->socketDescriptor  <  0 ) {
         perror("socket creation failed");

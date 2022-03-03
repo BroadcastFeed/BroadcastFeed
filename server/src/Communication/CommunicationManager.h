@@ -1,7 +1,7 @@
 #include <string>
 #include <netinet/in.h>
 
-#include "Packet.h"
+#include "../Session/Packet.h"
 
 class CommunicationManager{
     private:

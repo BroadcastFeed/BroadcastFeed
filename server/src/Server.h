@@ -1,7 +1,7 @@
 #pragma once
-#include "ProfileSessionManager.h"
-#include "CommunicationManager.h"
-#include "NotificationManager.h"
+#include "Session/ProfileSessionManager.h"
+#include "Communication/CommunicationManager.h"
+#include "Notification/NotificationManager.h"
 
 class Server{
     private:

@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 
-#include "Packet.h"
-#include "CommunicationManager.h"
+#include "Session/Packet.h"
+#include "Communication/CommunicationManager.h"
 
 //the syntax is ./server <IP ADDRESS> <PORT>
 

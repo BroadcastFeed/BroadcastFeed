@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Notification.h"
+#include "../Notification/Notification.h"
 
 class Profile {
 

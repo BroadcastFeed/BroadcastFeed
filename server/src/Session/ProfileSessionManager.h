@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Database.h"
+#include "../Database/Database.h"
 #include "Profile.h"
-#include "Notification.h"
+#include "../Notification/Notification.h"
 
 class ProfileSessionManager{
     private:
