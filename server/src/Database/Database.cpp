@@ -1,18 +1,18 @@
 #include "Database.h"
 
-void Database::addUser(std::string newUsername){
+void Database::addUser(std::string newUsername) {
     bool alreadyExists = false;
-    for (auto & profile : this->users){
-        if (newUsername == profile.getName()){
+    for (auto &profile: this->users) {
+        if (newUsername == profile.getName()) {
             alreadyExists = true;
         }
     }
-    if (!alreadyExists){
+    if (!alreadyExists) {
         Profile newUser = Profile(newUsername);
-        this->users.push_back(newUser);   
+        this->users.push_back(newUser);
     }
 }
 
-std::vector<Profile> Database::getUsers(){
-    return  this->users;
+std::vector<Profile> Database::getUsers() {
+    return this->users;
 }

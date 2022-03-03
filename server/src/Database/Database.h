@@ -1,13 +1,18 @@
 #pragma once
+
 #include <string>
 #include <vector>
 #include "../Session/Profile.h"
 
-class Database{
-    private:
-        std::vector<Profile> users;
+using std::string;
+using std::vector;
 
-    public:
-        void addUser(std::string newUsername);
-        std::vector<Profile> getUsers();
+class Database {
+private:
+    vector<Profile> users;
+
+public:
+    void addUser(string newUsername);
+
+    vector<Profile> getUsers();
 };

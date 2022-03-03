@@ -1,28 +1,39 @@
 #pragma once
+
 #include <vector>
 #include <string>
 #include "../Notification/Notification.h"
 
+using std::string;
+using std::vector;
+
 class Profile {
 
-    private:
+private:
+    int activeSessions;
+    string username;
+    vector<Profile> followers;
+    vector<Notification> notifications;
 
-        int activeSessions;
-        std::string username;
-        std::vector<Profile> followers;
-        std::vector<Notification> notifications;
+public:
+    Profile(string username);
 
-    public:
+    int getActiveSessions();
 
-        Profile(std::string username);
-        int getActiveSessions();
-        std::string getName();
-        std::vector<Profile> getFollowers();
-        std::vector<Notification> getNotifications();
-        void addFollower(Profile newFollower);
-        void addNotification(Notification newNotification);
-        void startSession();
-        void endSession();
-        Notification removeNotification();
+    string getName();
+
+    vector<Profile> getFollowers();
+
+    vector<Notification> getNotifications();
+
+    void addFollower(Profile newFollower);
+
+    void addNotification(Notification newNotification);
+
+    void startSession();
+
+    void endSession();
+
+    Notification removeNotification();
 };
 

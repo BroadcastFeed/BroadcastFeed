@@ -1,48 +1,48 @@
 #include "Profile.h"
 
-Profile::Profile(std::string username){
+Profile::Profile(std::string username) {
     this->username = username;
     this->activeSessions = 0;
 }
 
-int Profile::getActiveSessions(){
+int Profile::getActiveSessions() {
     return this->activeSessions;
 }
 
-std::string Profile::getName(){
+std::string Profile::getName() {
     return this->username;
 }
 
-std::vector<Profile> Profile::getFollowers(){
+std::vector<Profile> Profile::getFollowers() {
     return this->followers;
 }
 
-std::vector<Notification> Profile::getNotifications(){
+std::vector<Notification> Profile::getNotifications() {
     return this->notifications;
 }
 
-void Profile::addFollower(Profile newFollower){
+void Profile::addFollower(Profile newFollower) {
     this->followers.push_back(newFollower);
 }
 
-void Profile::addNotification(Notification newNotification){
+void Profile::addNotification(Notification newNotification) {
     this->notifications.push_back(newNotification);
 }
 
-Notification Profile::removeNotification(){ //assuming a queue implementation of the list
+Notification Profile::removeNotification() { //assuming a queue implementation of the list
     Notification firstElement = this->notifications[0];
     this->notifications.erase(this->notifications.begin());
     return firstElement;
 }
 
-void Profile::startSession(){
-    if (this->activeSessions < 2){ //otherwise, session is refused
+void Profile::startSession() {
+    if (this->activeSessions < 2) { //otherwise, session is refused
         this->activeSessions++;
     }
 }
 
-void Profile::endSession(){
-    if (this->activeSessions >0){
+void Profile::endSession() {
+    if (this->activeSessions > 0) {
         this->activeSessions--;
     }
 }
