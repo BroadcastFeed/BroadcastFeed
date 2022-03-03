@@ -45,9 +45,8 @@ Packet CommunicationManager::listen() {
     return Packet(buffer);
 }
 
-Packet CommunicationManager::putTimestamp(Packet packet, float timestamp) {
-    Packet newPacket = Packet(packet.getType(), packet.getSeqNum(), packet.getLength(), timestamp, packet.getMessage());
-    return newPacket;
+Packet CommunicationManager::putTimestamp(Packet packet, unsigned int timestamp) {
+    return Packet(packet.getType(), packet.getSeqNum(), packet.getLength(), timestamp, packet.getMessage());
 }
 
 void CommunicationManager::handleConnection(sockaddr_in clientAddress) {

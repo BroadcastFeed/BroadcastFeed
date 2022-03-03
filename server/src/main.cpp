@@ -1,7 +1,7 @@
 #include <thread>
 #include <iostream>
 #include <string>
-#include <time.h>
+#include <ctime>
 
 #include "Communication/Packet.h"
 #include "Server.h"
@@ -16,12 +16,11 @@ int main(int argc, char **argv) {
     unsigned int port = atoi(argv[2]);
 
     Server server(ipAddress, port);
-    time_t timer;
 
     while (true) {
         Packet inputPacket = server.listen();
-        timer = time(NULL);
-        Packet packet = server.putTimestamp(inputPacket, (float) timer);
+        std::time_t timer = std::time(nullptr);
+        Packet packet = server.putTimestamp(inputPacket, (unsigned int) timer);
         std::cout << (std::string) packet; //for debugging
     }
 }

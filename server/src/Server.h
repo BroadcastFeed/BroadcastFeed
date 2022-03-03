@@ -15,5 +15,5 @@ private:
 public:
     Server(char* ipAddress, unsigned int port);
     Packet listen();
-    Packet putTimestamp(Packet packet, float timestamp);
+    Packet putTimestamp(Packet packet, unsigned int timestamp);
 };
