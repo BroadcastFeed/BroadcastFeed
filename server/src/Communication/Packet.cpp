@@ -3,6 +3,8 @@
 #include <sstream>
 
 using std::string;
+using std::stringstream;
+using std::to_string;
 
 Packet::Packet(int type, int seqNum, int length, int timestamp, string message) {
     this->type = type;

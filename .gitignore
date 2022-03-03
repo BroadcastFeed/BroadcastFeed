@@ -34,6 +34,7 @@
 client/CMakeCache.txt
 client/CMakeFiles
 client/cmake_install.cmake
+client/cmake-build-*
 client/client
 client/Makefile
 client/build/*
@@ -41,6 +42,7 @@ client/build/*
 server/CMakeCache.txt
 server/CMakeFiles
 server/cmake_install.cmake
+server/cmake-build-*
 server/server
 server/Makefile
 server/build/*

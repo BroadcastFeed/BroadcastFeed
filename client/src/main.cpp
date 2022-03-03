@@ -3,9 +3,7 @@
 #include "Packet.h"
 
 #define MAXSIZE 1024
-
 //for now the syntax is ./client <USERNAME> <IP ADDRESS> <PORT>
-
 int main(int argc, char** argv) { 
     if (argc != 4) {
         exit(EXIT_FAILURE);
