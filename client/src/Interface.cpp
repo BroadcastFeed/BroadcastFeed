@@ -12,6 +12,6 @@ void Interface::showMessage(std::string message){
 std::string Interface::requestMessage(){
     std::cout << "> ";
     std::string message;
-    std::cin >> message;
+    std::getline(std::cin, message);
     return message;
 }
