@@ -42,12 +42,13 @@ Packet CommunicationManager::createPacket(std::string message){
     */
 
     int type = -1;
-    if (message.find("FOLLOW") == 0){
+    if (message.rfind("FOLLOW ", 0) == 0){
         type = 1;
+        message.erase(0,7);
     }
-
-    else if (message.find("SEND") == 0){
+    else if (message.rfind("SEND ", 0) == 0){
         type = 2;
+        message.erase(0,5);
     }
 
     int length = message.length();
