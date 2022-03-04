@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-Packet::Packet(int type, int seqNum, int length, float timestamp, std::string message){
+Packet::Packet(int type, int seqNum, int length, int64_t timestamp, std::string message){
     this->type = type;
     this->seqNum = seqNum;
     this->length = length;

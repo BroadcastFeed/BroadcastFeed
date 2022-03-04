@@ -6,6 +6,6 @@ Packet Server::listen(){
     return this->communicationManager.listen();
 }
 
-Packet Server::putTimestamp(Packet packet, float timestamp){
+Packet Server::putTimestamp(Packet packet, int64_t timestamp){
     return this->communicationManager.putTimestamp(packet, timestamp);
 }

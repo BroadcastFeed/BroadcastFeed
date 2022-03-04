@@ -2,9 +2,12 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <chrono>
 
 #include "Communication/Packet.h"
 #include "Server.h"
+
+using namespace std::chrono;
 
 //the syntax is ./server <IP ADDRESS> <PORT>
 
@@ -18,10 +21,13 @@ int main(int argc, char **argv) {
     Server server(ipAddress, port);
     time_t timer;
 
+
+
+
     while (true) {
         Packet inputPacket = server.listen();
-        timer = time(NULL);
-        Packet packet = server.putTimestamp(inputPacket, (float) timer);
+        milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+        Packet packet = server.putTimestamp(inputPacket, ms.count());
         std::cout << (std::string) packet; //for debugging
     }
 }

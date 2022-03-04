@@ -45,7 +45,7 @@ Packet CommunicationManager::listen() {
     return Packet(buffer);
 }
 
-Packet CommunicationManager::putTimestamp(Packet packet, float timestamp) {
+Packet CommunicationManager::putTimestamp(Packet packet, int64_t timestamp) {
     Packet newPacket = Packet(packet.getType(), packet.getSeqNum(), packet.getLength(), timestamp, packet.getMessage());
     return newPacket;
 }
