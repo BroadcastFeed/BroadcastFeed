@@ -2,7 +2,7 @@
 #include "Interface.h"
 
 void Interface::startSession(char* username){
-    //std::cout << "Session Started for profile " << username << std::endl;
+    std::cout << "Hello " << username << std::endl;
 }
 
 void Interface::showMessage(std::string message){
