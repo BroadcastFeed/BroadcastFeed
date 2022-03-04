@@ -13,8 +13,7 @@ private:
 public:
     CommunicationManager(char *ipAddress, unsigned int port);
 
-    Packet listen();
-    Packet putTimestamp(Packet packet, int64_t timestamp);
+    Packet listen(int seqn, int64_t timestamp);
 
     void handleConnection(sockaddr_in clientAddress);
 };

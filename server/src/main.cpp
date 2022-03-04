@@ -19,10 +19,11 @@ int main(int argc, char **argv) {
 
     Server server(ipAddress, port);
 
+    int seqNum = 0;
     while (true) {
-        Packet inputPacket = server.listen();
         milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-        Packet packet = server.putTimestamp(inputPacket, ms.count());
+        Packet packet = server.listen(seqNum, ms.count());
         std::cout << (std::string) packet; //for debugging
+        seqNum++;
     }
 }

@@ -14,6 +14,5 @@ private:
     ProfileSessionManager profileSessionManager;
 public:
     Server(char* ipAddress, unsigned int port);
-    Packet listen();
-    Packet putTimestamp(Packet packet, int64_t timestamp);
+    Packet listen(int seqn, int64_t timestamp);
 };

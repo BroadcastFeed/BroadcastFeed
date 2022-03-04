@@ -13,5 +13,5 @@ class CommunicationManager{
     public:
         CommunicationManager(char* ipAddress, unsigned int port);
         void send(Packet packet);
-        Packet createPacket(std::string message, int seqn);
+        Packet createPacket(std::string message);
 };

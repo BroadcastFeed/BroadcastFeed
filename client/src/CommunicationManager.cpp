@@ -34,7 +34,7 @@ void CommunicationManager::send(Packet packet){
         sizeof(serverAddress));
 }
 
-Packet CommunicationManager::createPacket(std::string message, int seqn){
+Packet CommunicationManager::createPacket(std::string message){
     /*packet type convention:
         1 - FOLLOW messages
         2 - SEND messages
@@ -51,7 +51,8 @@ Packet CommunicationManager::createPacket(std::string message, int seqn){
     }
 
     int length = message.length();
-    int timestamp = -1; 
+    int timestamp = -1;
+    int seqn = -1; 
 
     return Packet(type, seqn, length, timestamp, message);
 

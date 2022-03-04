@@ -34,7 +34,7 @@ CommunicationManager::CommunicationManager(char *ipAddress, unsigned int port) {
     }
 }
 
-Packet CommunicationManager::listen() {
+Packet CommunicationManager::listen(int seqn, int64_t timestamp) {
     unsigned int serverStructLength = sizeof(this->serverAddress);
     struct sockaddr_in clientAddress;
     memset(&clientAddress, 0, sizeof(clientAddress));
@@ -42,12 +42,10 @@ Packet CommunicationManager::listen() {
     recvfrom(this->socketDescriptor, buffer, MAXSIZE,
              MSG_WAITALL, (struct sockaddr *) &clientAddress,
              &serverStructLength);
-    return Packet(buffer);
-}
-
-Packet CommunicationManager::putTimestamp(Packet packet, int64_t timestamp) {
-    Packet newPacket = Packet(packet.getType(), packet.getSeqNum(), packet.getLength(), timestamp, packet.getMessage());
-    return newPacket;
+    Packet packet = Packet(buffer);
+    packet.setTimestamp(timestamp);
+    packet.setSeqNum(seqn);
+    return packet;
 }
 
 void CommunicationManager::handleConnection(sockaddr_in clientAddress) {

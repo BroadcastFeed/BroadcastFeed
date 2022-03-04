@@ -30,6 +30,14 @@ Packet::Packet(std::string serializedPacket){
     this->message = section;
 }
 
+void Packet::setTimestamp(int64_t timestamp){
+    this->timestamp = timestamp;
+}
+
+void Packet::setSeqNum(int seqNum){
+    this->seqNum = seqNum;
+}
+
 int Packet::getType(){
     return this->type;
 }
