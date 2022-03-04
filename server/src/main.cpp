@@ -19,9 +19,6 @@ int main(int argc, char **argv) {
 
     Server server(ipAddress, port);
 
-
-
-
     while (true) {
         Packet inputPacket = server.listen();
         milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());

@@ -24,7 +24,7 @@ Packet::Packet(std::string serializedPacket){
     this->length = stoi(section);
 
     std::getline(ss, section, ',');
-    this->timestamp = stoi(section);
+    this->timestamp = atoll(section.c_str());
 
     std::getline(ss, section, ',');
     this->message = section;
