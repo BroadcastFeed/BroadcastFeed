@@ -23,6 +23,7 @@ int main(int argc, char **argv) {
     while (true) {
         milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
         Packet packet = server.listen(seqNum, ms.count());
+        server.handlePacket(packet);
         std::cout << (std::string) packet; //for debugging
         seqNum++;
     }
