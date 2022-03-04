@@ -14,10 +14,4 @@ class CommunicationManager{
         CommunicationManager(char* ipAddress, unsigned int port);
         void send(Packet packet);
         Packet createPacket(std::string message, int seqn);
-        /*
-        char* getUsername();
-        char* getIpAddress();
-        unsigned int getPort();
-        void sendMessage(std::string message);
-        */
 };

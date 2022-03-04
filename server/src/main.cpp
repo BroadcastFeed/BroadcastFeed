@@ -1,7 +1,6 @@
 #include <thread>
 #include <iostream>
 #include <string>
-#include <time.h>
 #include <chrono>
 
 #include "Communication/Packet.h"
@@ -19,7 +18,6 @@ int main(int argc, char **argv) {
     unsigned int port = atoi(argv[2]);
 
     Server server(ipAddress, port);
-    time_t timer;
 
 
 
