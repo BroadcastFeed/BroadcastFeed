@@ -15,4 +15,5 @@ private:
 public:
     Server(char* ipAddress, unsigned int port);
     Packet listen(int seqn, int64_t timestamp);
+    void handlePacket(Packet packet);
 };

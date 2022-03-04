@@ -6,12 +6,14 @@ class Packet{
         int type;
         int seqNum;
         int length;
-        unsigned int timestamp;
+        int64_t timestamp;
         std::string message;
 
     public:
-        Packet(int type, int seqNum, int length, unsigned int timestamp, std::string message);
+        Packet(int type, int seqNum, int length, int64_t timestamp, std::string message);
         Packet(std::string serializedPacket);
+        void setTimestamp(int64_t timestamp);
+        void setSeqNum(int seqNum);
         int getType();
         int getSeqNum();
         int getLength();

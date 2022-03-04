@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-Packet::Packet(int type, int seqNum, int length, unsigned int timestamp, std::string message){
+Packet::Packet(int type, int seqNum, int length, int64_t timestamp, std::string message){
     this->type = type;
     this->seqNum = seqNum;
     this->length = length;
@@ -24,10 +24,18 @@ Packet::Packet(std::string serializedPacket){
     this->length = stoi(section);
 
     std::getline(ss, section, ',');
-    this->timestamp = stoi(section);
+    this->timestamp = atoll(section.c_str());
 
     std::getline(ss, section, ',');
     this->message = section;
+}
+
+void Packet::setTimestamp(int64_t timestamp){
+    this->timestamp = timestamp;
+}
+
+void Packet::setSeqNum(int seqNum){
+    this->seqNum = seqNum;
 }
 
 int Packet::getType(){
