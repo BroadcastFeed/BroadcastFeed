@@ -18,6 +18,16 @@ std::vector<Profile> Database::getUsers() {
     return this->users;
 }
 
+Profile Database::getUser(std::string username){
+    Profile nullProfile = Profile(NULL);
+    for (auto &profile: this->users) {
+        if (username == profile.getName()) {
+            return profile;
+        }
+    }
+    return nullProfile;
+}
+
 
 Database::operator std::string() const { 
     std::string str;
