@@ -15,6 +15,10 @@ int main(int argc, char** argv) {
     Interface interface;
     interface.startSession(username);
     CommunicationManager communicationManager(ipAddress, port);
+
+    //std::string startMessage = 
+    Packet startPacket = communicationManager.createPacket((std::string) "START "+ (std::string) username);
+    communicationManager.send(startPacket);
     
     while(true){
         std::string message = interface.requestMessage();
