@@ -36,18 +36,23 @@ void CommunicationManager::send(Packet packet){
 
 Packet CommunicationManager::createPacket(std::string message){
     /*packet type convention:
-        1 - FOLLOW messages
-        2 - SEND messages
+        1 - START (session) messages
+        2 - FOLLOW messages
+        3 - SEND messages
         else - INVALID TYPE
     */
 
     int type = -1;
-    if (message.rfind("FOLLOW ", 0) == 0){
+    if (message.rfind("START ", 0) == 0){
         type = 1;
         message.erase(0,7);
     }
-    else if (message.rfind("SEND ", 0) == 0){
+    else if (message.rfind("FOLLOW ", 0) == 0){
         type = 2;
+        message.erase(0,5);
+    }
+    else if (message.rfind("SEND ", 0) == 0){
+        type = 3;
         message.erase(0,5);
     }
 
