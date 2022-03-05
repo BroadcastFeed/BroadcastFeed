@@ -19,5 +19,7 @@ bool ProfileSessionManager::userIsActive(std::string username){
 }
 
 void ProfileSessionManager::login(std::string username) {
-    this->addActiveUser(username);
+    if (!userIsActive(username)){
+        this->addActiveUser(username);
+    }
 }
