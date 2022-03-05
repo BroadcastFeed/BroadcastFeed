@@ -11,11 +11,10 @@ using std::string;
 
 class ProfileSessionManager {
 private:
-    Database database;
     vector<Profile> activeUsers;
 
 public:
-    void addUser(string username);
+    void addActiveUser(string username);
 
     bool userIsActive(string username);
 
