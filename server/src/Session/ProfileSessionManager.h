@@ -16,6 +16,8 @@ private:
 public:
     void addActiveUser(string username);
 
+    vector<Profile> getActiveUsers();
+
     bool userIsActive(string username);
 
     void login(string username);
