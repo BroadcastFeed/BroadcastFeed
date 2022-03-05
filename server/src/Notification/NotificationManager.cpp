@@ -4,6 +4,6 @@ void NotificationManager::sendNotification(Notification notification, Profile pr
     //not implemented yet
 }
 
-void NotificationManager::recieveNotification(Notification notification, Profile user) {
+void NotificationManager::receiveNotification(Notification notification, Profile user) {
     //not implemented yet
 }

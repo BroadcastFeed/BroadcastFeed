@@ -17,23 +17,15 @@ private:
 
 public:
     Profile(string username);
-
     int getActiveSessions();
-
     string getName();
-
     vector<Profile> getFollowers();
-
     vector<Notification> getNotifications();
-
     void addFollower(Profile newFollower);
-
     void addNotification(Notification newNotification);
-
     void startSession();
-
     void endSession();
-
     Notification removeNotification();
+    operator std::string() const; 
 };
 

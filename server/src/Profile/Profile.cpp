@@ -46,3 +46,11 @@ void Profile::endSession() {
         this->activeSessions--;
     }
 }
+
+Profile::operator std::string() const { 
+    std::string str;
+    str += "Username: " + this->username + "\n";    
+    str += "Followers: " + std::to_string(this->followers.size()) + "\n";
+    str += "Pending Notifications: " + std::to_string(this->notifications.size()) + "\n";
+    return str; 
+}

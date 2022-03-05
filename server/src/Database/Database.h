@@ -13,6 +13,6 @@ private:
 
 public:
     void addUser(string newUsername);
-
     vector<Profile> getUsers();
+    operator std::string() const; 
 };
