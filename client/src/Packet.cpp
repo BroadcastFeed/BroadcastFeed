@@ -50,7 +50,7 @@ int Packet::getLength(){
     return this->length;
 }
 
-float Packet::getTimestamp(){
+int64_t Packet::getTimestamp(){
     return this->timestamp;
 }
 

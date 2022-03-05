@@ -17,7 +17,7 @@ class Packet{
         int getType();
         int getSeqNum();
         int getLength();
-        float getTimestamp();
+        int64_t getTimestamp();
         std::string getMessage();
         std::string serialize();
         operator std::string() const; 

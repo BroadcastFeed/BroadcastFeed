@@ -3,6 +3,7 @@
 #include "Session/ProfileSessionManager.h"
 #include "Communication/CommunicationManager.h"
 #include "Notification/NotificationManager.h"
+#include "Notification/Notification.h"
 #include "Database/Database.h"
 
 class Server {

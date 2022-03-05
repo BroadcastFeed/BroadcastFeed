@@ -1,6 +1,6 @@
 #include "Notification.h"
 
-Notification::Notification(int id, int timestamp, int length, int pendingReaders, std::string message) {
+Notification::Notification(int id, int64_t timestamp, int length, int pendingReaders, std::string message) {
     this->id = id;
     this->timestamp = timestamp;
     this->length = length;
@@ -12,7 +12,7 @@ int Notification::getId() {
     return this->id;
 }
 
-int Notification::getTimestamp() {
+int64_t Notification::getTimestamp() {
     return this->timestamp;
 }
 

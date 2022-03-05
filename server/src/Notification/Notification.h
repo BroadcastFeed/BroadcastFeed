@@ -7,17 +7,17 @@ using std::string;
 class Notification {
 private:
     int id;
-    int timestamp;
+    int64_t timestamp;
     int length;
     int pendingReaders;
     string message;
 
 public:
-    Notification(int id, int timestamp, int length, int pendingReaders, string message);
+    Notification(int id, int64_t timestamp, int length, int pendingReaders, string message);
 
     int getId();
 
-    int getTimestamp();
+    int64_t getTimestamp();
 
     int getLength();
 
