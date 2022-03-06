@@ -29,20 +29,17 @@ void Server::handlePacket(std::pair<Packet, Address> received){
                                                      packet.getLength(), pendingReaders,
                                                      packet.getMessage());
             break;
+            
         case FOLLOW:
-            notification = Notification(packet.getSeqNum(), packet.getTimestamp(),
-                                                     packet.getLength(), pendingReaders,
-                                                     packet.getMessage());
+
             break;
+
         case DISCONNECT:
-            notification = Notification(packet.getSeqNum(), packet.getTimestamp(),
-                                        packet.getLength(), pendingReaders,
-                                        packet.getMessage());
+
             break;
+
         default:
-            notification = Notification(packet.getSeqNum(), packet.getTimestamp(),
-                                        packet.getLength(), pendingReaders,
-                                        packet.getMessage());
+
             return;
     }
 }
