@@ -5,6 +5,8 @@ Profile::Profile(std::string username) {
     this->activeSessions = 0;
 }
 
+Profile::Profile(){}
+
 int Profile::getActiveSessions() {
     return this->activeSessions;
 }

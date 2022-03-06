@@ -28,7 +28,6 @@ Profile Database::getUser(const std::string& username){
     return nullProfile;
 }
 
-
 Database::operator std::string() const { 
     std::string str;
     str += "Database: \n";

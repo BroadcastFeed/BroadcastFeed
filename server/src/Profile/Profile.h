@@ -17,6 +17,7 @@ private:
 
 public:
     Profile(string username);
+    Profile();
     int getActiveSessions();
     string getName();
     vector<Profile> getFollowers();
