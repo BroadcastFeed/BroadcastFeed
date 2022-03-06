@@ -24,7 +24,6 @@ Packet::Packet(std::string serializedPacket){
     std::string section;
 
     std::getline(ss, section, ',');
-//    TODO TEST THIS CAST
     this->type = static_cast<PacketType>(stoi(section));
 
     std::getline(ss, section, ',');
