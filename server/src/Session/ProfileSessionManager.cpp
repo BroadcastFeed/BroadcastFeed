@@ -34,6 +34,10 @@ void ProfileSessionManager::login(pair<string,Address> sessionAttempt) {
 }
 
 //right now only printing ipv4
+/* Example of print output of sessions:
+Profile: marquinhos Addresses: 127.0.0.1:55440 127.0.0.1:7848
+Profile: mauro Addresses: 127.0.0.1:30093 
+*/
 ProfileSessionManager::operator std::string() const { 
     std::string str;
     str += "Sessions: \n";
