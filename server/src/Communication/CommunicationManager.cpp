@@ -1,13 +1,12 @@
 #include "CommunicationManager.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <arpa/inet.h>
 #include <string>
 #include <iostream>
-#include <errno.h>
 
 #define MAXSIZE 1024
 
@@ -34,9 +33,9 @@ CommunicationManager::CommunicationManager(char *ipAddress, unsigned int port) {
     }
 }
 
-Packet CommunicationManager::listen(int seqn, int64_t timestamp) {
+std::pair<Packet, Address> CommunicationManager::listen(int seqn, int64_t timestamp) {
     unsigned int serverStructLength = sizeof(this->serverAddress);
-    struct sockaddr_in clientAddress;
+    Address clientAddress;
     memset(&clientAddress, 0, sizeof(clientAddress));
     char buffer[MAXSIZE] = "";
     recvfrom(this->socketDescriptor, buffer, MAXSIZE,
@@ -45,10 +44,10 @@ Packet CommunicationManager::listen(int seqn, int64_t timestamp) {
     Packet packet = Packet(buffer);
     packet.setTimestamp(timestamp);
     packet.setSeqNum(seqn);
-    return packet;
+    return std::pair(packet, clientAddress);
 }
 
-void CommunicationManager::handleConnection(sockaddr_in clientAddress) {
+void CommunicationManager::handleConnection(Address clientAddress) {
     static std::string response = "Bem-vinde";
     sendto(socketDescriptor, response.c_str(), response.length(),
            MSG_CONFIRM, (struct sockaddr *) &clientAddress,

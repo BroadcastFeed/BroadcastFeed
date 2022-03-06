@@ -1,7 +1,7 @@
 #include "Database.h"
 #include <string>
 
-void Database::addUser(std::string newUsername) {
+void Database::addUser(const std::string& newUsername) {
     bool alreadyExists = false;
     for (auto &profile: this->users) {
         if (newUsername == profile.getName()) {
@@ -18,8 +18,8 @@ std::vector<Profile> Database::getUsers() {
     return this->users;
 }
 
-Profile Database::getUser(std::string username){
-    Profile nullProfile = Profile(NULL);
+Profile Database::getUser(const std::string& username){
+    Profile nullProfile = Profile(nullptr);
     for (auto &profile: this->users) {
         if (username == profile.getName()) {
             return profile;
@@ -32,7 +32,7 @@ Profile Database::getUser(std::string username){
 Database::operator std::string() const { 
     std::string str;
     str += "Database: \n";
-    for(Profile p : this->users) {
+    for(const Profile& p : this->users) {
         str += (std::string) p + "\n";
     }
     return str; 

@@ -12,8 +12,8 @@ private:
     vector<Profile> users;
 
 public:
-    void addUser(string newUsername);
+    void addUser(const string& newUsername);
     vector<Profile> getUsers();
-    Profile getUser(string username);
-    operator std::string() const; 
+    Profile getUser(const string& username);
+    explicit operator std::string() const;
 };

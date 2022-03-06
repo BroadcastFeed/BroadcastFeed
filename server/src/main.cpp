@@ -22,9 +22,9 @@ int main(int argc, char **argv) {
     int seqNum = 0;
     while (true) {
         milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-        Packet packet = server.listen(seqNum, ms.count());
-        server.handlePacket(packet);
-        std::cout << (std::string) packet; //for debugging
+        std::pair<Packet, Address> received = server.listen(seqNum, ms.count());
+        server.handlePacket(received);
+        std::cout << (std::string) received.first; //for debugging
         seqNum++;
     }
 }

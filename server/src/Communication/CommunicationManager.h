@@ -3,17 +3,21 @@
 #include <string>
 #include "Packet.h"
 #include <netinet/in.h>
+#include <utility>
 
 using std::string;
+
+typedef sockaddr_in Address;
 
 class CommunicationManager {
 private:
     unsigned int socketDescriptor;
-    struct sockaddr_in serverAddress;
+    Address serverAddress;
+
 public:
     CommunicationManager(char *ipAddress, unsigned int port);
 
-    Packet listen(int seqn, int64_t timestamp);
+    std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
 
-    void handleConnection(sockaddr_in clientAddress);
+    void handleConnection(Address clientAddress);
 };
