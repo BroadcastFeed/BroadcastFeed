@@ -34,22 +34,18 @@ void ProfileSessionManager::login(pair<string,Address> sessionAttempt) {
 }
 
 //right now only printing ipv4
-/* Example of print output of sessions:
-Profile: marquinhos Addresses: 127.0.0.1:55440 127.0.0.1:7848
-Profile: mauro Addresses: 127.0.0.1:30093 
-*/
 ProfileSessionManager::operator std::string() const { 
     std::string str;
-    str += "Sessions: \n";
+    str += "Sessions: \n\n";
     for(auto const& x: this->sessions) {
-        str += "Profile: " + x.first + " Addresses: ";
+        str += "    Profile: " + x.first + "\n    Addresses:";
         for(const Address& a : x.second){
             char stringAddr[INET_ADDRSTRLEN];
             inet_ntop(AF_INET, &(a.sin_addr), stringAddr, INET_ADDRSTRLEN);
-            str += (string) stringAddr + ":";
-            str += std::to_string(a.sin_port) + " ";
+            str += " " + (string) stringAddr + ":";
+            str += std::to_string(a.sin_port);
         }
-        str += "\n";
+        str += "\n\n";
     }
     return str; 
 }
