@@ -20,8 +20,6 @@ class ProfileSessionManager {
 private:
 
     Database database;
-
-    map<string, Profile> users; //TODO start using database for users
     map<string, vector<Address>> sessions;
 
 public:

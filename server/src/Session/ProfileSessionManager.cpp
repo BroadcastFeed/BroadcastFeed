@@ -1,14 +1,12 @@
 #include <arpa/inet.h>
 #include "ProfileSessionManager.h"
 
-ProfileSessionManager::ProfileSessionManager() : users(), sessions() {}
+ProfileSessionManager::ProfileSessionManager() : sessions() {}
 
 void ProfileSessionManager::login(pair<string,Address> sessionAttempt) {
     string username = sessionAttempt.first;
     Address address = sessionAttempt.second;
-    if(not database.userExists(username)){
-        database.addUser(username);
-    }
+    database.addUser(username);
     if(!sessions.contains(username)){
         std::vector<Address> newVector = {address};
         sessions[username] = newVector;
@@ -21,7 +19,7 @@ void ProfileSessionManager::login(pair<string,Address> sessionAttempt) {
 //right now only printing ipv4
 ProfileSessionManager::operator std::string() const { 
     std::string str;
-    str += "Sessions: \n\n";
+    str += "Sessions: \n";
     for(auto const& x: this->sessions) {
         str += "    Profile: " + x.first + "\n    Addresses:";
         for(const Address& a : x.second){
