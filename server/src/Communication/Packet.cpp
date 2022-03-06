@@ -2,11 +2,19 @@
 
 #include <sstream>
 
-Packet::Packet(int type, int seqNum, int length, int64_t timestamp, std::string message){
+Packet::Packet(PacketType type, int seqNum, int length, int64_t timestamp, std::string message){
     this->type = type;
     this->seqNum = seqNum;
     this->length = length;
     this->timestamp = timestamp;
+    this->message = message;
+}
+
+Packet::Packet(PacketType type, std::string message){
+    this->type = type;
+    this->seqNum = -1;
+    this->length = -1;
+    this->timestamp = -1;
     this->message = message;
 }
 
@@ -15,7 +23,7 @@ Packet::Packet(std::string serializedPacket){
     std::string section;
 
     std::getline(ss, section, ',');
-    this->type = stoi(section);
+    this->type = static_cast<PacketType>(stoi(section));
 
     std::getline(ss, section, ',');
     this->seqNum = stoi(section);

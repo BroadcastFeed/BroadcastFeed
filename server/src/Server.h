@@ -9,12 +9,12 @@
 class Server {
 
 private:
-    CommunicationManager communicationManager = CommunicationManager(nullptr, 0);
+    CommunicationManager communicationManager;
     Database database;
     NotificationManager notificationManager;
     ProfileSessionManager profileSessionManager;
 public:
     Server(char* ipAddress, unsigned int port);
-    Packet listen(int seqn, int64_t timestamp);
-    void handlePacket(Packet packet);
+    std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
+    void handlePacket(std::pair<Packet, Address> received);
 };

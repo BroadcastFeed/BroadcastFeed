@@ -34,32 +34,10 @@ void CommunicationManager::send(Packet packet){
         sizeof(serverAddress));
 }
 
-Packet CommunicationManager::createPacket(std::string message){
-    /*packet type convention:
-        1 - START (session) messages
-        2 - FOLLOW messages
-        3 - SEND messages
-        else - INVALID TYPE
-    */
-
-    int type = -1;
-    if (message.rfind("START ", 0) == 0){
-        type = 1;
-        message.erase(0,6);
-    }
-    else if (message.rfind("FOLLOW ", 0) == 0){
-        type = 2;
-        message.erase(0,7);
-    }
-    else if (message.rfind("SEND ", 0) == 0){
-        type = 3;
-        message.erase(0,5);
-    }
-
+Packet CommunicationManager::createPacket(PacketType type, std::string message){
     int length = message.length();
     int timestamp = -1;
     int seqn = -1; 
 
     return Packet(type, seqn, length, timestamp, message);
-
 }

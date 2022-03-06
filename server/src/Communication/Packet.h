@@ -1,16 +1,19 @@
 #pragma once 
 #include <string>
 
+enum PacketType { CONNECT, SEND, FOLLOW, DISCONNECT };
+
 class Packet{
     private:
-        int type;
+        PacketType type;
         int seqNum;
         int length;
         int64_t timestamp;
         std::string message;
 
     public:
-        Packet(int type, int seqNum, int length, int64_t timestamp, std::string message);
+        Packet(PacketType type, int seqNum, int length, int64_t timestamp, std::string message);
+        Packet(PacketType type, std::string message);
         Packet(std::string serializedPacket);
         void setTimestamp(int64_t timestamp);
         void setSeqNum(int seqNum);

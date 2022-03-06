@@ -1,6 +1,7 @@
 #include "CommunicationManager.h"
 #include "Interface.h"
 #include "Packet.h"
+#include "Tokenizer.h"
 
 #define MAXSIZE 1024
 //for now the syntax is ./client <USERNAME> <IP ADDRESS> <PORT>
@@ -15,13 +16,14 @@ int main(int argc, char** argv) {
     Interface interface;
     interface.startSession(username);
     CommunicationManager communicationManager(ipAddress, port);
- 
-    Packet startPacket = communicationManager.createPacket((std::string) "START " + (std::string) username);
+
+    Packet startPacket = Packet(PacketType::CONNECT, username);
     communicationManager.send(startPacket);
     
-    while(true){
+    while(true) {
         std::string message = interface.requestMessage();
-        Packet packet = communicationManager.createPacket(message + " USER: " + (std::string) username);
+        PacketType type = tokenizeStringToParamType(message);
+        Packet packet = Packet(type, message);
         communicationManager.send(packet);
     }
 }
