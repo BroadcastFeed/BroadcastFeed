@@ -3,25 +3,11 @@
 
 ProfileSessionManager::ProfileSessionManager() : users(), sessions() {}
 
-bool ProfileSessionManager::profileExists(string username){
-    return users.contains(username);
-}
-
-Profile ProfileSessionManager::newProfile(string username){
-    Profile newProfile(username);
-    users[username] = newProfile;
-    return newProfile;
-}
-
-Profile ProfileSessionManager::getProfile(string username){
-    return users[username];
-}
-
 void ProfileSessionManager::login(pair<string,Address> sessionAttempt) {
     string username = sessionAttempt.first;
     Address address = sessionAttempt.second;
-    if(not profileExists(username)){
-        newProfile(username);
+    if(not database.userExists(username)){
+        database.addUser(username);
     }
     if(!sessions.contains(username)){
         std::vector<Address> newVector = {address};
@@ -30,7 +16,6 @@ void ProfileSessionManager::login(pair<string,Address> sessionAttempt) {
     else if(sessions[username].size() < 2){
         this->sessions[username].push_back(address);
     }
-    //TODO? message to inform client that sessions are at max
 }
 
 //right now only printing ipv4

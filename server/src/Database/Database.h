@@ -4,16 +4,15 @@
 #include <vector>
 #include "../Profile/Profile.h"
 
-using std::string;
-using std::vector;
 
 class Database {
 private:
-    vector<Profile> users;
+    std::vector<Profile> users;
 
 public:
-    void addUser(const string& newUsername);
-    vector<Profile> getUsers();
-    Profile getUser(const string& username);
+    bool userExists(const std::string username);
+    void addUser(const std::string& newUsername);
+    std::vector<Profile> getUsers();
+    Profile getUser(const std::string& username);
     explicit operator std::string() const;
 };

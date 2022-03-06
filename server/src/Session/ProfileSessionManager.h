@@ -18,12 +18,11 @@ class ProfileSessionManager {
     typedef sockaddr_in Address;
 
 private:
+
+    Database database;
+
     map<string, Profile> users; //TODO start using database for users
     map<string, vector<Address>> sessions;
-
-    bool profileExists(string username);
-    Profile newProfile(string username);
-    Profile getProfile(string username);
 
 public:
     ProfileSessionManager();

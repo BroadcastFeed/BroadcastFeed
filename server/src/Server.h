@@ -10,7 +10,6 @@ class Server {
 
 private:
     CommunicationManager communicationManager;
-    Database database;
     NotificationManager notificationManager;
     ProfileSessionManager profileSessionManager;
 public:

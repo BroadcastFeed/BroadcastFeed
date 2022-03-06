@@ -1,6 +1,15 @@
 #include "Database.h"
 #include <string>
 
+bool Database::userExists(const std::string username){
+    for (auto &profile: this->users) {
+        if (username == profile.getName()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Database::addUser(const std::string& newUsername) {
     bool alreadyExists = false;
     for (auto &profile: this->users) {
