@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "CommunicationManager.h"
 #include "Interface.h"
 #include "Packet.h"
@@ -22,8 +23,13 @@ int main(int argc, char** argv) {
     
     while(true) {
         std::string message = interface.requestMessage();
-        PacketType type = tokenizeStringToParamType(message);
-        Packet packet = Packet(type, message);
-        communicationManager.send(packet);
+        try{
+            PacketType type = tokenizeStringToParamType(message);
+            Packet packet = Packet(type, message);
+            communicationManager.send(packet);
+        }
+        catch(std::out_of_range){
+            interface.commandNotFound();
+        }
     }
 }

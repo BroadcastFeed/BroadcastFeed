@@ -15,3 +15,7 @@ std::string Interface::requestMessage(){
     std::getline(std::cin, message);
     return message;
 }
+
+void Interface::commandNotFound(){
+    std::cout << "Command not found" << std::endl;
+}

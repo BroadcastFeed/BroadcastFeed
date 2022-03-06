@@ -7,4 +7,4 @@
 using std::map;
 using std::string;
 
-PacketType tokenizeStringToParamType(string message);
+PacketType tokenizeStringToParamType(string& message);

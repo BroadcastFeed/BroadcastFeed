@@ -5,6 +5,7 @@ class Interface{
     public:
         void startSession(char* username);
         void showMessage(std::string message);
+        void commandNotFound();
         std::string requestMessage();
 
 };
