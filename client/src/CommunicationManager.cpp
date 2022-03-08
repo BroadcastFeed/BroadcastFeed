@@ -33,11 +33,3 @@ void CommunicationManager::send(Packet packet){
         MSG_CONFIRM, (struct sockaddr*) &serverAddress,
         sizeof(serverAddress));
 }
-
-Packet CommunicationManager::createPacket(PacketType type, std::string message){
-    int length = message.length();
-    int timestamp = -1;
-    int seqn = -1; 
-
-    return Packet(type, seqn, length, timestamp, message);
-}
