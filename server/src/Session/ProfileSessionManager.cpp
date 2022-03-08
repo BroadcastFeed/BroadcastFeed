@@ -1,18 +1,18 @@
 #include <arpa/inet.h>
+#include <thread>
 #include "ProfileSessionManager.h"
+#include "../Communication/CommunicationManager.h"
 
-ProfileSessionManager::ProfileSessionManager() : sessions() {}
+ProfileSessionManager::ProfileSessionManager() : userToSessionsMap() {}
 
-void ProfileSessionManager::login(pair<string,Address> sessionAttempt) {
-    string username = sessionAttempt.first;
-    Address address = sessionAttempt.second;
-    database.addUser(username);
-    if(!sessions.contains(username)){
-        std::vector<Address> newVector = {address};
-        sessions[username] = newVector;
+Address ProfileSessionManager::login(string user, Address address) {
+    database.addUser(user);
+    if(!userToSessionsMap.contains(user)){
+        std::vector<Address> newVector = {Address()};
+        userToSessionsMap.at(user) = newVector;
     }
-    else if(sessions[username].size() < 2){
-        this->sessions[username].push_back(address);
+    else if(userToSessionsMap[user].size() < 2){
+        this->userToSessionsMap.at(user).push_back(address);
     }
 }
 
@@ -20,7 +20,7 @@ void ProfileSessionManager::login(pair<string,Address> sessionAttempt) {
 ProfileSessionManager::operator std::string() const { 
     std::string str;
     str += "Sessions: \n";
-    for(auto const& x: this->sessions) {
+    for(auto const& x: this->userToSessionsMap) {
         str += "    Profile: " + x.first + "\n    Addresses:";
         for(const Address& a : x.second){
             char stringAddr[INET_ADDRSTRLEN];

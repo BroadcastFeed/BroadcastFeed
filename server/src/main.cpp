@@ -33,16 +33,13 @@ int main(int argc, char **argv) {
     server = new Server(ipAddress, port);
 
     int seqNum = 0;
-    while (RUNNING) {
-        milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-        try{
-            std::pair<Packet, Address> received = server->listen(seqNum, ms.count());
-            server->handlePacket(received);
-            std::cout << (std::string) received.first; //for debugging
-            seqNum++;
-        } catch (std::runtime_error) {
-            if(RUNNING) std::cout << "Error getting packet!";
-        }
+    while (true) {
+        int64_t timestampMillesseconds = duration_cast< milliseconds >(system_clock::now().time_since_epoch()).count();
+        std::pair<Packet, Address> received = server.listen(seqNum, timestampMillesseconds);
+//        server.handlePacket(received);
+        std::cout << (std::string) received.first; //for debugging
+        
+        seqNum++;
     }
     std::cout << "\nExiting" << std::endl;
 }

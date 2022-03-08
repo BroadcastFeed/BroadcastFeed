@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB SOURCES src/*.cpp)
 
-add_executable(client src/main.cpp ${SOURCES})
+add_executable(client src/main.cpp ${SOURCES} src/Tokenizer.h)

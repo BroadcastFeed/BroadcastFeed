@@ -1,11 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <queue>
 #include <string>
 #include "../Notification/Notification.h"
 
 using std::string;
 using std::vector;
+using std::queue;
 
 class Profile {
 

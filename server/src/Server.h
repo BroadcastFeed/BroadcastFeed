@@ -15,6 +15,5 @@ private:
 public:
     Server(char* ipAddress, unsigned int port);
     std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
-    void handlePacket(std::pair<Packet, Address> received);
-    void halt();
+//    void handlePacket(std::pair<Packet, Address> received);
 };
