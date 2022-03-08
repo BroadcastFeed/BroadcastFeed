@@ -1,13 +1,14 @@
 #include <arpa/inet.h>
 #include <thread>
 #include "ProfileSessionManager.h"
+#include "../Communication/CommunicationManager.h"
 
 ProfileSessionManager::ProfileSessionManager() : userToSessionsMap() {}
 
-Session ProfileSessionManager::login(string user, Address address) {
+Address ProfileSessionManager::login(string user, Address address) {
     database.addUser(user);
     if(!userToSessionsMap.contains(user)){
-        std::vector<Session> newVector = {Session()};
+        std::vector<Address> newVector = {Address()};
         userToSessionsMap.at(user) = newVector;
     }
     else if(userToSessionsMap[user].size() < 2){

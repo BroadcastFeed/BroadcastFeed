@@ -8,7 +8,6 @@
 #include "../Database/Database.h"
 #include "../Profile/Profile.h"
 #include "../Notification/Notification.h"
-#include "Session.h"
 
 using std::vector;
 using std::string;
@@ -20,7 +19,7 @@ class ProfileSessionManager {
 
 private:
     Database database;
-    map<string, vector<Session>> userToSessionsMap;
+    map<string, vector<Address>> userToSessionsMap;
 
     /*
     ernestito:
@@ -44,6 +43,6 @@ private:
 
 public:
     ProfileSessionManager();
-    Session login(string user, Address address);
+    Address login(string user, Address address);
     explicit operator std::string() const;
 };
