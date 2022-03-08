@@ -21,10 +21,11 @@ int main(int argc, char **argv) {
 
     int seqNum = 0;
     while (true) {
-        milliseconds ms = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-        std::pair<Packet, Address> received = server.listen(seqNum, ms.count());
+        int64_t timestampMillesseconds = duration_cast< milliseconds >(system_clock::now().time_since_epoch()).count();
+        std::pair<Packet, Address> received = server.listen(seqNum, timestampMillesseconds);
         server.handlePacket(received);
         std::cout << (std::string) received.first; //for debugging
+        
         seqNum++;
     }
 }

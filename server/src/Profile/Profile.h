@@ -1,11 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <queue>
 #include <string>
 #include "../Notification/Notification.h"
 
 using std::string;
 using std::vector;
+using std::queue;
 
 class Profile {
 
@@ -13,7 +15,7 @@ private:
     int activeSessions;
     string username;
     vector<Profile> followers;
-    vector<Notification> notifications;
+    queue<Notification> notifications;
 
 public:
     Profile(string username);
@@ -21,7 +23,7 @@ public:
     int getActiveSessions();
     string getName();
     vector<Profile> getFollowers();
-    vector<Notification> getNotifications();
+    queue<Notification> getNotifications();
     void addFollower(Profile newFollower);
     void addNotification(Notification newNotification);
     void startSession();
