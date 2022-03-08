@@ -38,9 +38,13 @@ std::pair<Packet, Address> CommunicationManager::listen(int seqn, int64_t timest
     Address clientAddress;
     memset(&clientAddress, 0, sizeof(clientAddress));
     char buffer[MAXSIZE] = "";
-    recvfrom(this->socketDescriptor, buffer, MAXSIZE,
-             MSG_WAITALL, (struct sockaddr *) &clientAddress,
-             &serverStructLength);
+    if(
+        recvfrom(this->socketDescriptor, buffer, MAXSIZE,
+                 MSG_WAITALL, (struct sockaddr *) &clientAddress,
+                 &serverStructLength) 
+        <= 0){
+        throw std::runtime_error("Error getting packet");
+    }
     Packet packet = Packet(buffer);
     packet.setTimestamp(timestamp);
     packet.setSeqNum(seqn);
@@ -53,4 +57,8 @@ void CommunicationManager::handleConnection(Address clientAddress) {
            MSG_CONFIRM, (struct sockaddr *) &clientAddress,
            sizeof(clientAddress));
     std::cout << response << std::endl;
+}
+
+unsigned int CommunicationManager::getDescriptor(){
+    return socketDescriptor;
 }

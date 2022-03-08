@@ -44,3 +44,7 @@ void Server::handlePacket(std::pair<Packet, Address> received){
     }
 }
 
+void Server::halt(){
+    shutdown(communicationManager.getDescriptor(), SHUT_RDWR);
+}
+

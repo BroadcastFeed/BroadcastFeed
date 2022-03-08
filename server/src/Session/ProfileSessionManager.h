@@ -18,7 +18,6 @@ class ProfileSessionManager {
     typedef sockaddr_in Address;
 
 private:
-
     Database database;
     map<string, vector<Address>> sessions;
 
