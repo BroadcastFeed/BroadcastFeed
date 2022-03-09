@@ -7,8 +7,8 @@ Packet::Packet(PacketType type, int seqNum, int length, int64_t timestamp, std::
     this->seqNum = seqNum;
     this->length = length;
     this->timestamp = timestamp;
-    this->message = message;
     this->username = username;
+    this->message = message;
 }
 
 
@@ -17,8 +17,8 @@ Packet::Packet(PacketType type, std::string message, std::string username){
     this->seqNum = -1;
     this->length = message.length();
     this->timestamp = -1;
-    this->message = message;
     this->username = username;
+    this->message = message;
 }
 
 Packet::Packet(std::string serializedPacket){
@@ -38,10 +38,10 @@ Packet::Packet(std::string serializedPacket){
     this->timestamp = atoll(section.c_str());
 
     std::getline(ss, section, ',');
-    this->message = section;
-
-    std::getline(ss, section, ',');
     this->username = section;
+
+    std::getline(ss, section);
+    this->message = section;
 }
 
 void Packet::setTimestamp(int64_t timestamp){
@@ -82,8 +82,8 @@ std::string Packet::serialize(){
     str += std::to_string(this->seqNum) + ",";
     str += std::to_string(this->length) + ",";
     str += std::to_string(this->timestamp) + ",";
-    str += this->message + ",";
-    str += this->username;
+    str += this->username + ",";
+    str += this->message;
     return str; 
 }
 
@@ -93,7 +93,7 @@ Packet::operator std::string() const {
     str += "Seqn: " + std::to_string(this->seqNum) + "\n";
     str += "Length: " + std::to_string(this->length) + "\n";
     str += "Timestamp: " + std::to_string(this->timestamp) + "\n";
-    str += "Message: " + this->message + "\n";
     str += "Username: " + this->username + "\n";
+    str += "Message: " + this->message + "\n";
     return str; 
 }

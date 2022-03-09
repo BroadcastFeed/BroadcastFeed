@@ -9,8 +9,8 @@ class Packet{
         int seqNum;
         int length;
         int64_t timestamp;
-        std::string message;
         std::string username;
+        std::string message;
 
     public:
         Packet(PacketType type, int seqNum, int length, int64_t timestamp, std::string message, std::string username);
