@@ -1,5 +1,5 @@
 #include <thread>
-#include <signal.h>
+//#include <signal.h>
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -14,7 +14,7 @@ using namespace std::chrono;
 int main(int argc, char **argv) {
 
     //sets handleCtrlC as callback for SIGINT signals
-    signal(SIGINT, handleCtrlC);
+    //signal(SIGINT, handleCtrlC);
 
     if (argc != 3) {
         exit(EXIT_FAILURE);
