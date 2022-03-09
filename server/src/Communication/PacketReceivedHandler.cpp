@@ -9,7 +9,7 @@ void handle(Packet packet, Address received) {
 //    switch (packet.getType()) {
 //        case CONNECT:{
 //            std::pair<std::string, Address> session(packet.getMessage(), received);
-//            this->profileSessionManager.login(session);
+//            this->profileSessionManager.registerNewSession(session);
 //            notification = Notification(packet.getSeqNum(), packet.getTimestamp(),
 //                                        packet.getLength(), pendingReaders,
 //                                        packet.getMessage());

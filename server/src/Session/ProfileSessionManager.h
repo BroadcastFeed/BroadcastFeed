@@ -21,28 +21,10 @@ private:
     Database database;
     map<string, vector<Address>> userToSessionsMap;
 
-    /*
-    ernestito:
-        lidar com notificações:
-            map<string, Address>
-        ok, faz senso, podendo criar thread na hora
-
-        decodificar remetente:
-            map<Address, string>
-        problema: quem cria/chama as threads? ficam em busywait?
-        criar threads na hora? 
-
-        problemas ultrapassam dilema "passar username na mensagem"
-
-    
-
-    riquito:
-        map<string, pair<Address, thread>>
-        map<Address, pair<string, thread>>
-    */
-
 public:
     ProfileSessionManager();
-    Address login(string user, Address address);
+    void registerNewSession(const string& user, Address address);
+    bool validateProfileSession(const string& username, const Address& address);
+    vector<Address> getOpenedSessions(const string& username);
     explicit operator std::string() const;
 };

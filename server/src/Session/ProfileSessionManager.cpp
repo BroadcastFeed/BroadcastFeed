@@ -1,11 +1,10 @@
 #include <arpa/inet.h>
-#include <thread>
 #include "ProfileSessionManager.h"
 #include "../Communication/CommunicationManager.h"
 
 ProfileSessionManager::ProfileSessionManager() : userToSessionsMap() {}
 
-Address ProfileSessionManager::login(string user, Address address) {
+void ProfileSessionManager::registerNewSession(const string& user, Address address) {
     database.addUser(user);
     if(!userToSessionsMap.contains(user)){
         std::vector<Address> newVector = {Address()};
@@ -32,3 +31,24 @@ ProfileSessionManager::operator std::string() const {
     }
     return str; 
 }
+
+constexpr bool operator==(const Address& lhs, const Address& rhs)
+{
+    return lhs.sin_port == rhs.sin_port && lhs.sin_addr.s_addr == rhs.sin_addr.s_addr
+           && lhs.sin_family == rhs.sin_family;
+}
+
+bool ProfileSessionManager::validateProfileSession(const string &username, const Address& address) {
+    auto addresses = userToSessionsMap.at(username);
+    for (Address session : addresses) {
+        if (session == address)
+            return true;
+    }
+    return false;
+}
+
+vector<Address> ProfileSessionManager::getOpenedSessions(const string &username) {
+    return userToSessionsMap.at(username);
+}
+
+
