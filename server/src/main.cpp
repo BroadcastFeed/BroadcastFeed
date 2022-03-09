@@ -9,14 +9,6 @@
 
 using namespace std::chrono;
 
-int RUNNING = true;
-Server* server;
-
-//required by signal.h for ctrl-C handling
-void handleCtrlC(int signal){
-    RUNNING = false;
-    server->halt();
-}
 
 //the syntax is ./server <IP ADDRESS> <PORT>
 int main(int argc, char **argv) {
@@ -30,7 +22,7 @@ int main(int argc, char **argv) {
     char *ipAddress = argv[1];
     unsigned int port = atoi(argv[2]);
 
-    server = new Server(ipAddress, port);
+    Server server(ipAddress, port);
 
     int seqNum = 0;
     while (true) {
