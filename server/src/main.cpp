@@ -1,5 +1,5 @@
 #include <thread>
-//#include <signal.h>
+#include <signal.h>
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -9,12 +9,19 @@
 
 using namespace std::chrono;
 
+int RUNNING = true;
+Server* server;
+
+void handleCtrlC(int s){
+    RUNNING = false;
+    server->halt();
+}
 
 //the syntax is ./server <IP ADDRESS> <PORT>
 int main(int argc, char **argv) {
 
     //sets handleCtrlC as callback for SIGINT signals
-    //signal(SIGINT, handleCtrlC);
+    signal(SIGINT, handleCtrlC);
 
     if (argc != 3) {
         exit(EXIT_FAILURE);
@@ -22,16 +29,21 @@ int main(int argc, char **argv) {
     char *ipAddress = argv[1];
     unsigned int port = atoi(argv[2]);
 
-    Server server(ipAddress, port);
+    server = new Server(ipAddress, port);
 
     int seqNum = 0;
-    while (true) {
+    while (RUNNING) {
         int64_t timestampMillesseconds = duration_cast< milliseconds >(system_clock::now().time_since_epoch()).count();
-        std::pair<Packet, Address> received = server.listen(seqNum, timestampMillesseconds);
-//        server.handlePacket(received);
-        std::cout << (std::string) received.first; //for debugging
-        
-        seqNum++;
+        try{
+            std::pair<Packet, Address> received = server->listen(seqNum, timestampMillesseconds);
+            //server.handlePacket(received);
+            std::cout << (std::string) received.first; //for debugging
+            seqNum++;
+        } catch (const std::runtime_error &exc){
+            if(RUNNING)
+                std::cerr << exc.what();
+        }
     }
-    std::cout << "\nExiting" << std::endl;
+
+    std::cout << "\nExiting, database should be saving state now" << std::endl; //placeholder for where database would be saved
 }
