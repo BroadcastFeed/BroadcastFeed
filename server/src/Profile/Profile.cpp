@@ -19,8 +19,8 @@ std::vector<Profile> Profile::getFollowers() {
     return this->followers;
 }
 
-std::vector<Notification> Profile::getNotifications() {
-    return this->notifications;
+std::vector<Notification> Profile::getPendingNotifications() {
+    return this->pendingNotifications;
 }
 
 void Profile::addFollower(Profile newFollower) {
@@ -28,12 +28,12 @@ void Profile::addFollower(Profile newFollower) {
 }
 
 void Profile::addNotification(Notification newNotification) {
-    this->notifications.push_back(newNotification);
+    this->pendingNotifications.push_back(newNotification);
 }
 
 Notification Profile::removeNotification() { //assuming a queue implementation of the list
-    Notification firstElement = this->notifications[0];
-    this->notifications.erase(this->notifications.begin());
+    Notification firstElement = this->pendingNotifications[0];
+    this->pendingNotifications.erase(this->pendingNotifications.begin());
     return firstElement;
 }
 
@@ -53,6 +53,6 @@ Profile::operator std::string() const {
     std::string str;
     str += "Username: " + this->username + "\n";    
     str += "Followers: " + std::to_string(this->followers.size()) + "\n";
-    str += "Pending Notifications: " + std::to_string(this->notifications.size()) + "\n";
+    str += "Pending Notifications: " + std::to_string(this->pendingNotifications.size()) + "\n";
     return str; 
 }

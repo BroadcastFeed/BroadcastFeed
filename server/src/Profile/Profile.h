@@ -15,7 +15,7 @@ private:
     int activeSessions;
     string username;
     vector<Profile> followers;
-    vector<Notification> notifications;
+    vector<Notification> pendingNotifications;
 
 public:
     Profile(string username);
@@ -23,7 +23,7 @@ public:
     int getActiveSessions();
     string getName();
     vector<Profile> getFollowers();
-    vector<Notification> getNotifications();
+    vector<Notification> getPendingNotifications();
     void addFollower(Profile newFollower);
     void addNotification(Notification newNotification);
     void startSession();
