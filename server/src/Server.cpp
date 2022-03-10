@@ -12,13 +12,8 @@ void Server::handlePacket(Packet packet, Address received) {
     Notification notification = Notification(0, 0, 0, 0, "");
     switch (packet.getType()) {
         case CONNECT: {
-            std::pair<std::string, Address> session(packet.getMessage(), received);
-//            this->profileSessionManager.registerNewSession(session);
-//            notification = Notification(packet.getSeqNum(), packet.getTimestamp(),
-//                                        packet.getLength(), pendingReaders,
-//                                        packet.getMessage());
-//            //DEBUG LINE FOR TESTING
-//            std::cout << (std::string) profileSessionManager << std::endl;
+            ProfileSessionManager::registerNewSession(packet.getMessage(), received);
+
             break;
         }
         case SEND:
