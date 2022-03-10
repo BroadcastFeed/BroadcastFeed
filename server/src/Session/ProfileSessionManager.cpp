@@ -13,6 +13,10 @@ void ProfileSessionManager::registerNewSession(const string& user, Address addre
     }
 }
 
+void ProfileSessionManager::addNotification(const string& username, const Notification& notification){
+    ProfileSessionManager::database.addNotification(username, notification);
+}
+
 void ProfileSessionManager::addFollower(const string& followed, const string& follower){
     ProfileSessionManager::database.addFollower(followed, follower);
 }

@@ -22,10 +22,12 @@ void Server::handlePacket(Packet packet, Address received) {
             break;
         }
         case SEND:
-//            pendingReaders = 0; //change later
+            //pendingReaders = packet.getFollowers().length();
             notification = Notification(packet.getSeqNum(), packet.getTimestamp(),
                                         packet.getLength(), pendingReaders,
                                         packet.getMessage());
+            ProfileSessionManager::addNotification(packet.getUsername(), notification);
+
             break;
 
         case FOLLOW:

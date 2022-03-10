@@ -35,6 +35,12 @@ Database::operator std::string() const {
     return str; 
 }
 
+void Database::addNotification(const string& username, const Notification& notification){
+    auto userProfile = getUser(username);
+    userProfile.addNotification(notification);
+    updateUser(username, userProfile);
+}
+
 void Database::addFollower(const string& followedUsername, const string& followerUsername) {
     auto followedProfile = getUser(followedUsername);
     auto followerProfile = getUser(followerUsername);
