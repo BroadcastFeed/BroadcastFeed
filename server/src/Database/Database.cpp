@@ -1,47 +1,47 @@
 #include "Database.h"
 #include <string>
 
-bool Database::userExists(const std::string username){
-    for (auto &profile: this->users) {
-        if (username == profile.getName()) {
-            return true;
-        }
-    }
-    return false;
+bool Database::userExists(const std::string& username){
+    return users.contains(username);
 }
 
 void Database::addUser(const std::string& newUsername) {
-    bool alreadyExists = false;
-    for (auto &profile: this->users) {
-        if (newUsername == profile.getName()) {
-            alreadyExists = true;
-        }
-    }
-    if (!alreadyExists) {
+    if (!userExists(newUsername)) {
         Profile newUser = Profile(newUsername);
-        this->users.push_back(newUser);
+        this->users.insert({newUsername, newUser});
     }
 }
 
-std::vector<Profile> Database::getUsers() {
-    return this->users;
+// TODO verify const here
+std::vector<Profile> Database::getUsers() const {
+    vector<Profile> usersVector = {};
+    for (std::pair<string, Profile> user : this->users) {
+        usersVector.push_back(user.second);
+    }
+
+    return usersVector;
 }
 
 Profile Database::getUser(const std::string& username){
-    Profile nullProfile = Profile(nullptr);
-    for (auto &profile: this->users) {
-        if (username == profile.getName()) {
-            return profile;
-        }
-    }
-    return nullProfile;
+    return this->users.at(username);
 }
 
 Database::operator std::string() const { 
     std::string str;
     str += "Database: \n";
-    for(const Profile& p : this->users) {
+    for(const Profile& p : Database::getUsers()) {
         str += (std::string) p + "\n";
     }
     return str; 
+}
+
+void Database::addFollowers(string username, string follower) {
+    auto followedProfile = getUser(username);
+    auto followerProfile = getUser(follower);
+    followedProfile.addFollower(followerProfile);
+    updateUser(username, followedProfile);
+}
+
+void Database::updateUser(string username, Profile newProfile) {
+    users.at(username) = newProfile;
 }
