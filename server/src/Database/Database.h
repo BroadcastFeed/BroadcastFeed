@@ -16,6 +16,6 @@ public:
     std::vector<Profile> getUsers() const;
     Profile getUser(const std::string& username);
     void updateUser(string username, Profile newProfile);
-    void addFollowers(string username, string follower);
+    void addFollower(const string& followedUsername, const string& followerUsername);
     explicit operator std::string() const;
 };

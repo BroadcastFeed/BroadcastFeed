@@ -35,11 +35,11 @@ Database::operator std::string() const {
     return str; 
 }
 
-void Database::addFollowers(string username, string follower) {
-    auto followedProfile = getUser(username);
-    auto followerProfile = getUser(follower);
+void Database::addFollower(const string& followedUsername, const string& followerUsername) {
+    auto followedProfile = getUser(followedUsername);
+    auto followerProfile = getUser(followerUsername);
     followedProfile.addFollower(followerProfile);
-    updateUser(username, followedProfile);
+    updateUser(followedUsername, followedProfile);
 }
 
 void Database::updateUser(string username, Profile newProfile) {
