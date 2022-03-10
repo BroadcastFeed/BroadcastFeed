@@ -11,9 +11,10 @@ class Server {
 private:
     CommunicationManager communicationManager;
     NotificationManager notificationManager;
+
+    void handlePacket(Packet packet, Address received);
 public:
     Server(char* ipAddress, unsigned int port);
-    std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
+    void listen(int seqn, int64_t timestamp);
     void halt();
-//    void handlePacket(std::pair<Packet, Address> received);
 };
