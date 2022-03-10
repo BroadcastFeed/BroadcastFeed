@@ -33,11 +33,11 @@ int main(int argc, char **argv) {
 
     int seqNum = 0;
     while (RUNNING) {
-        int64_t timestampMillesseconds = duration_cast< milliseconds >(system_clock::now().time_since_epoch()).count();
+        int64_t timestampMilliseconds = duration_cast< milliseconds >(system_clock::now().time_since_epoch()).count();
         try{
-            std::pair<Packet, Address> received = server->listen(seqNum, timestampMillesseconds);
+            server->listen(seqNum, timestampMilliseconds);
             //server.handlePacket(received);
-            std::cout << (std::string) received.first; //for debugging
+//            std::cout << (std::string) received.first; //for debugging
             seqNum++;
         } catch (const std::runtime_error &exc){
             if(RUNNING)
