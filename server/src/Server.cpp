@@ -29,6 +29,7 @@ void Server::handlePacket(Packet packet, Address received) {
             break;
 
         case FOLLOW:
+            ProfileSessionManager::addFollower(packet.getMessage(), packet.getUsername());
 
             break;
 

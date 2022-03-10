@@ -23,6 +23,7 @@ private:
 
 public:
     static void registerNewSession(const string& user, Address address);
+    static void addFollower(const string& followed, const string& follower);
     static bool validateProfileSession(const string& username, const Address& address);
     static vector<Address> getOpenedSessions(const string& username);
     explicit operator std::string() const;

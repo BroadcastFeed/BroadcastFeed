@@ -13,6 +13,10 @@ void ProfileSessionManager::registerNewSession(const string& user, Address addre
     }
 }
 
+void ProfileSessionManager::addFollower(const string& followed, const string& follower){
+    ProfileSessionManager::database.addFollower(followed, follower);
+}
+
 //right now only printing ipv4
 ProfileSessionManager::operator std::string() const { 
     std::string str;
@@ -47,5 +51,3 @@ bool ProfileSessionManager::validateProfileSession(const string &username, const
 vector<Address> ProfileSessionManager::getOpenedSessions(const string &username) {
     return userToSessionsMap.at(username);
 }
-
-
