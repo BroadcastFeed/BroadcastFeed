@@ -11,6 +11,8 @@ private:
     std::map<string, Profile> users;
 
 public:
+    Database();
+    void save();
     bool userExists(const std::string& username);
     void addUser(const std::string& newUsername);
     std::vector<Profile> getUsers() const;

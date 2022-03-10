@@ -68,3 +68,4 @@ server/.idea/workspace.xml
 server/.idea/shelf/Uncommitted_changes_before_Update_at_06_03_2022_16_46__Changes_.xml
 server/.idea/shelf/Uncommitted_changes_before_Update_at_06_03_2022_18_33__Changes_.xml
 .gitignore
+server/users.dat
