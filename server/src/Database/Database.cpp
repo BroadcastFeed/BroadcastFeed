@@ -1,5 +1,46 @@
 #include "Database.h"
 #include <string>
+#include <fstream>
+#include <sstream>
+
+#define FILENAME "users.dat"
+
+Database::Database(){
+    std::ifstream fileIn;
+    fileIn.open(FILENAME);
+    
+    std::string line;
+    std::string section;
+    while(fileIn){
+        std::getline(fileIn, line);
+        std::stringstream ss(line);
+        std::getline(ss, section, ':');
+        addUser(section);
+        while(std::getline(ss, section, ',')){
+            //add follower (section) to user
+        }
+    }
+}
+
+void Database::save(){
+    std::ofstream fileOut;
+    fileOut.open(FILENAME);
+
+    std::string line;
+    for(Profile user : users){
+        line += user.getName() + ":";
+        std::vector<Profile> followers;
+        for(auto it = followers.begin(); it != followers.end(); it++){
+            if(it == users.begin())
+                line += it->getName();
+            else
+                line += "," + it->getName();
+        }
+        fileOut << line << std::endl;
+        line = "";
+    }
+    fileOut.close();
+}
 
 bool Database::userExists(const std::string& username){
     return users.contains(username);
