@@ -15,9 +15,16 @@ Database::Database(){
         std::getline(fileIn, line);
         std::stringstream ss(line);
         std::getline(ss, section, ':');
-        addUser(section);
+
+        std::string user = section;
+        addUser(user);
+
         while(std::getline(ss, section, ',')){
-            //add follower (section) to user
+            std::string follower = section;
+
+            if(!userExists(follower))
+                addUser(follower); 
+            addFollower(user, follower);
         }
     }
 }
@@ -27,11 +34,11 @@ void Database::save(){
     fileOut.open(FILENAME);
 
     std::string line;
-    for(Profile user : users){
+    for(Profile user : getUsers()){
         line += user.getName() + ":";
-        std::vector<Profile> followers;
+        std::vector<Profile> followers = user.getFollowers();
         for(auto it = followers.begin(); it != followers.end(); it++){
-            if(it == users.begin())
+            if(it == followers.begin())
                 line += it->getName();
             else
                 line += "," + it->getName();
@@ -47,13 +54,12 @@ bool Database::userExists(const std::string& username){
 }
 
 void Database::addUser(const std::string& newUsername) {
-    if (!userExists(newUsername)) {
+    if (!userExists(newUsername) && newUsername != "") {
         Profile newUser = Profile(newUsername);
         this->users.insert({newUsername, newUser});
     }
 }
 
-// TODO verify const here
 std::vector<Profile> Database::getUsers() const {
     vector<Profile> usersVector = {};
     for (std::pair<string, Profile> user : this->users) {
