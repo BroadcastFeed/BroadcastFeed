@@ -2,16 +2,14 @@
 #include "ProfileSessionManager.h"
 #include "../Communication/CommunicationManager.h"
 
-ProfileSessionManager::ProfileSessionManager() : userToSessionsMap() {}
-
 void ProfileSessionManager::registerNewSession(const string& user, Address address) {
-    database.addUser(user);
+    ProfileSessionManager::database.addUser(user);
     if(!userToSessionsMap.contains(user)){
         std::vector<Address> newVector = {Address()};
         userToSessionsMap.at(user) = newVector;
     }
     else if(userToSessionsMap[user].size() < 2){
-        this->userToSessionsMap.at(user).push_back(address);
+        userToSessionsMap.at(user).push_back(address);
     }
 }
 
@@ -32,8 +30,7 @@ ProfileSessionManager::operator std::string() const {
     return str; 
 }
 
-constexpr bool operator==(const Address& lhs, const Address& rhs)
-{
+constexpr bool operator==(const Address& lhs, const Address& rhs) {
     return lhs.sin_port == rhs.sin_port && lhs.sin_addr.s_addr == rhs.sin_addr.s_addr
            && lhs.sin_family == rhs.sin_family;
 }

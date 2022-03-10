@@ -18,13 +18,12 @@ class ProfileSessionManager {
     typedef sockaddr_in Address;
 
 private:
-    Database database;
-    map<string, vector<Address>> userToSessionsMap;
+    inline static Database database = Database();
+    inline static map<string, vector<Address>> userToSessionsMap = {};
 
 public:
-    ProfileSessionManager();
-    void registerNewSession(const string& user, Address address);
-    bool validateProfileSession(const string& username, const Address& address);
-    vector<Address> getOpenedSessions(const string& username);
+    static void registerNewSession(const string& user, Address address);
+    static bool validateProfileSession(const string& username, const Address& address);
+    static vector<Address> getOpenedSessions(const string& username);
     explicit operator std::string() const;
 };
