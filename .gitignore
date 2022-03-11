@@ -53,7 +53,6 @@ client/.vscode/launch.json
 client/.vscode/tasks.json
 server/.vscode/launch.json
 server/.vscode/settings.json
-server/src/Session/Session.cpp
 .vscode/settings.json
 client/.idea/client.iml
 client/.idea/misc.xml
