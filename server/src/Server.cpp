@@ -12,8 +12,12 @@ void Server::handlePacket(Packet packet, Address received) {
     Notification notification = Notification(0, 0, 0, 0, "");
     switch (packet.getType()) {
         case CONNECT: {
-            ProfileSessionManager::registerNewSession(packet.getMessage(), received);
-
+            ProfileSessionManager::registerNewSession(
+                packet.getMessage(), 
+                received, 
+                communicationManager.getAddress(),
+                communicationManager.getDescriptor());
+            //TODO: create and save threads
             break;
         }
         case SEND:

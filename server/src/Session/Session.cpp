@@ -1,13 +1,13 @@
 #include "Session.h"
 
-Session::Session(Profile& profile, Address address, CommunicationManager& communicationManager) 
-: profile(profile), address(address), communicationManager(communicationManager){}
+Session::Session(Profile& profile, Address address, Address serverAddress, unsigned int socketDescriptor) 
+: profile(profile), address(address), serverAddress(serverAddress), socketDescriptor(socketDescriptor) {}
 
 void Session::consume() {
     while(true){
         if(profile.hasNotificationToBeRead()){
             Notification notification = profile.popNotificationToBeRead();
-            communicationManager.notify(notification, address); 
+            sendNotification(notification); 
         }
     }
 }
@@ -21,5 +21,12 @@ void Session::produce() {
             }
         }
     }
+}
+
+void Session::sendNotification(Notification notification){
+    std::string message = notification.serialize();
+    sendto(socketDescriptor, message.data(), message.length(),
+        MSG_CONFIRM, (struct sockaddr*) &serverAddress,
+        sizeof(serverAddress));
 }
 

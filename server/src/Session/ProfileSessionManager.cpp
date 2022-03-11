@@ -2,14 +2,20 @@
 #include "ProfileSessionManager.h"
 #include "../Communication/CommunicationManager.h"
 
-void ProfileSessionManager::registerNewSession(const string& user, Address address) {
-    database.addUser(user);
+void ProfileSessionManager::registerNewSession(
+        const string& user, 
+        Address sessionAddress, 
+        Address serverAddress,
+        unsigned int socketDescriptor
+        ) {
+    Profile& profile = database.addUser(user);
+    Session session(profile, sessionAddress, serverAddress, socketDescriptor);
     if(!userToSessionsMap.contains(user)){
-        std::vector<Address> newVector = {Address()};
+        std::vector<Session> newVector = {session};
         userToSessionsMap.at(user) = newVector;
     }
     else if(userToSessionsMap[user].size() < 2){
-        userToSessionsMap.at(user).push_back(address);
+        userToSessionsMap.at(user).push_back(session);
     }
 }
 

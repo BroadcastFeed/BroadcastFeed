@@ -51,13 +51,11 @@ std::pair<Packet, Address> CommunicationManager::listen(int seqn, int64_t timest
     return std::pair(packet, clientAddress);
 }
 
-void CommunicationManager::notify(Notification notification, Address address){
-    std::string message = notification.serialize();
-    sendto(socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &serverAddress,
-        sizeof(serverAddress));
-}
 
 unsigned int CommunicationManager::getDescriptor(){
     return socketDescriptor;
+}
+
+Address CommunicationManager::getAddress(){
+    return serverAddress;
 }

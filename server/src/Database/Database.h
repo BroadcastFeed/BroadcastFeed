@@ -14,7 +14,8 @@ public:
     Database();
     void save();
     bool userExists(const std::string& username);
-    void addUser(const std::string& newUsername);
+    Profile& addUser(const std::string& newUsername);
+
     std::vector<Profile> getUsers() const;
     Profile getUser(const std::string& username);
     void updateUser(string username, Profile newProfile);

@@ -36,7 +36,7 @@ void Database::save(){
     std::string line;
     for(Profile user : getUsers()){
         line += user.getName() + ":";
-        std::vector<Profile> followers = user.getFollowers();
+        std::vector<Profile&> followers = user.getFollowers();
         for(auto it = followers.begin(); it != followers.end(); it++){
             if(it == followers.begin())
                 line += it->getName();
@@ -53,10 +53,14 @@ bool Database::userExists(const std::string& username){
     return users.contains(username);
 }
 
-void Database::addUser(const std::string& newUsername) {
+Profile& Database::addUser(const std::string& newUsername) {
     if (!userExists(newUsername) && newUsername != "") {
         Profile newUser = Profile(newUsername);
         this->users.insert({newUsername, newUser});
+        return newUser;
+    }
+    else {
+        return users[newUsername];
     }
 }
 
@@ -82,11 +86,13 @@ Database::operator std::string() const {
     return str; 
 }
 
+/*
 void Database::addNotification(const string& username, const Notification& notification){
     auto userProfile = getUser(username);
     userProfile.addNotification(notification);
     updateUser(username, userProfile);
 }
+*/
 
 void Database::addFollower(const string& followedUsername, const string& followerUsername) {
     auto followedProfile = getUser(followedUsername);

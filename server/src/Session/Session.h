@@ -9,14 +9,16 @@ class Session {
     typedef sockaddr_in Address;
 
 public:
-    Session(Profile& profile, Address address, CommunicationManager& communicationManager);
+    Session(Profile& profile, Address address, Address serverAddress, unsigned int socketDescriptor);
     void consume();
     void produce();
 
 private:
-    void sendNotification(Notification notification, Address address);
+    void sendNotification(Notification notification);
 
     Profile& profile;
     Address address;
-    CommunicationManager& communicationManager;
+    
+    Address serverAddress;
+    unsigned int socketDescriptor;
 };

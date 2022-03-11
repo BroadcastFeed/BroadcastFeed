@@ -23,7 +23,7 @@ private:
     inline static map<string, vector<Session>> userToSessionsMap = {};
 
 public:
-    static void registerNewSession(const string& user, Address address);
+    static void registerNewSession(const string& user, Address sessionAddress, Address serverAddress, unsigned int socketDescriptor);
     static void addNotification(const string& username, const Notification& notification);
     static void addFollower(const string& followed, const string& follower);
     static bool validateProfileSession(const string& username, const Address& address);
