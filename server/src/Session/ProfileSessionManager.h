@@ -8,6 +8,7 @@
 #include "../Database/Database.h"
 #include "../Profile/Profile.h"
 #include "../Notification/Notification.h"
+#include "../Session/Session.h"
 
 using std::vector;
 using std::string;
@@ -19,7 +20,7 @@ class ProfileSessionManager {
 
 private:
     inline static Database database = Database();
-    inline static map<string, vector<Address>> userToSessionsMap = {};
+    inline static map<string, vector<Session>> userToSessionsMap = {};
 
 public:
     static void registerNewSession(const string& user, Address address);

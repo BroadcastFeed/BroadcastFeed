@@ -1,11 +1,16 @@
 #include "Notification.h"
 
-Notification::Notification(int id, int64_t timestamp, int length, int pendingReaders, std::string message) {
+Notification::Notification(int id, int64_t timestamp, int length, int pendingReaders, string sender, string message) {
     this->id = id;
     this->timestamp = timestamp;
     this->length = length;
     this->pendingReaders = pendingReaders;
+    this->sender = sender;
     this->message = message;
+}
+
+string Notification::serialize(){
+    return sender + ":" + message;
 }
 
 int Notification::getId() {

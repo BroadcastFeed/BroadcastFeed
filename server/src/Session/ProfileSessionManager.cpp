@@ -3,7 +3,7 @@
 #include "../Communication/CommunicationManager.h"
 
 void ProfileSessionManager::registerNewSession(const string& user, Address address) {
-    ProfileSessionManager::database.addUser(user);
+    database.addUser(user);
     if(!userToSessionsMap.contains(user)){
         std::vector<Address> newVector = {Address()};
         userToSessionsMap.at(user) = newVector;
@@ -22,6 +22,7 @@ void ProfileSessionManager::addFollower(const string& followed, const string& fo
 }
 
 //right now only printing ipv4
+/* TODO UPDATE
 ProfileSessionManager::operator std::string() const { 
     std::string str;
     str += "Sessions: \n";
@@ -37,6 +38,7 @@ ProfileSessionManager::operator std::string() const {
     }
     return str; 
 }
+
 
 constexpr bool operator==(const Address& lhs, const Address& rhs) {
     return lhs.sin_port == rhs.sin_port && lhs.sin_addr.s_addr == rhs.sin_addr.s_addr
@@ -55,3 +57,4 @@ bool ProfileSessionManager::validateProfileSession(const string &username, const
 vector<Address> ProfileSessionManager::getOpenedSessions(const string &username) {
     return userToSessionsMap.at(username);
 }
+*/
