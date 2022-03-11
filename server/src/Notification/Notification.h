@@ -15,6 +15,7 @@ private:
 
 public:
     Notification(int id, int64_t timestamp, int length, int pendingReaders, string sender, string message);
+    string serialize();
 
     int getId();
     int64_t getTimestamp();
@@ -22,6 +23,5 @@ public:
     int getPendingReaders();
     string getMessage();
     void decreasePendingReaders();
-    string serialize();
 
 };

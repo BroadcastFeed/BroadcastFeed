@@ -27,20 +27,21 @@ void Profile::addFollower(Profile& newFollower) {
     this->followers.push_back(newFollower);
 }
 
-void Profile::addNotificationToBeSent(Notification notification) {
-    this->notificationsToBeSent.push_back(notification);
-}
-
-void Profile::addNotificationToBeRead(Notification notification) {
-    this->notificationsToBeRead.push_back(notification);
-}
-
 bool Profile::hasNotificationToBeSent() {
     return !notificationsToBeSent.empty();
 }
 
 bool Profile::hasNotificationToBeRead() {
     return !notificationsToBeRead.empty();
+}
+
+
+void Profile::addNotificationToBeSent(Notification notification) {
+    this->notificationsToBeSent.push_back(notification);
+}
+
+void Profile::addNotificationToBeRead(Notification notification) {
+    this->notificationsToBeRead.push_back(notification);
 }
 
 Notification Profile::popNotificationToBeSent() { //assuming a queue implementation of the list
