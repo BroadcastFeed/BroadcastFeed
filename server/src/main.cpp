@@ -37,7 +37,6 @@ int main(int argc, char **argv) {
         try{
             server->listen(seqNum, timestampMilliseconds);
             //server.handlePacket(received);
-//            std::cout << (std::string) received.first; //for debugging
             seqNum++;
         } catch (const std::runtime_error &exc){
             if(RUNNING)

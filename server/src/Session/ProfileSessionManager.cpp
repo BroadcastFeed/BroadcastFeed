@@ -25,12 +25,12 @@ void ProfileSessionManager::addFollower(const string& followed, const string& fo
 ProfileSessionManager::operator std::string() const { 
     std::string str;
     str += "Sessions: \n";
-    for(auto const& x: this->userToSessionsMap) {
+    for(auto const& x: userToSessionsMap) {
         str += "    Profile: " + x.first + "\n    Addresses:";
         for(const Address& a : x.second){
-            char stringAddr[INET_ADDRSTRLEN];
-            inet_ntop(AF_INET, &(a.sin_addr), stringAddr, INET_ADDRSTRLEN);
-            str += " " + (string) stringAddr + ":";
+            char stringAddress[INET_ADDRSTRLEN];
+            inet_ntop(AF_INET, &(a.sin_addr), stringAddress, INET_ADDRSTRLEN);
+            str += " " + (string) stringAddress + ":";
             str += std::to_string(a.sin_port);
         }
         str += "\n\n";
