@@ -1,10 +1,30 @@
 #include "Session.h"
+#include <iostream>
 
-Session::Session(Profile* profile, Address address, Address serverAddress, unsigned int socketDescriptor) 
-: profile(profile), address(address), serverAddress(serverAddress), socketDescriptor(socketDescriptor) {}
+Session::Session(Profile* profile, Address address, Address serverAddress, unsigned int socketDescriptor) : 
+    profile(profile), 
+    address(address), 
+    serverAddress(serverAddress), 
+    socketDescriptor(socketDescriptor),
+    isActive(false){}
+
+Session::~Session(){
+    if(isActive){
+        isActive = false;
+        producerThread->join();
+        consumerThread->join();
+    }
+}
+
+void Session::startThreads(){
+    isActive = true;
+    producerThread = new thread(&Session::produce, this);    
+    consumerThread = new thread(&Session::consume, this);    
+}
 
 void Session::consume() {
-    while(true){
+    std::cout << profile->getName() << std::endl;
+    while(isActive){
         if(profile->hasNotificationToBeRead()){
             Notification notification = profile->popNotificationToBeRead();
             sendNotification(notification); 
@@ -13,7 +33,7 @@ void Session::consume() {
 }
 
 void Session::produce() {
-    while(true){
+    while(isActive){
         if(profile->hasNotificationToBeSent()){
             Notification notification = profile->popNotificationToBeSent();
             for(auto follower : profile->getFollowers()){
@@ -30,3 +50,6 @@ void Session::sendNotification(Notification notification){
         sizeof(address));
 }
 
+Address Session::getAddress(){
+    return address;
+}

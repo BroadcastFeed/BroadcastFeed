@@ -10,18 +10,23 @@ void ProfileSessionManager::registerNewSession(
         ) {
     database.addUser(user);
     Profile* profile = database.getUser(user);
-    Session session(profile, sessionAddress, serverAddress, socketDescriptor);
+    Session* session = new Session(profile, sessionAddress, serverAddress, socketDescriptor);
+    session->startThreads();
     if(!userToSessionsMap.contains(user)){
-        std::vector<Session> newVector = {session};
-        userToSessionsMap[user] = newVector;
+        userToSessionsMap[user] = {session};
     }
     else if(userToSessionsMap[user].size() < 2){
         userToSessionsMap.at(user).push_back(session);
     }
-    std::thread producerThread(&Session::produce, session);    
-    std::thread consumerThread(&Session::consume, session);
-    threadList.push_back(move(producerThread));
-    threadList.push_back(move(consumerThread));
+}
+
+void ProfileSessionManager::removeSession(const string& user, Address sessionAddress){
+    auto sessions = userToSessionsMap.at(user);
+    for (int i = 0; i < sessions.size(); i++) {
+        auto session = sessions[i];
+        sessions.erase(sessions.begin() + i);
+        delete(session);
+    }
 }
 
 void ProfileSessionManager::addNotification(const string& username, const Notification& notification){
@@ -32,24 +37,22 @@ void ProfileSessionManager::addFollower(const string& followed, const string& fo
     ProfileSessionManager::database.addFollower(followed, follower);
 }
 
-//right now only printing ipv4
-/* TODO UPDATE
 ProfileSessionManager::operator std::string() const { 
     std::string str;
     str += "Sessions: \n";
     for(auto const& x: this->userToSessionsMap) {
         str += "    Profile: " + x.first + "\n    Addresses:";
-        for(const Address& a : x.second){
+        for(Session* s : x.second){
             char stringAddr[INET_ADDRSTRLEN];
-            inet_ntop(AF_INET, &(a.sin_addr), stringAddr, INET_ADDRSTRLEN);
+            Address address = s->getAddress();
+            inet_ntop(AF_INET, &address.sin_addr, stringAddr, INET_ADDRSTRLEN);
             str += " " + (string) stringAddr + ":";
-            str += std::to_string(a.sin_port);
+            str += std::to_string(s->getAddress().sin_port);
         }
         str += "\n\n";
     }
     return str; 
 }
-
 
 constexpr bool operator==(const Address& lhs, const Address& rhs) {
     return lhs.sin_port == rhs.sin_port && lhs.sin_addr.s_addr == rhs.sin_addr.s_addr
@@ -57,15 +60,22 @@ constexpr bool operator==(const Address& lhs, const Address& rhs) {
 }
 
 bool ProfileSessionManager::validateProfileSession(const string &username, const Address& address) {
-    auto addresses = userToSessionsMap.at(username);
-    for (Address session : addresses) {
-        if (session == address)
+    auto sessions = userToSessionsMap.at(username);
+    for (Session* s : sessions) {
+        if (s->getAddress() == address)
             return true;
     }
     return false;
 }
 
-vector<Address> ProfileSessionManager::getOpenedSessions(const string &username) {
+vector<Session*> ProfileSessionManager::getOpenedSessions(const string &username) {
     return userToSessionsMap.at(username);
 }
-*/
+
+ProfileSessionManager::~ProfileSessionManager() {
+    for(auto const& x : this->userToSessionsMap) {
+        for(Session* s : x.second){
+            delete(s);
+        }    
+    }
+}

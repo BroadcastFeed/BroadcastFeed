@@ -43,5 +43,6 @@ int main(int argc, char **argv) {
         }
     }
 
-    std::cout << "\nExiting..." << std::endl; //placeholder for where database would be saved
+    std::cout << "\nExiting..." << std::endl; 
+    
 }

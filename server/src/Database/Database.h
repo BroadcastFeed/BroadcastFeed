@@ -12,6 +12,7 @@ private:
 
 public:
     Database();
+    ~Database();
     void save();
     bool userExists(const std::string& username);
     void addUser(const std::string& newUsername);

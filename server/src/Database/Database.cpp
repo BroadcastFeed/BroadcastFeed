@@ -29,6 +29,10 @@ Database::Database(){
     }
 }
 
+Database::~Database(){
+    save();    
+}
+
 void Database::save(){
     std::ofstream fileOut;
     fileOut.open(FILENAME);
