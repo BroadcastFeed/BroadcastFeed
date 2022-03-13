@@ -13,4 +13,5 @@ class CommunicationManager{
     public:
         CommunicationManager(char* ipAddress, unsigned int port);
         void send(Packet packet);
+        void listen();
 };

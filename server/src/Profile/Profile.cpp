@@ -15,7 +15,7 @@ std::string Profile::getName() {
     return this->username;
 }
 
-std::vector<Profile&> Profile::getFollowers() {
+std::vector<Profile*> Profile::getFollowers() {
     return this->followers;
 }
 
@@ -23,7 +23,7 @@ std::vector<Notification> Profile::getNotificationsToBeSent() {
     return this->notificationsToBeSent;
 }
 
-void Profile::addFollower(Profile& newFollower) {
+void Profile::addFollower(Profile* newFollower) {
     this->followers.push_back(newFollower);
 }
 

@@ -36,12 +36,12 @@ void Database::save(){
     std::string line;
     for(Profile user : getUsers()){
         line += user.getName() + ":";
-        std::vector<Profile&> followers = user.getFollowers();
+        std::vector<Profile*> followers = user.getFollowers();
         for(auto it = followers.begin(); it != followers.end(); it++){
             if(it == followers.begin())
-                line += it->getName();
+                line += (*it)->getName();
             else
-                line += "," + it->getName();
+                line += "," + (*it)->getName();
         }
         fileOut << line << std::endl;
         line = "";
@@ -53,14 +53,10 @@ bool Database::userExists(const std::string& username){
     return users.contains(username);
 }
 
-Profile& Database::addUser(const std::string& newUsername) {
+void Database::addUser(const std::string& newUsername) {
     if (!userExists(newUsername) && newUsername != "") {
         Profile newUser = Profile(newUsername);
         this->users.insert({newUsername, newUser});
-        return newUser;
-    }
-    else {
-        return users[newUsername];
     }
 }
 
@@ -73,8 +69,8 @@ std::vector<Profile> Database::getUsers() const {
     return usersVector;
 }
 
-Profile Database::getUser(const std::string& username){
-    return this->users.at(username);
+Profile* Database::getUser(const std::string& username){
+    return &(this->users.at(username));
 }
 
 Database::operator std::string() const { 
@@ -86,19 +82,16 @@ Database::operator std::string() const {
     return str; 
 }
 
-/*
+
 void Database::addNotification(const string& username, const Notification& notification){
-    auto userProfile = getUser(username);
-    userProfile.addNotification(notification);
-    updateUser(username, userProfile);
+    getUser(username)->addNotificationToBeSent(notification);
 }
-*/
+
 
 void Database::addFollower(const string& followedUsername, const string& followerUsername) {
-    auto followedProfile = getUser(followedUsername);
-    auto followerProfile = getUser(followerUsername);
-    followedProfile.addFollower(followerProfile);
-    updateUser(followedUsername, followedProfile);
+    Profile* followedProfile = getUser(followedUsername);
+    Profile* followerProfile = getUser(followerUsername);
+    followedProfile->addFollower(followerProfile);
 }
 
 void Database::updateUser(string username, Profile newProfile) {

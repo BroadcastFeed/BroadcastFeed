@@ -4,6 +4,7 @@
 #include <vector>
 #include <utility>
 #include <map>
+#include <thread>
 #include <netinet/in.h>
 #include "../Database/Database.h"
 #include "../Profile/Profile.h"
@@ -14,6 +15,7 @@ using std::vector;
 using std::string;
 using std::pair;
 using std::map;
+using std::thread;
 
 class ProfileSessionManager {
     typedef sockaddr_in Address;
@@ -21,6 +23,7 @@ class ProfileSessionManager {
 private:
     inline static Database database = Database();
     inline static map<string, vector<Session>> userToSessionsMap = {};
+    inline static vector<thread> threadList = {};
 
 public:
     static void registerNewSession(const string& user, Address sessionAddress, Address serverAddress, unsigned int socketDescriptor);

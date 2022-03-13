@@ -8,15 +8,20 @@ void ProfileSessionManager::registerNewSession(
         Address serverAddress,
         unsigned int socketDescriptor
         ) {
-    Profile& profile = database.addUser(user);
+    database.addUser(user);
+    Profile* profile = database.getUser(user);
     Session session(profile, sessionAddress, serverAddress, socketDescriptor);
     if(!userToSessionsMap.contains(user)){
         std::vector<Session> newVector = {session};
-        userToSessionsMap.at(user) = newVector;
+        userToSessionsMap[user] = newVector;
     }
     else if(userToSessionsMap[user].size() < 2){
         userToSessionsMap.at(user).push_back(session);
     }
+    std::thread producerThread(&Session::produce, session);    
+    std::thread consumerThread(&Session::consume, session);
+    threadList.push_back(move(producerThread));
+    threadList.push_back(move(consumerThread));
 }
 
 void ProfileSessionManager::addNotification(const string& username, const Notification& notification){

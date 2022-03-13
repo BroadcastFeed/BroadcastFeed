@@ -14,10 +14,10 @@ public:
     Database();
     void save();
     bool userExists(const std::string& username);
-    Profile& addUser(const std::string& newUsername);
+    void addUser(const std::string& newUsername);
+    Profile* getUser(const std::string& username);
 
     std::vector<Profile> getUsers() const;
-    Profile getUser(const std::string& username);
     void updateUser(string username, Profile newProfile);
     void addNotification(const string& username, const Notification& notification);
     void addFollower(const string& followedUsername, const string& followerUsername);

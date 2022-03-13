@@ -33,3 +33,17 @@ void CommunicationManager::send(Packet packet){
         MSG_CONFIRM, (struct sockaddr*) &serverAddress,
         sizeof(serverAddress));
 }
+
+void CommunicationManager::listen(){
+    char buffer[MAXSIZE] = "";
+    unsigned int serverStructLength = sizeof(this->serverAddress);
+    recvfrom(
+        this->socketDescriptor, 
+        buffer, 
+        MAXSIZE,
+        MSG_WAITALL, 
+        (struct sockaddr *) &serverAddress,
+        &serverStructLength
+    ); 
+    std::cout << buffer << std::endl;
+}

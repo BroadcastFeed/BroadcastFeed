@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
             PacketType type = tokenizeStringToParamType(message);
             Packet packet = Packet(type, message, username);
             communicationManager.send(packet);
+            communicationManager.listen();
         }
         catch(std::out_of_range){
             interface.commandNotFound();
