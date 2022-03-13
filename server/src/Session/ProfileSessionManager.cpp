@@ -11,7 +11,6 @@ void ProfileSessionManager::registerNewSession(
     database.addUser(user);
     Profile* profile = database.getUser(user);
     Session* session = new Session(profile, sessionAddress, serverAddress, socketDescriptor);
-    session->startThreads();
     if(!userToSessionsMap.contains(user)){
         userToSessionsMap[user] = {session};
     }

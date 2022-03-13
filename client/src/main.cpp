@@ -1,31 +1,42 @@
 #include <stdexcept>
-#include <thread>
-#include <iostream>
+#include <signal.h>
 #include "CommunicationManager.h"
 #include "Interface.h"
 #include "Packet.h"
 #include "Tokenizer.h"
 
 #define MAXSIZE 1024
+
+int RUNNING = true;
+
+void handleCtrlC(int s){
+    RUNNING = false;
+}
+
 //for now the syntax is ./client <USERNAME> <IP ADDRESS> <PORT>
 int main(int argc, char** argv) { 
     if (argc != 4) {
         exit(EXIT_FAILURE);
     }
+
+    //sets handleCtrlC as callback for SIGINT signals
+    signal(SIGINT, handleCtrlC);
+
     char* username = argv[1];
     char* ipAddress = argv[2];
     unsigned int port = atoi(argv[3]);
     
+    CommunicationManager communicationManager(ipAddress, port);
+
     Interface interface;
     interface.startSession(username);
-    CommunicationManager communicationManager(ipAddress, port);
 
     Packet startPacket = Packet(PacketType::CONNECT, username, username);
     communicationManager.send(startPacket);
     communicationManager.startListening();
     
-    while(true) {
-        std::string message = interface.requestMessage();
+    std::string message;
+    while(interface.requestMessage(message)) {
         try{
             PacketType type = tokenizeStringToParamType(message);
             Packet packet = Packet(type, message, username);
@@ -35,4 +46,5 @@ int main(int argc, char** argv) {
             interface.commandNotFound();
         }
     }
+    interface.exiting();
 }

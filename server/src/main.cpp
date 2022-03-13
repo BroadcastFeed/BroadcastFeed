@@ -19,19 +19,19 @@ void handleCtrlC(int s){
 
 //the syntax is ./server <IP ADDRESS> <PORT>
 int main(int argc, char **argv) {
+    if (argc != 3) {
+        exit(EXIT_FAILURE);
+    }
 
     //sets handleCtrlC as callback for SIGINT signals
     signal(SIGINT, handleCtrlC);
 
-    if (argc != 3) {
-        exit(EXIT_FAILURE);
-    }
     char *ipAddress = argv[1];
     unsigned int port = atoi(argv[2]);
-
     server = new Server(ipAddress, port);
-
     int seqNum = 0;
+    
+    std::cout << "Server running, press Ctrl-C to save and exit." << std::endl;
     while (RUNNING) {
         int64_t timestampMilliseconds = duration_cast< milliseconds >(system_clock::now().time_since_epoch()).count();
         try{
@@ -42,7 +42,5 @@ int main(int argc, char **argv) {
                 std::cerr << exc.what();
         }
     }
-
     std::cout << "\nExiting..." << std::endl; 
-    
 }

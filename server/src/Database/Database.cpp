@@ -97,7 +97,3 @@ void Database::addFollower(const string& followedUsername, const string& followe
     Profile* followerProfile = getUser(followerUsername);
     followedProfile->addFollower(followerProfile);
 }
-
-void Database::updateUser(string username, Profile newProfile) {
-    users.at(username) = newProfile;
-}

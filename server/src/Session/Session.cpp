@@ -1,12 +1,14 @@
 #include "Session.h"
-#include <iostream>
 
 Session::Session(Profile* profile, Address address, Address serverAddress, unsigned int socketDescriptor) : 
     profile(profile), 
     address(address), 
     serverAddress(serverAddress), 
     socketDescriptor(socketDescriptor),
-    isActive(false){}
+    isActive(false)
+    {
+        startThreads();
+    }
 
 Session::~Session(){
     if(isActive){
@@ -23,7 +25,6 @@ void Session::startThreads(){
 }
 
 void Session::consume() {
-    std::cout << profile->getName() << std::endl;
     while(isActive){
         if(profile->hasNotificationToBeRead()){
             Notification notification = profile->popNotificationToBeRead();

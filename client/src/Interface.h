@@ -1,11 +1,14 @@
-#pragma once
+#pragma once 
 #include <string>
 
 class Interface{
+    private:
+        bool reachedEOF = false;
     public:
         void startSession(char* username);
         void showMessage(std::string message);
         void commandNotFound();
-        std::string requestMessage();
-
+        bool requestMessage(std::string& message);
+        bool isRunning();
+        void exiting();
 };

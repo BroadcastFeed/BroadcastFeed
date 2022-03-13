@@ -30,6 +30,7 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
 CommunicationManager::~CommunicationManager(){
     if(running){
         running = false;
+        shutdown(socketDescriptor, SHUT_RDWR);
         listeningThread->join();
         delete(listeningThread);
     }
@@ -59,6 +60,7 @@ void CommunicationManager::listen(){
             (struct sockaddr *) &serverAddress,
             &serverStructLength
         ); 
-        std::cout << buffer << std::endl;
+        if(buffer != "")
+            std::cout << buffer << std::endl;
     }
 }

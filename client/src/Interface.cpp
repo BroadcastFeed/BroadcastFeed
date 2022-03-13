@@ -9,13 +9,15 @@ void Interface::showMessage(std::string message){
     std::cout << message << std::endl;
 }
 
-std::string Interface::requestMessage(){
+bool Interface::requestMessage(std::string& message){
     std::cout << "> ";
-    std::string message;
-    std::getline(std::cin, message);
-    return message;
+    return (bool) std::getline(std::cin, message);
 }
 
 void Interface::commandNotFound(){
     std::cout << "Command not found" << std::endl;
+}
+
+void Interface::exiting(){
+    std::cout << "\nExiting...";
 }

@@ -14,25 +14,20 @@ class Session {
 
 public:
     Session(Profile* profile, Address address, Address serverAddress, unsigned int socketDescriptor);
-    void startThreads();
     ~Session();
-
     void consume();
     void produce();
-    
     Address getAddress();
 
 private:
-    void sendNotification(Notification notification);
-
     Profile* profile;
     Address address;
-    
     Address serverAddress;
     unsigned int socketDescriptor;
-
     bool isActive;
-
     thread* producerThread;
     thread* consumerThread;
+
+    void sendNotification(Notification notification);
+    void startThreads();
 };
