@@ -9,13 +9,9 @@ class CommunicationManager{
     private:
         unsigned int socketDescriptor;
         struct sockaddr_in serverAddress{};
-
         std::thread* listeningThread;
-        bool running = false;
-        
+        bool running = true;
         void listen();
-
-        
 
     public:
         CommunicationManager(char* ipAddress, unsigned int port);

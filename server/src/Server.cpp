@@ -12,7 +12,7 @@ void Server::handlePacket(Packet packet, Address received) {
     switch (packet.getType()) {
         case CONNECT: {
             ProfileSessionManager::registerNewSession(
-                packet.getMessage(), 
+                packet.getUsername(), 
                 received, 
                 communicationManager.getAddress(),
                 communicationManager.getDescriptor());
@@ -34,7 +34,7 @@ void Server::handlePacket(Packet packet, Address received) {
             break;
 
         case DISCONNECT:
-
+            ProfileSessionManager::removeSession(packet.getUsername(), received);
             break;
 
         default:

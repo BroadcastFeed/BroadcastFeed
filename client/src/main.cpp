@@ -31,9 +31,8 @@ int main(int argc, char** argv) {
     Interface interface;
     interface.startSession(username);
 
-    Packet startPacket = Packet(PacketType::CONNECT, username, username);
+    Packet startPacket = Packet(PacketType::CONNECT, "", username);
     communicationManager.send(startPacket);
-    communicationManager.startListening();
     
     std::string message;
     while(interface.requestMessage(message)) {
@@ -46,5 +45,8 @@ int main(int argc, char** argv) {
             interface.commandNotFound();
         }
     }
+
     interface.exiting();
+    Packet endPacket = Packet(PacketType::DISCONNECT, "", username);    
+    communicationManager.send(endPacket);
 }

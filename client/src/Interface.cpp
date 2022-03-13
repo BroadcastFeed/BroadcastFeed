@@ -19,5 +19,5 @@ void Interface::commandNotFound(){
 }
 
 void Interface::exiting(){
-    std::cout << "\nExiting...";
+    std::cout << "\nExiting..." << std::endl;
 }

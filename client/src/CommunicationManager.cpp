@@ -25,15 +25,15 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
     this->serverAddress.sin_family    = AF_INET; // ipv4 family
     this->serverAddress.sin_addr.s_addr = inet_addr(ipAddress); 
     this->serverAddress.sin_port = htons(port); 
+
+    listeningThread = new std::thread(&CommunicationManager::listen, this);
 }
 
 CommunicationManager::~CommunicationManager(){
-    if(running){
-        running = false;
-        shutdown(socketDescriptor, SHUT_RDWR);
-        listeningThread->join();
-        delete(listeningThread);
-    }
+    running = false;
+    shutdown(socketDescriptor, SHUT_RDWR);
+    listeningThread->join();
+    delete(listeningThread);
 }
 
 void CommunicationManager::send(Packet packet){
