@@ -60,7 +60,9 @@ void CommunicationManager::listen(){
             (struct sockaddr *) &serverAddress,
             &serverStructLength
         ); 
-        if(buffer != "")
-            std::cout << buffer << std::endl;
+        if(buffer != ""){
+            std::cout << std::endl << buffer << "\n> ";
+            std::cout.flush();
+        }
     }
 }
