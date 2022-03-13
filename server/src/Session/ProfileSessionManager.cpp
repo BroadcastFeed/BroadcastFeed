@@ -19,15 +19,6 @@ void ProfileSessionManager::registerNewSession(
     }
 }
 
-void ProfileSessionManager::removeSession(const string& user, Address sessionAddress){
-    auto sessions = userToSessionsMap.at(user);
-    for (int i = 0; i < sessions.size(); i++) {
-        auto session = sessions[i];
-        sessions.erase(sessions.begin() + i);
-        delete(session);
-    }
-}
-
 void ProfileSessionManager::addNotification(const string& username, const Notification& notification){
     ProfileSessionManager::database.addNotification(username, notification);
 }
@@ -57,6 +48,20 @@ constexpr bool operator==(const Address& lhs, const Address& rhs) {
     return lhs.sin_port == rhs.sin_port && lhs.sin_addr.s_addr == rhs.sin_addr.s_addr
            && lhs.sin_family == rhs.sin_family;
 }
+
+void ProfileSessionManager::removeSession(const string& user, Address sessionAddress){
+    if(userToSessionsMap.contains(user)){
+        auto sessions = userToSessionsMap.at(user);
+        for (int i = 0; i < sessions.size(); i++) {
+            auto session = sessions[i];
+            if(session->getAddress() == sessionAddress){
+                sessions.erase(sessions.begin() + i);
+                delete(session);
+            }
+        }
+    }
+}
+
 
 bool ProfileSessionManager::validateProfileSession(const string &username, const Address& address) {
     auto sessions = userToSessionsMap.at(username);
