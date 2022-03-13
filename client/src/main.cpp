@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <thread>
 #include <iostream>
 #include "CommunicationManager.h"
 #include "Interface.h"
@@ -21,6 +22,7 @@ int main(int argc, char** argv) {
 
     Packet startPacket = Packet(PacketType::CONNECT, username, username);
     communicationManager.send(startPacket);
+    communicationManager.startListening();
     
     while(true) {
         std::string message = interface.requestMessage();
@@ -28,7 +30,6 @@ int main(int argc, char** argv) {
             PacketType type = tokenizeStringToParamType(message);
             Packet packet = Packet(type, message, username);
             communicationManager.send(packet);
-            communicationManager.listen();
         }
         catch(std::out_of_range){
             interface.commandNotFound();

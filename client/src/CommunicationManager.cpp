@@ -27,6 +27,14 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
     this->serverAddress.sin_port = htons(port); 
 }
 
+CommunicationManager::~CommunicationManager(){
+    if(running){
+        running = false;
+        listeningThread->join();
+        delete(listeningThread);
+    }
+}
+
 void CommunicationManager::send(Packet packet){
     std::string message = packet.serialize();
     sendto(socketDescriptor, message.data(), message.length(),
@@ -34,16 +42,23 @@ void CommunicationManager::send(Packet packet){
         sizeof(serverAddress));
 }
 
+void CommunicationManager::startListening(){
+    listeningThread = new std::thread(&CommunicationManager::listen, this);
+    running = true;
+}
+
 void CommunicationManager::listen(){
-    char buffer[MAXSIZE] = "";
-    unsigned int serverStructLength = sizeof(this->serverAddress);
-    recvfrom(
-        this->socketDescriptor, 
-        buffer, 
-        MAXSIZE,
-        MSG_WAITALL, 
-        (struct sockaddr *) &serverAddress,
-        &serverStructLength
-    ); 
-    std::cout << buffer << std::endl;
+    while(running){
+        char buffer[MAXSIZE] = "";
+        unsigned int serverStructLength = sizeof(this->serverAddress);
+        recvfrom(
+            this->socketDescriptor, 
+            buffer, 
+            MAXSIZE,
+            MSG_WAITALL, 
+            (struct sockaddr *) &serverAddress,
+            &serverStructLength
+        ); 
+        std::cout << buffer << std::endl;
+    }
 }
