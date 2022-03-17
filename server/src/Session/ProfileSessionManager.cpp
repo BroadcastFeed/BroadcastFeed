@@ -20,7 +20,6 @@ void ProfileSessionManager::registerNewSession(
         Session* session = new Session(profile, sessionAddress, socketDescriptor, !userToSessionsMap[user][0]->getSessionNum());
         userToSessionsMap.at(user).push_back(session);
     }
-    std::cout<<"Sessoes do usuario apos insercao: "<<userToSessionsMap[user].size()<<std::endl;
 }
 
 void ProfileSessionManager::addNotification(const string& username, const Notification& notification){
@@ -59,13 +58,11 @@ void ProfileSessionManager::removeSession(const string& user, Address sessionAdd
         for (int i = 0; i < sessions.size(); i++) {
             auto session = sessions[i];
             if(session->getAddress() == sessionAddress){
-                //sessions.erase(sessions.begin() + i);
-                userToSessionsMap[user].erase(sessions.begin()+i);
+                userToSessionsMap[user].erase(userToSessionsMap.at(user).begin()+i);
                 delete(session);
             }
         }
     }
-    std::cout<<"Sessoes do usuario depois da delecao: "<<userToSessionsMap[user].size()<<std::endl;
 }
 
 bool ProfileSessionManager::validateProfileSession(const string &username, const Address& address) {
