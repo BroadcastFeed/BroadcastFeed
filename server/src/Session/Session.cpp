@@ -1,9 +1,10 @@
 #include "Session.h"
 
-Session::Session(Profile* profile, Address address, unsigned int socketDescriptor): 
+Session::Session(Profile* profile, Address address, unsigned int socketDescriptor, unsigned int sessionNum): 
     profile(profile), 
     address(address), 
     socketDescriptor(socketDescriptor),
+    sessionNum(sessionNum),
     isActive(false)
     {
         startThreads();

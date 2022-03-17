@@ -12,11 +12,12 @@ void ProfileSessionManager::registerNewSession(
     std::cout << user << std::endl;
     database.addUser(user);
     Profile* profile = database.getUser(user);
-    Session* session = new Session(profile, sessionAddress, socketDescriptor);
     if(!userToSessionsMap.contains(user)){
+        Session* session = new Session(profile, sessionAddress, socketDescriptor, 1);
         userToSessionsMap[user] = {session};
     }
     else if(userToSessionsMap[user].size() < 2){
+        Session* session = new Session(profile, sessionAddress, socketDescriptor, 2);
         userToSessionsMap.at(user).push_back(session);
     }
 }
