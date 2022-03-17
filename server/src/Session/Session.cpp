@@ -30,19 +30,14 @@ void Session::consume() {
             //Notification notification = profile->popNotificationToBeRead();
             Notification notification = profile->getTopNotification();
             bool isRead = false;
-            int sum = 0;
-            for (auto sessionNumber: notification.getReadBySessions()){
-                if(sessionNumber==this->sessionNum){
-                    isRead = true;
-                }
-                sum = sum + sessionNumber;
-            }
-            if(!isRead){ //my ugliest piece of code in a while
+            int lastRead = notification.getLastReadBySession();
+
+            if (lastRead != this->sessionNum){
                 profile->markTopAsRead(this->sessionNum);
-                if(sum == 3){ //sessions 1 and 2 have already read.
-                    Notification _ = profile->popNotificationToBeRead();
+                if (lastRead != -1){
+                    Notification _ = profile->popNotificationToBeRead();    
                 }
-                sendNotification(notification); 
+                sendNotification(notification);
             }
         }
     }

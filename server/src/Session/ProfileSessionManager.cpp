@@ -13,13 +13,14 @@ void ProfileSessionManager::registerNewSession(
     database.addUser(user);
     Profile* profile = database.getUser(user);
     if(!userToSessionsMap.contains(user)){
-        Session* session = new Session(profile, sessionAddress, socketDescriptor, 1);
+        Session* session = new Session(profile, sessionAddress, socketDescriptor, 0);
         userToSessionsMap[user] = {session};
     }
     else if(userToSessionsMap[user].size() < 2){
-        Session* session = new Session(profile, sessionAddress, socketDescriptor, 2);
+        Session* session = new Session(profile, sessionAddress, socketDescriptor, !userToSessionsMap[user][0]->getSessionNum());
         userToSessionsMap.at(user).push_back(session);
     }
+    std::cout<<userToSessionsMap[user].size()<<std::endl;
 }
 
 void ProfileSessionManager::addNotification(const string& username, const Notification& notification){

@@ -6,6 +6,7 @@ Notification::Notification(int id, int64_t timestamp, int length, string sender,
     this->length = length;
     this->sender = sender;
     this->message = message;
+    this->lastReadBySession = -1;
 }
 
 string Notification::serialize(){
@@ -28,10 +29,10 @@ std::string Notification::getMessage() {
     return this->message;
 }
 
-std::vector<int> Notification::getReadBySessions(){
-    return this->readBySessions;
+int Notification::getLastReadBySession(){
+    return this->lastReadBySession;
 }
 
 void Notification::markAsRead(int sessionId) {
-    this->readBySessions.push_back(sessionId);
+    this->lastReadBySession = sessionId;
 }

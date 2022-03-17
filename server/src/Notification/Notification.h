@@ -10,7 +10,7 @@ private:
     int id;
     int64_t timestamp;
     int length;
-    std::vector <int> readBySessions;
+    int lastReadBySession;
     string sender;
     string message;
 
@@ -22,7 +22,7 @@ public:
     int64_t getTimestamp();
     int getLength();
     string getMessage();
-    std::vector<int> getReadBySessions();
+    int getLastReadBySession();
     void markAsRead(int sessionId);
 
 };
