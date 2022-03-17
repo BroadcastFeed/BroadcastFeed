@@ -8,7 +8,7 @@ void Server::listen(int seqn, int64_t timestamp){
 }
 
 void Server::handlePacket(Packet packet, Address received) {
-    int pendingReaders = -1;
+
     switch (packet.getType()) {
         case CONNECT: {
             ProfileSessionManager::registerNewSession(
@@ -21,7 +21,7 @@ void Server::handlePacket(Packet packet, Address received) {
         case SEND: {
             //pendingReaders = packet.getFollowers().length();
             Notification notification(packet.getSeqNum(), packet.getTimestamp(),
-                                        packet.getLength(), pendingReaders, packet.getUsername(),
+                                        packet.getLength(), packet.getUsername(),
                                         packet.getMessage());
             ProfileSessionManager::addNotification(packet.getUsername(), notification);
 

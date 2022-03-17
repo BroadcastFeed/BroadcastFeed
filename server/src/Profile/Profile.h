@@ -26,11 +26,13 @@ public:
     string getName();
     vector<Profile*> getFollowers();
     vector<Notification> getNotificationsToBeSent();
+    Notification getTopNotification();
 
     void addFollower(Profile* newFollower);
 
     void addNotificationToBeSent(Notification notification);
     void addNotificationToBeRead(Notification notification);
+    void markTopAsRead(int sessionId);
 
     bool hasNotificationToBeSent();
     bool hasNotificationToBeRead();

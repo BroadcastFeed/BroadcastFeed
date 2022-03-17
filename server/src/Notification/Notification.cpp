@@ -1,10 +1,9 @@
 #include "Notification.h"
 
-Notification::Notification(int id, int64_t timestamp, int length, int pendingReaders, string sender, string message) {
+Notification::Notification(int id, int64_t timestamp, int length, string sender, string message) {
     this->id = id;
     this->timestamp = timestamp;
     this->length = length;
-    this->pendingReaders = pendingReaders;
     this->sender = sender;
     this->message = message;
 }
@@ -25,14 +24,14 @@ int Notification::getLength() {
     return this->length;
 }
 
-int Notification::getPendingReaders() {
-    return this->pendingReaders;
-}
-
 std::string Notification::getMessage() {
     return this->message;
 }
 
-void Notification::decreasePendingReaders() {
-    this->pendingReaders--;
+std::vector<int> Notification::getReadBySessions(){
+    return this->readBySessions;
+}
+
+void Notification::markAsRead(int sessionId) {
+    this->readBySessions.push_back(sessionId);
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <string>
 
 using std::string;
@@ -9,19 +10,19 @@ private:
     int id;
     int64_t timestamp;
     int length;
-    int pendingReaders;
+    std::vector <int> readBySessions;
     string sender;
     string message;
 
 public:
-    Notification(int id, int64_t timestamp, int length, int pendingReaders, string sender, string message);
+    Notification(int id, int64_t timestamp, int length, string sender, string message);
     string serialize();
 
     int getId();
     int64_t getTimestamp();
     int getLength();
-    int getPendingReaders();
     string getMessage();
-    void decreasePendingReaders();
+    std::vector<int> getReadBySessions();
+    void markAsRead(int sessionId);
 
 };

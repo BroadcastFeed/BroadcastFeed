@@ -23,6 +23,11 @@ std::vector<Notification> Profile::getNotificationsToBeSent() {
     return this->notificationsToBeSent;
 }
 
+Notification Profile::getTopNotification() {
+    return this->notificationsToBeRead[0];
+}
+
+
 void Profile::addFollower(Profile* newFollower) {
     this->followers.push_back(newFollower);
 }
@@ -42,6 +47,10 @@ void Profile::addNotificationToBeSent(Notification notification) {
 
 void Profile::addNotificationToBeRead(Notification notification) {
     this->notificationsToBeRead.push_back(notification);
+}
+
+void Profile::markTopAsRead(int sessionId) {
+    this->notificationsToBeRead[0].markAsRead(sessionId);
 }
 
 Notification Profile::popNotificationToBeSent() { //assuming a queue implementation of the list

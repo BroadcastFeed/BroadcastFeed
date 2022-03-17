@@ -27,8 +27,23 @@ void Session::startThreads(){
 void Session::consume() {
     while(isActive){
         if(profile->hasNotificationToBeRead()){
-            Notification notification = profile->popNotificationToBeRead();
-            sendNotification(notification); 
+            //Notification notification = profile->popNotificationToBeRead();
+            Notification notification = profile->getTopNotification();
+            bool isRead = false;
+            int sum = 0;
+            for (auto sessionNumber: notification.getReadBySessions()){
+                if(sessionNumber==this->sessionNum){
+                    isRead = true;
+                }
+                sum = sum + sessionNumber;
+            }
+            if(!isRead){ //my ugliest piece of code in a while
+                profile->markTopAsRead(this->sessionNum);
+                if(sum == 3){ //sessions 1 and 2 have already read.
+                    Notification _ = profile->popNotificationToBeRead();
+                }
+                sendNotification(notification); 
+            }
         }
     }
 }
