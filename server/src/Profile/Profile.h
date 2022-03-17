@@ -29,9 +29,6 @@ public:
 
     void addFollower(Profile* newFollower);
 
-    void startSession();
-    void endSession();
-
     void addNotificationToBeSent(Notification notification);
     void addNotificationToBeRead(Notification notification);
 

@@ -56,18 +56,6 @@ Notification Profile::popNotificationToBeRead() { //assuming a queue implementat
     return firstElement;
 }
 
-void Profile::startSession() {
-    if (this->activeSessions < 2) { //otherwise, session is refused
-        this->activeSessions++;
-    }
-}
-
-void Profile::endSession() {
-    if (this->activeSessions > 0) {
-        this->activeSessions--;
-    }
-}
-
 Profile::operator std::string() const { 
     std::string str;
     str += "Username: " + this->username + "\n";    
