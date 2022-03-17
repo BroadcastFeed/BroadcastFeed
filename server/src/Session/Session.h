@@ -18,6 +18,7 @@ public:
     void consume();
     void produce();
     Address getAddress();
+    int getSessionNum();
 
 private:
     Profile* profile;

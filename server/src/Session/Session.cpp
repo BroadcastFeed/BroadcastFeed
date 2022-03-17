@@ -54,3 +54,7 @@ void Session::sendNotification(Notification notification){
 Address Session::getAddress(){
     return address;
 }
+
+int Session::getSessionNum(){
+    return this->sessionNum;
+}
