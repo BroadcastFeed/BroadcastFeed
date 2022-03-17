@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <signal.h>
+#include <iostream>
 #include "CommunicationManager.h"
 #include "Interface.h"
 #include "Packet.h"
@@ -45,7 +46,6 @@ int main(int argc, char** argv) {
             interface.commandNotFound();
         }
     }
-
     interface.exiting();
     Packet endPacket = Packet(PacketType::DISCONNECT, username, username);    
     communicationManager.send(endPacket);
