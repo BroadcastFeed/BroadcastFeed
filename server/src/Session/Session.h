@@ -13,7 +13,7 @@ class Session {
     typedef sockaddr_in Address;
 
 public:
-    Session(Profile* profile, Address address, Address serverAddress, unsigned int socketDescriptor);
+    Session(Profile* profile, Address address, unsigned int socketDescriptor);
     ~Session();
     void consume();
     void produce();
@@ -22,9 +22,11 @@ public:
 private:
     Profile* profile;
     Address address;
-    Address serverAddress;
+
+
     unsigned int socketDescriptor;
     bool isActive;
+
     thread* producerThread;
     thread* consumerThread;
 

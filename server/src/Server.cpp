@@ -12,7 +12,7 @@ void Server::handlePacket(Packet packet, Address received) {
     switch (packet.getType()) {
         case CONNECT: {
             ProfileSessionManager::registerNewSession(
-                packet.getUsername(), 
+                packet.getMessage(), 
                 received, 
                 communicationManager.getAddress(),
                 communicationManager.getDescriptor());

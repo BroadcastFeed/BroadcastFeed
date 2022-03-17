@@ -1,9 +1,8 @@
 #include "Session.h"
 
-Session::Session(Profile* profile, Address address, Address serverAddress, unsigned int socketDescriptor) : 
+Session::Session(Profile* profile, Address address, unsigned int socketDescriptor): 
     profile(profile), 
     address(address), 
-    serverAddress(serverAddress), 
     socketDescriptor(socketDescriptor),
     isActive(false)
     {

@@ -1,4 +1,5 @@
 #include <arpa/inet.h>
+#include <iostream>
 #include "ProfileSessionManager.h"
 #include "../Communication/CommunicationManager.h"
 
@@ -8,9 +9,10 @@ void ProfileSessionManager::registerNewSession(
         Address serverAddress,
         unsigned int socketDescriptor
         ) {
+    std::cout << user << std::endl;
     database.addUser(user);
     Profile* profile = database.getUser(user);
-    Session* session = new Session(profile, sessionAddress, serverAddress, socketDescriptor);
+    Session* session = new Session(profile, sessionAddress, socketDescriptor);
     if(!userToSessionsMap.contains(user)){
         userToSessionsMap[user] = {session};
     }
@@ -61,7 +63,6 @@ void ProfileSessionManager::removeSession(const string& user, Address sessionAdd
         }
     }
 }
-
 
 bool ProfileSessionManager::validateProfileSession(const string &username, const Address& address) {
     auto sessions = userToSessionsMap.at(username);
