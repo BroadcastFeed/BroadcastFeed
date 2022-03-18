@@ -1,11 +1,16 @@
 #include "Profile.h"
 
+#include <utility>
+
 Profile::Profile(std::string username) {
-    this->username = username;
+    this->username = std::move(username);
     this->activeSessions = 0;
+    this->notificationsQueueMutex = new mutex();
 }
 
-Profile::Profile(){}
+Profile::Profile() {
+    this->notificationsQueueMutex = new mutex();
+}
 
 int Profile::getActiveSessions() {
     return this->activeSessions;
@@ -20,11 +25,12 @@ std::vector<Profile*> Profile::getFollowers() {
 }
 
 std::vector<Notification> Profile::getNotificationsToBeSent() {
-    return this->notificationsToBeSent;
+    return this->producerBuffer;
 }
 
 Notification Profile::getTopNotification() {
-    return this->notificationsToBeRead[0];
+    std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
+    return this->pendingNotifications[0];
 }
 
 
@@ -33,35 +39,39 @@ void Profile::addFollower(Profile* newFollower) {
 }
 
 bool Profile::hasNotificationToBeSent() {
-    return !notificationsToBeSent.empty();
+    return !producerBuffer.empty();
 }
 
 bool Profile::hasNotificationToBeRead() {
-    return !notificationsToBeRead.empty();
+    std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
+    return !pendingNotifications.empty();
 }
 
 
 void Profile::addNotificationToBeSent(Notification notification) {
-    this->notificationsToBeSent.push_back(notification);
+    this->producerBuffer.push_back(notification);
 }
 
 void Profile::addNotificationToBeRead(Notification notification) {
-    this->notificationsToBeRead.push_back(notification);
+    std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
+    this->pendingNotifications.push_back(notification);
 }
 
 void Profile::markTopAsRead(int sessionId) {
-    this->notificationsToBeRead[0].markAsRead(sessionId);
+    std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
+    this->pendingNotifications[0].markAsRead(sessionId);
 }
 
 Notification Profile::popNotificationToBeSent() { //assuming a queue implementation of the list
-    Notification firstElement = this->notificationsToBeSent[0];
-    this->notificationsToBeSent.erase(this->notificationsToBeSent.begin());
+    Notification firstElement = this->producerBuffer[0];
+    this->producerBuffer.erase(this->producerBuffer.begin());
     return firstElement;
 }
 
 Notification Profile::popNotificationToBeRead() { //assuming a queue implementation of the list
-    Notification firstElement = this->notificationsToBeRead[0];
-    this->notificationsToBeRead.erase(this->notificationsToBeRead.begin());
+    std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
+    Notification firstElement = this->pendingNotifications[0];
+    this->pendingNotifications.erase(this->pendingNotifications.begin());
     return firstElement;
 }
 
@@ -69,6 +79,6 @@ Profile::operator std::string() const {
     std::string str;
     str += "Username: " + this->username + "\n";    
     str += "Followers: " + std::to_string(this->followers.size()) + "\n";
-    str += "Notifications to be sent: " + std::to_string(this->notificationsToBeSent.size()) + "\n";
+    str += "Notifications to be sent: " + std::to_string(this->producerBuffer.size()) + "\n";
     return str; 
 }

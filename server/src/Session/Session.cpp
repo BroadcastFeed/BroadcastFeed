@@ -1,70 +1,73 @@
 #include "Session.h"
 
-Session::Session(Profile* profile, Address address, unsigned int socketDescriptor, unsigned int sessionNum): 
-    profile(profile), 
-    address(address), 
-    socketDescriptor(socketDescriptor),
-    sessionNum(sessionNum),
-    isActive(false)
-    {
-        startThreads();
-    }
+Session::Session(Profile *profile, Address address, unsigned int socketDescriptor, unsigned int sessionNum) :
+        profile(profile),
+        address(address),
+        socketDescriptor(socketDescriptor),
+        sessionNum(sessionNum),
+        isActive(false) {
+    startThreads();
+}
 
-Session::~Session(){
-    if(isActive){
+Session::~Session() {
+    if (isActive) {
         isActive = false;
         producerThread->join();
         consumerThread->join();
     }
 }
 
-void Session::startThreads(){
+void Session::startThreads() {
     isActive = true;
-    producerThread = new thread(&Session::produce, this);    
-    consumerThread = new thread(&Session::consume, this);    
+    producerThread = new thread(&Session::produce, this);
+    consumerThread = new thread(&Session::consume, this);
 }
 
 void Session::consume() {
-    while(isActive){
-        if(profile->hasNotificationToBeRead()){
-            //Notification notification = profile->popNotificationToBeRead();
-            Notification notification = profile->getTopNotification();
-            bool isRead = false;
-            int lastRead = notification.getLastReadBySession();
+    while (isActive) {
+        std::unique_lock<mutex> lock(notificationsMutex);
+        conditionVariable.wait(lock, [this] { return this->profile->hasNotificationToBeRead(); });
 
-            if (lastRead != this->sessionNum){
-                profile->markTopAsRead(this->sessionNum);
-                if (lastRead != -1){
-                    Notification _ = profile->popNotificationToBeRead();    
-                }
-                sendNotification(notification);
+        Notification notification = profile->getTopNotification();
+        int lastRead = notification.getLastReadBySession();
+
+        if (lastRead != this->sessionNum) {
+            profile->markTopAsRead(this->sessionNum);
+            if (lastRead != -1) {
+                Notification _ = profile->popNotificationToBeRead();
             }
+            sendNotification(notification);
         }
     }
 }
 
 void Session::produce() {
-    while(isActive){
-        if(profile->hasNotificationToBeSent()){
-            Notification notification = profile->popNotificationToBeSent();
-            for(auto follower : profile->getFollowers()){
-                follower->addNotificationToBeRead(notification);
+    while (isActive) {
+        {
+            std::lock_guard<mutex> lock(notificationsMutex);
+
+            if (profile->hasNotificationToBeSent()) {
+                Notification notification = profile->popNotificationToBeSent();
+                for (auto follower: profile->getFollowers()) {
+                    follower->addNotificationToBeRead(notification);
+                }
             }
         }
+        conditionVariable.notify_all();
     }
 }
 
-void Session::sendNotification(Notification notification){
+void Session::sendNotification(Notification notification) {
     std::string message = notification.serialize();
     sendto(socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &address,
-        sizeof(address));
+           MSG_CONFIRM, (struct sockaddr *) &address,
+           sizeof(address));
 }
 
-Address Session::getAddress(){
+Address Session::getAddress() {
     return address;
 }
 
-int Session::getSessionNum(){
+int Session::getSessionNum() {
     return this->sessionNum;
 }

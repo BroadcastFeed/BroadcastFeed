@@ -3,11 +3,13 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <mutex>
 #include "../Notification/Notification.h"
 
 using std::string;
 using std::vector;
 using std::queue;
+using std::mutex;
 
 class Profile {
 
@@ -15,11 +17,13 @@ private:
     int activeSessions;
     string username;
     vector<Profile*> followers;
-    vector<Notification> notificationsToBeSent;
-    vector<Notification> notificationsToBeRead;
+    vector<Notification> producerBuffer;
+    vector<Notification> pendingNotifications;
+
+    mutex *notificationsQueueMutex;
 
 public:
-    Profile(string username);
+    explicit Profile(string username);
     Profile();
 
     int getActiveSessions();
