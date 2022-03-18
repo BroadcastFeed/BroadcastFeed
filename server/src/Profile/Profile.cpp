@@ -24,36 +24,35 @@ std::vector<Profile*> Profile::getFollowers() {
     return this->followers;
 }
 
-std::vector<Notification> Profile::getNotificationsToBeSent() {
+std::vector<Notification> Profile::getProducerBuffer() {
     return this->producerBuffer;
 }
 
-Notification Profile::getTopNotification() {
+Notification Profile::getTopPendingNotification() {
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
     return this->pendingNotifications[0];
 }
 
 
 void Profile::addFollower(Profile* newFollower) {
-
     this->followers.push_back(newFollower);
 }
 
-bool Profile::hasNotificationToBeSent() {
+bool Profile::hasNotificationInBuffer() {
     return !producerBuffer.empty();
 }
 
-bool Profile::hasNotificationToBeRead() {
+bool Profile::hasPendingNotification() {
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
     return !pendingNotifications.empty();
 }
 
 
-void Profile::addNotificationToBeSent(Notification notification) {
+void Profile::addNotificationToProducerBuffer(Notification notification) {
     this->producerBuffer.push_back(notification);
 }
 
-void Profile::addNotificationToBeRead(Notification notification) {
+void Profile::addPendingNotification(Notification notification) {
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
     this->pendingNotifications.push_back(notification);
 }
@@ -63,13 +62,13 @@ void Profile::markTopAsRead(int sessionId) {
     this->pendingNotifications[0].markAsRead(sessionId);
 }
 
-Notification Profile::popNotificationToBeSent() { //assuming a queue implementation of the list
+Notification Profile::popNotificationFromBuffer() { //assuming a queue implementation of the list
     Notification firstElement = this->producerBuffer[0];
     this->producerBuffer.erase(this->producerBuffer.begin());
     return firstElement;
 }
 
-Notification Profile::popNotificationToBeRead() { //assuming a queue implementation of the list
+Notification Profile::popPendingNotification() { //assuming a queue implementation of the list
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
     Notification firstElement = this->pendingNotifications[0];
     this->pendingNotifications.erase(this->pendingNotifications.begin());

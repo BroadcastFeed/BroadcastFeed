@@ -29,20 +29,20 @@ public:
     int getActiveSessions();
     string getName();
     vector<Profile*> getFollowers();
-    vector<Notification> getNotificationsToBeSent();
-    Notification getTopNotification();
+    vector<Notification> getProducerBuffer();
+    Notification getTopPendingNotification();
 
     void addFollower(Profile* newFollower);
 
-    void addNotificationToBeSent(Notification notification);
-    void addNotificationToBeRead(Notification notification);
+    void addNotificationToProducerBuffer(Notification notification);
+    void addPendingNotification(Notification notification);
     void markTopAsRead(int sessionId);
 
-    bool hasNotificationToBeSent();
-    bool hasNotificationToBeRead();
+    bool hasNotificationInBuffer();
+    bool hasPendingNotification();
 
-    Notification popNotificationToBeSent();
-    Notification popNotificationToBeRead();
+    Notification popNotificationFromBuffer();
+    Notification popPendingNotification();
 
     operator std::string() const; 
 };
