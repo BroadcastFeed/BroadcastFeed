@@ -12,7 +12,7 @@ private:
 
 public:
     Database();  //constructor loads data from file if possible
-    ~Database(); //deconstructor saves data and deletes pointers
+    ~Database(); //deconstruct saves data and deletes pointers
     void save();
     bool userExists(const std::string& username);
     void addUser(const std::string& newUsername);

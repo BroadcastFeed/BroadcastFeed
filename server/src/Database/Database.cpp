@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 #define FILENAME "users.dat"
 
@@ -74,7 +75,8 @@ std::vector<Profile> Database::getUsers() const {
 }
 
 Profile* Database::getUser(const std::string& username){
-    return &(this->users.at(username));
+    if (userExists(username)) { return &(this->users.at(username)); }
+    else { return nullptr; }
 }
 
 Database::operator std::string() const { 
@@ -95,5 +97,9 @@ void Database::addNotification(const string& username, const Notification& notif
 void Database::addFollower(const string& followedUsername, const string& followerUsername) {
     Profile* followedProfile = getUser(followedUsername);
     Profile* followerProfile = getUser(followerUsername);
-    followedProfile->addFollower(followerProfile);
+    if (followedProfile != nullptr) {
+        if (followerProfile != nullptr) { followedProfile->addFollower(followerProfile); }
+    } else {
+        std::cout << "User " << followedUsername << " doesnt exists!" << std::endl;
+    }
 }

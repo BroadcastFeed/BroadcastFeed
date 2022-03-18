@@ -35,6 +35,7 @@ Notification Profile::getTopNotification() {
 
 
 void Profile::addFollower(Profile* newFollower) {
+
     this->followers.push_back(newFollower);
 }
 
