@@ -3,25 +3,29 @@
 #include "ProfileSessionManager.h"
 #include "../Communication/CommunicationManager.h"
 
-void ProfileSessionManager::registerNewSession(
+bool ProfileSessionManager::registerNewSession(
         const string &user,
         Address sessionAddress,
         Address serverAddress,
         unsigned int socketDescriptor
 ) {
-    std::cout << user << std::endl;
     database.addUser(user);
     Profile *profile = database.getUser(user);
     if (profile != nullptr) {
         if (!userToSessionsMap.contains(user)) {
             Session *session = new Session(profile, sessionAddress, socketDescriptor, 0);
+            session->initSession();
             userToSessionsMap[user] = {session};
+            return true;
         } else if (userToSessionsMap[user].size() < 2) {
             Session *session = new Session(profile, sessionAddress, socketDescriptor,
                                            !userToSessionsMap[user][0]->getSessionNum());
+            session->initSession();
             userToSessionsMap.at(user).push_back(session);
+            return true;
         }
     }
+    return false;
 }
 
 void ProfileSessionManager::addNotification(const string &username, const Notification &notification) {
@@ -60,8 +64,8 @@ void ProfileSessionManager::removeSession(const string &user, Address sessionAdd
         for (int i = 0; i < sessions.size(); i++) {
             auto session = sessions[i];
             if (session->getAddress() == sessionAddress) {
-                userToSessionsMap[user].erase(userToSessionsMap.at(user).begin() + i);
-                delete (session);
+                userToSessionsMap[user].erase(std::next(userToSessionsMap[user].begin(), i));
+                session->closeSession();
             }
         }
     }

@@ -20,11 +20,13 @@ class Session {
 
 public:
     Session(Profile* profile, Address address, unsigned int socketDescriptor, unsigned int sessionNum);
-    ~Session();
     void consume();
     void produce();
     Address getAddress();
     int getSessionNum();
+
+    void initSession();
+    void closeSession();
 
 private:
     Profile* profile;
@@ -35,11 +37,12 @@ private:
 
     unsigned int sessionNum; //1 or 2, considering the 2 sessions limitation.
     unsigned int socketDescriptor;
-    bool isActive;
+    volatile bool isActive;
 
     thread* producerThread;
     thread* consumerThread;
 
     void sendNotification(Notification notification);
-    void startThreads();
+    void start();
+    void stop();
 };
