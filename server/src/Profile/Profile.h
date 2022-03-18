@@ -34,8 +34,8 @@ public:
 
     void addFollower(Profile* newFollower);
 
-    void addNotificationToProducerBuffer(Notification notification);
-    void addPendingNotification(Notification notification);
+    void addNotificationToProducerBuffer(const Notification& notification);
+    void addPendingNotification(const Notification& notification);
     void markTopAsRead(int sessionId);
 
     bool hasNotificationInBuffer();

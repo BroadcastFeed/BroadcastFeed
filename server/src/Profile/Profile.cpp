@@ -48,11 +48,11 @@ bool Profile::hasPendingNotification() {
 }
 
 
-void Profile::addNotificationToProducerBuffer(Notification notification) {
+void Profile::addNotificationToProducerBuffer(const Notification& notification) {
     this->producerBuffer.push_back(notification);
 }
 
-void Profile::addPendingNotification(Notification notification) {
+void Profile::addPendingNotification(const Notification& notification) {
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
     this->pendingNotifications.push_back(notification);
 }
