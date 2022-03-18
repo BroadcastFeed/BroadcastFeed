@@ -21,5 +21,6 @@ public:
     std::vector<Profile> getUsers() const;
     void addNotification(const string& username, const Notification& notification);
     void addFollower(const string& followedUsername, const string& followerUsername);
+    bool userIsFollowed(Profile* followed, Profile* follower);
     explicit operator std::string() const;
 };

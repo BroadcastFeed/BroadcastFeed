@@ -97,9 +97,23 @@ void Database::addNotification(const string& username, const Notification& notif
 void Database::addFollower(const string& followedUsername, const string& followerUsername) {
     Profile* followedProfile = getUser(followedUsername);
     Profile* followerProfile = getUser(followerUsername);
-    if (followedProfile != nullptr) {
-        if (followerProfile != nullptr) { followedProfile->addFollower(followerProfile); }
-    } else {
+    if (followedProfile == nullptr) {
         std::cout << "User " << followedUsername << " doesnt exists!" << std::endl;
+    } else if(userIsFollowed(followedProfile, followerProfile)){
+        std::cout << "User " << followedUsername 
+            << " already follows " << followerUsername << std::endl;
     }
+    else {
+        if (followerProfile != nullptr) { followedProfile->addFollower(followerProfile); }
+    }
+}
+
+bool Database::userIsFollowed(Profile* followed, Profile* follower) {
+    std::string followerUsername = follower->getName();
+    for(Profile* p : followed->getFollowers()){
+        if(followerUsername == p->getName()){
+            return true;
+        }
+    }
+    return false;
 }
