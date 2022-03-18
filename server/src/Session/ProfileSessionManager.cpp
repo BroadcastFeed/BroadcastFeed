@@ -81,11 +81,11 @@ bool ProfileSessionManager::validateProfileSession(const string &username, const
 }
 
 vector<Session *> ProfileSessionManager::getOpenedSessions(const string &username) {
-    return userToSessionsMap.at(username);
+    return (hasOpenedSessions(username)) ? userToSessionsMap.at(username) : vector<Session *>();
 }
 
 bool ProfileSessionManager::hasOpenedSessions(const string &username) {
-    return !getOpenedSessions(username).empty();
+    return userToSessionsMap.contains(username) && !userToSessionsMap.at(username).empty();
 }
 
 ProfileSessionManager::~ProfileSessionManager() {
