@@ -10,7 +10,7 @@
 
 int RUNNING = true;
 
-void handleCtrlC(int s){
+void handleInterruption(int signal){
     RUNNING = false;
 }
 
@@ -21,7 +21,8 @@ int main(int argc, char** argv) {
     }
 
     //sets handleCtrlC as callback for SIGINT signals
-    signal(SIGINT, handleCtrlC);
+    signal(SIGINT, handleInterruption);
+    signal(SIGTERM, handleInterruption);
 
     char* username = argv[1];
     char* ipAddress = argv[2];

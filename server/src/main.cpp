@@ -12,7 +12,7 @@ using namespace std::chrono;
 int RUNNING = true;
 Server* server;
 
-void handleCtrlC(int s){
+void handleInterruption(int signal){
     RUNNING = false;
     server->halt();
 }
@@ -23,8 +23,9 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
-    //sets handleCtrlC as callback for SIGINT signals
-    signal(SIGINT, handleCtrlC);
+    //sets handleInterruption as callback for SIGINT signals
+    signal(SIGINT, handleInterruption);
+    signal(SIGTERM, handleInterruption);
 
     char *ipAddress = argv[1];
     unsigned int port = atoi(argv[2]);
