@@ -38,6 +38,8 @@ public:
 
     static vector<Session *> getOpenedSessions(const string &username);
 
+    static bool hasOpenedSessions(const string &username);
+
     explicit operator std::string() const;
 
     ~ProfileSessionManager();

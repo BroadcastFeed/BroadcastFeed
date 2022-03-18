@@ -84,6 +84,10 @@ vector<Session *> ProfileSessionManager::getOpenedSessions(const string &usernam
     return userToSessionsMap.at(username);
 }
 
+bool ProfileSessionManager::hasOpenedSessions(const string &username) {
+    return !getOpenedSessions(username).empty();
+}
+
 ProfileSessionManager::~ProfileSessionManager() {
     for (auto const &x: this->userToSessionsMap) {
         for (Session *s: x.second) {

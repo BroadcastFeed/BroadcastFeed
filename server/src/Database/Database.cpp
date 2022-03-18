@@ -90,7 +90,7 @@ Database::operator std::string() const {
 
 
 void Database::addNotification(const string& username, const Notification& notification){
-    getUser(username)->addNotificationToProducerBuffer(notification);
+    if (userExists(username)) { getUser(username)->addNotificationToProducerBuffer(notification); }
 }
 
 
