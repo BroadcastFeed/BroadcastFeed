@@ -20,9 +20,11 @@ int main(int argc, char** argv) {
         exit(EXIT_FAILURE);
     }
 
+    struct sigaction sa = { sa.sa_handler = handleInterruption };
+
     //sets handleCtrlC as callback for SIGINT signals
-    signal(SIGINT, handleInterruption);
-    signal(SIGTERM, handleInterruption);
+    sigaction(SIGINT, &sa, 0);
+
 
     char* username = argv[1];
     char* ipAddress = argv[2];
@@ -37,7 +39,7 @@ int main(int argc, char** argv) {
     communicationManager.send(startPacket);
     
     std::string message;
-    while(interface.requestMessage(message)) {
+    while(interface.requestMessage(message) && RUNNING) {
         try{
             PacketType type = tokenizeStringToParamType(message);
             Packet packet = Packet(type, message, username);
