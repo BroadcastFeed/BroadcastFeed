@@ -28,7 +28,7 @@ public:
     static bool registerNewSession(const string &user, Address sessionAddress, Address serverAddress,
                                    unsigned int socketDescriptor);
 
-    static void removeSession(const string &user, Address sessionsAddress);
+    static bool removeSession(const string &user, Address sessionsAddress);
 
     static void addNotification(const string &username, const Notification &notification);
 

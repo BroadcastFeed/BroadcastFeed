@@ -39,11 +39,13 @@ void Server::handlePacket(Packet packet, Address received) {
 
         case DISCONNECT: 
             std::cout << "User " << packet.getUsername() << " attempts to DISCONNECT" << std::endl;
-            ProfileSessionManager::removeSession(packet.getUsername(), received);
+            if (ProfileSessionManager::removeSession(packet.getUsername(), received))
+                std::cout << "User DISCONNECTED, now has " << ProfileSessionManager::getOpenedSessions(packet.getUsername()).size()
+                    << " sessions" << std::endl;
             break;
 
         default:
-
+            std::cout << "Command not found" << std::endl;
             return;
     }
 }

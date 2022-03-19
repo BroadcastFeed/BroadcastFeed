@@ -60,7 +60,7 @@ constexpr bool operator==(const Address &lhs, const Address &rhs) {
            && lhs.sin_family == rhs.sin_family;
 }
 
-void ProfileSessionManager::removeSession(const string &user, Address sessionAddress) {
+bool ProfileSessionManager::removeSession(const string &user, Address sessionAddress) {
     if (userToSessionsMap.contains(user)) {
         auto sessions = &userToSessionsMap.at(user);
         for (int i = 0; i < sessions->size(); i++) {
@@ -68,7 +68,7 @@ void ProfileSessionManager::removeSession(const string &user, Address sessionAdd
             if (session->getAddress() == sessionAddress) {
                 session->closeSession();
                 sessions->erase(userToSessionsMap[user].begin() + i);
-                if (sessions->size() == 0) {
+                if (sessions->empty()) {
                     userToSessionsMap.erase(user); }
                 else {
                     userToSessionsMap[user][0]->setAsOnlySession();
@@ -76,8 +76,9 @@ void ProfileSessionManager::removeSession(const string &user, Address sessionAdd
             }
         }
 
-        std::cout << "User DISCONNECTED, now has " << sessions->size() << " sessions" << std::endl;
+        return true;
     }
+    return false;
 }
 
 bool ProfileSessionManager::validateProfileSession(const string &username, const Address &address) {
