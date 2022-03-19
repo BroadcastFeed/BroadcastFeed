@@ -6,7 +6,7 @@ Notification::Notification(int id, int64_t timestamp, int length, string sender,
     this->length = length;
     this->sender = sender;
     this->message = message;
-    this->lastReadBySession = -1;
+    this->lastReadBySession = 0;
 }
 
 string Notification::serialize(){

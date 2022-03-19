@@ -42,11 +42,15 @@ void Session::consume() {
                 profile->popPendingNotification();
                 sendNotification(notification);
             } else {
-                int lastReadBy = profile->markTopAsRead(this->sessionNum);
-                if (lastReadBy != -1 && lastReadBy != this->sessionNum) {
-                    profile->popPendingNotification();
+                int assignedTo = profile->getTopPendingNotification().getLastReadBySession();
+                if (assignedTo == this->sessionNum) {
+                    sendNotification(notification);
+                    if(assignedTo == 1)
+                        profile->popPendingNotification();
+                    else{
+                        profile->markTopAsRead(this->sessionNum);
+                    }
                 }
-                sendNotification(notification);
             }
         }
     }

@@ -60,10 +60,13 @@ void Profile::addPendingNotification(const Notification& notification) {
 }
 
 int Profile::markTopAsRead(int sessionId) {
+    /*
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
     int lastReadBy = pendingNotifications[0].getLastReadBySession();
     this->pendingNotifications[0].markAsRead(sessionId);
     return lastReadBy;
+    */
+    pendingNotifications[0].markAsRead(1);
 }
 
 Notification Profile::popNotificationFromBuffer() { //assuming a queue implementation of the list
