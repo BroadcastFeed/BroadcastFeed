@@ -45,8 +45,8 @@ void Session::consume() {
             int lastRead = notification.getLastReadBySession();
             if (isOnlySession){
                 profile->popPendingNotification();
-                if (lastRead == -1) 
-                    sendNotification(notification);
+                //if (lastRead == -1) 
+                sendNotification(notification);
             } else {
                 if (lastRead != this->sessionNum) {
                     profile->markTopAsRead(this->sessionNum);

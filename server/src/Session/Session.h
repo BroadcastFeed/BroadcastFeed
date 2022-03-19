@@ -39,7 +39,7 @@ private:
     condition_variable conditionVariable;
 
     unsigned int sessionNum; //0 or 1, considering the 2 sessions limitation.
-    bool isOnlySession; //indicates if is the only active session
+    volatile bool isOnlySession; //indicates if is the only active session
     unsigned int socketDescriptor;
     volatile bool isActive;
 
