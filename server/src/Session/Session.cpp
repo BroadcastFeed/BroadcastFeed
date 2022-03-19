@@ -6,6 +6,7 @@ Session::Session(Profile *profile, Address address, unsigned int socketDescripto
         address(address),
         socketDescriptor(socketDescriptor),
         sessionNum(sessionNum),
+        isOnlySession(false),
         isActive(false) {};
 
 //Session::~Session() {
@@ -39,21 +40,24 @@ void Session::consume() {
     while (isActive) {
         std::unique_lock<mutex> lock(notificationsMutex);
         conditionVariable.wait(lock, [this] { return !this->isActive || this->profile->hasPendingNotification(); });
-
         while (profile->hasPendingNotification()) {
             Notification notification = profile->getTopPendingNotification();
             int lastRead = notification.getLastReadBySession();
-
-            if (lastRead != this->sessionNum) {
-                profile->markTopAsRead(this->sessionNum);
-                if (lastRead != -1) {
-                    Notification _ = profile->popPendingNotification();
+            if (isOnlySession){
+                profile->popPendingNotification();
+                if (lastRead == -1) 
+                    sendNotification(notification);
+            } else {
+                if (lastRead != this->sessionNum) {
+                    profile->markTopAsRead(this->sessionNum);
+                    if (lastRead != -1) {
+                        profile->popPendingNotification();
+                    }
+                    sendNotification(notification);
                 }
-                sendNotification(notification);
             }
         }
     }
-//    std::cout << "CONSUMER: I'm about to die" << std::endl;
 }
 
 void Session::produce() {
@@ -71,7 +75,14 @@ void Session::produce() {
         conditionVariable.notify_all();
     }
     conditionVariable.notify_all();
-//    std::cout << "PRODUCER: I'm about to die" << std::endl;
+}
+
+void Session::setAsOnlySession(){
+    isOnlySession = true;
+}
+
+void Session::unsetAsOnlySession(){
+    isOnlySession = false;
 }
 
 void Session::sendNotification(Notification notification) {

@@ -27,15 +27,19 @@ public:
 
     void initSession();
     void closeSession();
+    
+    void setAsOnlySession();
+    void unsetAsOnlySession();
 
 private:
     Profile* profile;
     Address address;
 
-     mutex notificationsMutex;
-     condition_variable conditionVariable;
+    mutex notificationsMutex;
+    condition_variable conditionVariable;
 
-    unsigned int sessionNum; //1 or 2, considering the 2 sessions limitation.
+    unsigned int sessionNum; //0 or 1, considering the 2 sessions limitation.
+    bool isOnlySession; //indicates if is the only active session
     unsigned int socketDescriptor;
     volatile bool isActive;
 

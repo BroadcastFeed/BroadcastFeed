@@ -15,13 +15,16 @@ bool ProfileSessionManager::registerNewSession(
         if (!userToSessionsMap.contains(user)) {
             Session *session = new Session(profile, sessionAddress, socketDescriptor, 0);
             session->initSession();
+            session->setAsOnlySession();
             userToSessionsMap[user] = {session};
             return true;
         } else if (userToSessionsMap[user].size() < 2) {
             Session *session = new Session(profile, sessionAddress, socketDescriptor,
                                            !userToSessionsMap[user][0]->getSessionNum());
             session->initSession();
-            userToSessionsMap.at(user).push_back(session);
+            vector<Session*> userSessions = userToSessionsMap.at(user);
+            userSessions[0]->unsetAsOnlySession();
+            userSessions.push_back(session);
             return true;
         }
     }
@@ -64,10 +67,13 @@ void ProfileSessionManager::removeSession(const string &user, Address sessionAdd
         for (int i = 0; i < sessions.size(); i++) {
             auto session = sessions[i];
             if (session->getAddress() == sessionAddress) {
-                userToSessionsMap[user].erase(std::next(userToSessionsMap[user].begin(), i));
                 session->closeSession();
+                sessions.erase(sessions.begin() + i);
+                if(sessions.size() == 0)
+                    userToSessionsMap.erase(user);
             }
         }
+        std::cout << "User has " << sessions.size() << " remaining open sessions" << std::endl;
     }
 }
 
