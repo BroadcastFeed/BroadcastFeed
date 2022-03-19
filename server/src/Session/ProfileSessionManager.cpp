@@ -68,10 +68,14 @@ void ProfileSessionManager::removeSession(const string &user, Address sessionAdd
             if (session->getAddress() == sessionAddress) {
                 session->closeSession();
                 sessions->erase(userToSessionsMap[user].begin() + i);
-                if(sessions->size() == 0)
-                    userToSessionsMap.erase(user);
+                if (sessions->size() == 0) {
+                    userToSessionsMap.erase(user); }
+                else {
+                    userToSessionsMap[user][0]->setAsOnlySession();
+                }
             }
         }
+
         std::cout << "User DISCONNECTED, now has " << sessions->size() << " sessions" << std::endl;
     }
 }
