@@ -21,10 +21,9 @@ bool ProfileSessionManager::registerNewSession(
         } else if (userToSessionsMap[user].size() < 2) {
             Session *session = new Session(profile, sessionAddress, socketDescriptor,
                                            !userToSessionsMap[user][0]->getSessionNum());
+            userToSessionsMap[user][0]->unsetAsOnlySession();
+            userToSessionsMap[user].push_back(session);
             session->initSession();
-            vector<Session*> userSessions = userToSessionsMap.at(user);
-            userSessions[0]->unsetAsOnlySession();
-            userSessions.push_back(session);
             return true;
         }
     }
@@ -63,17 +62,17 @@ constexpr bool operator==(const Address &lhs, const Address &rhs) {
 
 void ProfileSessionManager::removeSession(const string &user, Address sessionAddress) {
     if (userToSessionsMap.contains(user)) {
-        auto sessions = userToSessionsMap.at(user);
-        for (int i = 0; i < sessions.size(); i++) {
-            auto session = sessions[i];
+        auto sessions = &userToSessionsMap.at(user);
+        for (int i = 0; i < sessions->size(); i++) {
+            auto session = sessions->at(i);
             if (session->getAddress() == sessionAddress) {
                 session->closeSession();
-                sessions.erase(sessions.begin() + i);
-                if(sessions.size() == 0)
+                sessions->erase(userToSessionsMap[user].begin() + i);
+                if(sessions->size() == 0)
                     userToSessionsMap.erase(user);
             }
         }
-        std::cout << "User has " << sessions.size() << " remaining open sessions" << std::endl;
+        std::cout << "User DISCONNECTED, now has " << sessions->size() << " sessions" << std::endl;
     }
 }
 

@@ -38,7 +38,7 @@ void Server::handlePacket(Packet packet, Address received) {
             break;
 
         case DISCONNECT: 
-            std::cout << "User " << packet.getUsername() << " DISCONNECTED" << std::endl;
+            std::cout << "User " << packet.getUsername() << " attempts to DISCONNECT" << std::endl;
             ProfileSessionManager::removeSession(packet.getUsername(), received);
             break;
 
