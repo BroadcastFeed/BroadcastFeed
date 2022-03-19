@@ -1,8 +1,8 @@
 # INF01151-BroadcastFeed
-As an Operating Systems II assignment, this project aims to develop a Twitter-like Cli application in C++ practicing Concurrent Programming concepts.
+As an Operating Systems II assignment, this project aims to develop a Twitter-like Cli application in C++, practicing Concurrent Programming concepts.
 
 ## Development and Runtime Environment
-The whole development environment as well as testing and execution environments was Linux Based Distributions 
+The whole development environment as well as testing and execution environments were Linux Based Distributions .
 
 
 ## Dependencies:
@@ -16,7 +16,7 @@ There are two main directories here:
 - Client 
 - Server
 
-Into the both directories, there are a CMakeList Files, then you can build the both projects as well:
+There is a CMakeLists.txt file in each of the directories, you can build each project as so:
 ```bash
  > .../client/
  cmake .
@@ -28,8 +28,8 @@ Into the both directories, there are a CMakeList Files, then you can build the b
 ```
 
 ### Execution
-As already compiled binaries for both projects, the execution is simple.
-First, verifies if the client and the server binaries has execution permission.
+Having compiled binaries for each project, the execution is simple.
+First, verify if the client and server binaries have execution permission.
 However, you can execute:
 
 ```bash
@@ -37,7 +37,7 @@ However, you can execute:
 chmod +x client
 ```
 
-And then you can just execute both of the binaries with their arguments as illustrated above:
+Then you can execute both of the binaries with their arguments as illustrated below:
 
 ```bash
 > .../client
