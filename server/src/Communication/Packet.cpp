@@ -22,26 +22,31 @@ Packet::Packet(PacketType type, std::string message, std::string username){
 }
 
 Packet::Packet(std::string serializedPacket){
-    std::stringstream ss(serializedPacket);      
+    parseFromString(serializedPacket);
+
+}
+
+void Packet::parseFromString(const std::string &serializedPacket) {
+    std::stringstream ss(serializedPacket);
     std::string section;
 
     std::getline(ss, section, ',');
-    this->type = static_cast<PacketType>(stoi(section));
+    type = static_cast<PacketType>(stoi(section));
 
     std::getline(ss, section, ',');
-    this->seqNum = stoi(section);
+    seqNum = stoi(section);
 
     std::getline(ss, section, ',');
-    this->length = stoi(section);
+    length = stoi(section);
 
     std::getline(ss, section, ',');
-    this->timestamp = atoll(section.c_str());
+    timestamp = atoll(section.c_str());
 
     std::getline(ss, section, ',');
-    this->username = section;
+    username = section;
 
     std::getline(ss, section);
-    this->message = section;
+    message = section;
 }
 
 void Packet::setTimestamp(int64_t timestamp){
