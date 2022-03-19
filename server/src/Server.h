@@ -11,8 +11,11 @@ private:
     CommunicationManager communicationManager;
 
     void handlePacket(Packet packet, Address received);
+
 public:
-    Server(char* ipAddress, unsigned int port);
+    Server(char *ipAddress, unsigned int port);
+
     void listen(int seqn, int64_t timestamp);
+
     void halt();
 };

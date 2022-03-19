@@ -17,8 +17,10 @@ private:
 
 public:
     CommunicationManager(char *ipAddress, unsigned int port);
+
     std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
 
     unsigned int getDescriptor();
+
     Address getAddress();
 };

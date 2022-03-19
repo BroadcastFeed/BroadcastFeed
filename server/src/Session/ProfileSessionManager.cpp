@@ -68,8 +68,8 @@ bool ProfileSessionManager::removeSession(const string &user, Address sessionAdd
                 session->closeSession();
                 sessions->erase(userToSessionsMap[user].begin() + i);
                 if (sessions->empty()) {
-                    userToSessionsMap.erase(user); }
-                else {
+                    userToSessionsMap.erase(user);
+                } else {
                     userToSessionsMap[user][0]->setAsOnlySession();
                 }
             }

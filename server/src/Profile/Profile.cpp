@@ -20,7 +20,7 @@ std::string Profile::getName() {
     return this->username;
 }
 
-std::vector<Profile*> Profile::getFollowers() {
+std::vector<Profile *> Profile::getFollowers() {
     return this->followers;
 }
 
@@ -34,7 +34,7 @@ Notification Profile::getTopPendingNotification() {
 }
 
 
-void Profile::addFollower(Profile* newFollower) {
+void Profile::addFollower(Profile *newFollower) {
     this->followers.push_back(newFollower);
 }
 
@@ -48,11 +48,11 @@ bool Profile::hasPendingNotification() {
 }
 
 
-void Profile::addNotificationToProducerBuffer(const Notification& notification) {
+void Profile::addNotificationToProducerBuffer(const Notification &notification) {
     this->producerBuffer.push_back(notification);
 }
 
-void Profile::addPendingNotification(const Notification& notification) {
+void Profile::addPendingNotification(const Notification &notification) {
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
     this->pendingNotifications.push_back(notification);
 }
@@ -75,11 +75,11 @@ Notification Profile::popPendingNotification() { //assuming a queue implementati
     return firstElement;
 }
 
-Profile::operator std::string() const { 
+Profile::operator std::string() const {
     std::string str;
-    str += "Username: " + this->username + "\n";    
+    str += "Username: " + this->username + "\n";
     str += "Followers: " + std::to_string(this->followers.size()) + "\n";
     str += "Notifications to be sent: " + std::to_string(this->producerBuffer.size()) + "\n";
-    return str; 
+    return str;
 }
 

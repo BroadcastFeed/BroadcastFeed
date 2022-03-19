@@ -10,9 +10,9 @@
 using namespace std::chrono;
 
 int RUNNING = true;
-Server* server;
+Server *server;
 
-void handleInterruption(int signal){
+void handleInterruption(int signal) {
     RUNNING = false;
     server->halt();
 }
@@ -31,17 +31,17 @@ int main(int argc, char **argv) {
     unsigned int port = atoi(argv[2]);
     server = new Server(ipAddress, port);
     int seqNum = 0;
-    
+
     std::cout << "Server running, press Ctrl-C to save and exit." << std::endl;
     while (RUNNING) {
-        int64_t timestampMilliseconds = duration_cast< milliseconds >(system_clock::now().time_since_epoch()).count();
-        try{
+        int64_t timestampMilliseconds = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+        try {
             server->listen(seqNum, timestampMilliseconds);
             seqNum++;
-        } catch (const std::runtime_error &exc){
-            if(RUNNING)
+        } catch (const std::runtime_error &exc) {
+            if (RUNNING)
                 std::cerr << exc.what();
         }
     }
-    std::cout << "\nExiting..." << std::endl; 
+    std::cout << "\nExiting..." << std::endl;
 }

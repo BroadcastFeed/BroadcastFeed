@@ -19,20 +19,26 @@ class Session {
     typedef sockaddr_in Address;
 
 public:
-    Session(Profile* profile, Address address, unsigned int socketDescriptor, unsigned int sessionNum);
+    Session(Profile *profile, Address address, unsigned int socketDescriptor, unsigned int sessionNum);
+
     void consume();
+
     void produce();
+
     Address getAddress();
+
     int getSessionNum();
 
     void initSession();
+
     void closeSession();
-    
+
     void setAsOnlySession();
+
     void unsetAsOnlySession();
 
 private:
-    Profile* profile;
+    Profile *profile;
     Address address;
 
     mutex notificationsMutex;
@@ -43,10 +49,12 @@ private:
     unsigned int socketDescriptor;
     volatile bool isActive;
 
-    thread* producerThread;
-    thread* consumerThread;
+    thread *producerThread;
+    thread *consumerThread;
 
     void sendNotification(Notification notification);
+
     void start();
+
     void stop();
 };

@@ -9,7 +9,7 @@ Notification::Notification(int id, int64_t timestamp, int length, string sender,
     this->lastReadBySession = 0;
 }
 
-string Notification::serialize(){
+string Notification::serialize() {
     return sender + ":" + message;
 }
 
@@ -29,7 +29,7 @@ std::string Notification::getMessage() {
     return this->message;
 }
 
-int Notification::getLastReadBySession(){
+int Notification::getLastReadBySession() {
     return this->lastReadBySession;
 }
 
