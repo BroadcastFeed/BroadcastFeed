@@ -16,7 +16,7 @@ There are two main directories here:
 - Client 
 - Server
 
-There is a CMakeLists.txt file in each of the directories, you can build each project as so:
+There is a CMakeLists.txt file in each of the directories. You can build each project as so:
 ```bash
  > .../client/
  cmake .
