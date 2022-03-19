@@ -29,7 +29,7 @@ Into the both directories, there are a CMakeList Files, then you can build the b
 
 ### Execution
 As already compiled binaries for both projects, the execution is simple.
-First, verifies if the client and the server binary has execution permission.
+First, verifies if the client and the server binaries has execution permission.
 However, you can execute:
 
 ```bash
