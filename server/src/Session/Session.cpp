@@ -9,10 +9,6 @@ Session::Session(Profile *profile, Address address, unsigned int socketDescripto
         isOnlySession(false),
         isActive(false) {};
 
-//Session::~Session() {
-//    stop();
-//}
-
 void Session::initSession() {
     start();
 }
@@ -37,24 +33,20 @@ void Session::stop() {
 }
 
 void Session::consume() {
+    std::unique_lock<mutex> lock(notificationsMutex);
     while (isActive) {
-        std::unique_lock<mutex> lock(notificationsMutex);
         conditionVariable.wait(lock, [this] { return !this->isActive || this->profile->hasPendingNotification(); });
         while (profile->hasPendingNotification()) {
             Notification notification = profile->getTopPendingNotification();
-            int lastRead = notification.getLastReadBySession();
-            if (isOnlySession){
+            if (isOnlySession) {
                 profile->popPendingNotification();
-                //if (lastRead == -1) 
                 sendNotification(notification);
             } else {
-                if (lastRead != this->sessionNum) {
-                    profile->markTopAsRead(this->sessionNum);
-                    if (lastRead != -1) {
-                        profile->popPendingNotification();
-                    }
-                    sendNotification(notification);
+                int lastReadBy = profile->markTopAsRead(this->sessionNum);
+                if (lastReadBy != -1 && lastReadBy != this->sessionNum) {
+                    profile->popPendingNotification();
                 }
+                sendNotification(notification);
             }
         }
     }
@@ -65,7 +57,7 @@ void Session::produce() {
         {
             std::lock_guard<mutex> lock(notificationsMutex);
 
-            if (profile->hasNotificationInBuffer()) {
+            while (profile->hasNotificationInBuffer()) {
                 Notification notification = profile->popNotificationFromBuffer();
                 for (auto follower: profile->getFollowers()) {
                     follower->addPendingNotification(notification);
@@ -77,11 +69,11 @@ void Session::produce() {
     conditionVariable.notify_all();
 }
 
-void Session::setAsOnlySession(){
+void Session::setAsOnlySession() {
     isOnlySession = true;
 }
 
-void Session::unsetAsOnlySession(){
+void Session::unsetAsOnlySession() {
     isOnlySession = false;
 }
 

@@ -5,11 +5,13 @@
 Profile::Profile(std::string username) {
     this->username = std::move(username);
     this->activeSessions = 0;
+    this->popMutex = new mutex();
     this->notificationsQueueMutex = new mutex();
 }
 
 Profile::Profile() {
     this->notificationsQueueMutex = new mutex();
+    this->popMutex = new mutex();
 }
 
 int Profile::getActiveSessions() {
@@ -57,9 +59,11 @@ void Profile::addPendingNotification(const Notification& notification) {
     this->pendingNotifications.push_back(notification);
 }
 
-void Profile::markTopAsRead(int sessionId) {
+int Profile::markTopAsRead(int sessionId) {
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
+    int lastReadBy = pendingNotifications[0].getLastReadBySession();
     this->pendingNotifications[0].markAsRead(sessionId);
+    return lastReadBy;
 }
 
 Notification Profile::popNotificationFromBuffer() { //assuming a queue implementation of the list
@@ -81,4 +85,8 @@ Profile::operator std::string() const {
     str += "Followers: " + std::to_string(this->followers.size()) + "\n";
     str += "Notifications to be sent: " + std::to_string(this->producerBuffer.size()) + "\n";
     return str; 
+}
+
+mutex *Profile::acquirePopMutex() {
+    return popMutex;
 }
