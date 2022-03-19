@@ -21,7 +21,6 @@ private:
     vector<Notification> pendingNotifications;
 
     mutex *notificationsQueueMutex;
-    mutex *popMutex;
 
 public:
     explicit Profile(string username);
@@ -37,7 +36,7 @@ public:
 
     void addNotificationToProducerBuffer(const Notification& notification);
     void addPendingNotification(const Notification& notification);
-    int markTopAsRead(int sessionId);
+    void markTopAsRead();
 
     bool hasNotificationInBuffer();
     bool hasPendingNotification();
@@ -45,8 +44,6 @@ public:
     Notification popNotificationFromBuffer();
     Notification popPendingNotification();
 
-    mutex *acquirePopMutex();
-
-    operator std::string() const; 
+    operator std::string() const;
 };
 

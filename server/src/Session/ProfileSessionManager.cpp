@@ -1,7 +1,6 @@
 #include <arpa/inet.h>
 #include <iostream>
 #include "ProfileSessionManager.h"
-#include "../Communication/CommunicationManager.h"
 
 bool ProfileSessionManager::registerNewSession(
         const string &user,

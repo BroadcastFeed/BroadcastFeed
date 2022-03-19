@@ -48,7 +48,7 @@ void Session::consume() {
                     if(assignedTo == 1)
                         profile->popPendingNotification();
                     else{
-                        profile->markTopAsRead(this->sessionNum);
+                        profile->markTopAsRead();
                     }
                 }
             }
