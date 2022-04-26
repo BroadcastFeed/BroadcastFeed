@@ -36,7 +36,12 @@ int main(int argc, char** argv) {
     interface.startSession(username);
 
     Packet startPacket = Packet(PacketType::CONNECT, username, username);
+
     communicationManager.send(startPacket);
+    interface.showWaitConnection();
+    communicationManager.waitAcknowledge();
+    interface.successfulConnection();
+    communicationManager.startListening();
     
     std::string message;
     while(interface.requestMessage(message) && RUNNING) {

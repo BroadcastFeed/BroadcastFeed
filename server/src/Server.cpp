@@ -18,7 +18,10 @@ void Server::handlePacket(Packet packet, Address received) {
                     received,
                     communicationManager.getAddress(),
                     communicationManager.getDescriptor());
-            if (registered) std::cout << "User new session successfully connected" << std::endl;
+            if (registered){
+                std::cout << "User new session successfully connected" << std::endl;
+                communicationManager.sendAcknowledge(received);
+            }
             break;
         }
         case SEND: {

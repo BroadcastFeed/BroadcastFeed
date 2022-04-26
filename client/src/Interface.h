@@ -6,6 +6,8 @@ class Interface{
         bool reachedEOF = false;
     public:
         void startSession(char* username);
+        void showWaitConnection();
+        void successfulConnection();
         void showMessage(std::string message);
         void commandNotFound();
         bool requestMessage(std::string& message);

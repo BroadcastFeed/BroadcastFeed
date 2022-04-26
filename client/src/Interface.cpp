@@ -5,6 +5,14 @@ void Interface::startSession(char* username){
     std::cout << "Hello " << username << std::endl;
 }
 
+void Interface::showWaitConnection(){
+    std::cout << "Waiting connection... ";
+}
+
+void Interface::successfulConnection(){
+    std::cout << "CONNECTED" << std::endl;
+}
+
 void Interface::showMessage(std::string message){
     std::cout << message << std::endl;
 }

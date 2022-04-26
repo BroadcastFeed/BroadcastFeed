@@ -3,7 +3,7 @@
 #include <string>
 
 enum PacketType {
-    CONNECT, SEND, FOLLOW, DISCONNECT
+    ACKNOWLEDGE, CONNECT, SEND, FOLLOW, DISCONNECT
 };
 
 class Packet {

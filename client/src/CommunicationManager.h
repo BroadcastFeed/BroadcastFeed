@@ -10,7 +10,7 @@ class CommunicationManager{
         unsigned int socketDescriptor;
         struct sockaddr_in serverAddress{};
         std::thread* listeningThread;
-        bool running = true;
+        bool running;
         void listen();
 
     public:
@@ -18,4 +18,5 @@ class CommunicationManager{
         ~CommunicationManager();
         void send(Packet packet);
         void startListening();
+        void waitAcknowledge(); 
 };
