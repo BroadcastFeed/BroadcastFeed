@@ -51,6 +51,14 @@ std::pair<Packet, Address> CommunicationManager::listen(int seqn, int64_t timest
     return std::pair(packet, clientAddress);
 }
 
+void CommunicationManager::sendAcknowledge(Address address) {
+    Packet ackPacket = Packet(PacketType::ACKNOWLEDGE, "", ""); //add username later
+    std::string message = ackPacket.serialize();
+    sendto(this->socketDescriptor, message.data(), message.length(),
+        MSG_CONFIRM, (struct sockaddr*) &address,
+        sizeof(address));
+}
+
 
 unsigned int CommunicationManager::getDescriptor() {
     return socketDescriptor;

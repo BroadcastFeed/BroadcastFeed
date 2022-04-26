@@ -19,6 +19,7 @@ public:
     CommunicationManager(char *ipAddress, unsigned int port);
 
     std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
+    void sendAcknowledge(Address address);
 
     unsigned int getDescriptor();
 

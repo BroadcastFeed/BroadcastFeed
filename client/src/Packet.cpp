@@ -23,7 +23,6 @@ Packet::Packet(PacketType type, std::string message, std::string username){
 
 Packet::Packet(std::string serializedPacket){
     parseFromString(serializedPacket);
-
 }
 
 void Packet::parseFromString(const std::string &serializedPacket) {

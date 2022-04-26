@@ -44,8 +44,26 @@ void CommunicationManager::send(Packet packet){
 }
 
 void CommunicationManager::startListening(){
-    listeningThread = new std::thread(&CommunicationManager::listen, this);
     running = true;
+}
+
+void CommunicationManager::waitAcknowledge(){
+    char buffer[MAXSIZE] = "";
+    unsigned int serverStructLength = sizeof(this->serverAddress);
+    bool waiting = true;
+    while(waiting){
+        recvfrom(
+            this->socketDescriptor,
+            buffer,
+            MAXSIZE,
+            MSG_WAITALL,
+            (struct sockaddr*) &serverAddress,
+            &serverStructLength
+        );
+        Packet receivedPacket(buffer);
+        if(receivedPacket.getType() == ACKNOWLEDGE)
+            waiting = false;
+    }
 }
 
 void CommunicationManager::listen(){
@@ -59,7 +77,7 @@ void CommunicationManager::listen(){
             MSG_WAITALL, 
             (struct sockaddr *) &serverAddress,
             &serverStructLength
-        ); 
+        );
         if(buffer != "" && running){
             std::cout << std::endl << buffer << "\n> ";
             std::cout.flush();
