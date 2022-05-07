@@ -30,9 +30,9 @@ public:
 
     static bool removeSession(const string &user, Address sessionsAddress);
 
-    static void addNotification(const string &username, const Notification &notification);
+    static bool addNotification(const string &username, const Notification &notification);
 
-    static void addFollower(const string &followed, const string &follower);
+    static bool addFollower(const string &followed, const string &follower);
 
     static bool validateProfileSession(const string &username, const Address &address);
 

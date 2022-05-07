@@ -29,12 +29,12 @@ bool ProfileSessionManager::registerNewSession(
     return false;
 }
 
-void ProfileSessionManager::addNotification(const string &username, const Notification &notification) {
-    ProfileSessionManager::database.addNotification(username, notification);
+bool ProfileSessionManager::addNotification(const string &username, const Notification &notification) {
+    return ProfileSessionManager::database.addNotification(username, notification);
 }
 
-void ProfileSessionManager::addFollower(const string &followed, const string &follower) {
-    ProfileSessionManager::database.addFollower(followed, follower);
+bool ProfileSessionManager::addFollower(const string &followed, const string &follower) {
+    return ProfileSessionManager::database.addFollower(followed, follower);
 }
 
 ProfileSessionManager::operator std::string() const {

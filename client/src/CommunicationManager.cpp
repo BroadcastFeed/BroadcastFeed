@@ -25,7 +25,8 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
     this->serverAddress.sin_family    = AF_INET; // ipv4 family
     this->serverAddress.sin_addr.s_addr = inet_addr(ipAddress); 
     this->serverAddress.sin_port = htons(port); 
-
+    
+    this->running = false;
     listeningThread = new std::thread(&CommunicationManager::listen, this);
 }
 
@@ -66,7 +67,7 @@ void CommunicationManager::waitAcknowledge(){
     }
 }
 
-void CommunicationManager::listen(){
+void CommunicationManager::listen(){    
     while(running){
         char buffer[MAXSIZE] = "";
         unsigned int serverStructLength = sizeof(this->serverAddress);
@@ -79,7 +80,8 @@ void CommunicationManager::listen(){
             &serverStructLength
         );
         if(buffer != "" && running){
-            std::cout << std::endl << buffer << "\n> ";
+            Packet received(buffer);
+            std::cout << std::endl << received.getUsername() << " says " << received.getMessage() << "\n> ";
             std::cout.flush();
         }
     }

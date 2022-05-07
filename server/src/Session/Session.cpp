@@ -82,7 +82,7 @@ void Session::unsetAsOnlySession() {
 }
 
 void Session::sendNotification(Notification notification) {
-    std::string message = notification.serialize();
+    std::string message = Packet(notification).serialize();
     sendto(socketDescriptor, message.data(), message.length(),
            MSG_CONFIRM, (struct sockaddr *) &address,
            sizeof(address));

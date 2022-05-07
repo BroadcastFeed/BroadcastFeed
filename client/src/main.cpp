@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
     interface.showWaitConnection();
     communicationManager.waitAcknowledge();
     interface.successfulConnection();
+
     communicationManager.startListening();
     
     std::string message;
