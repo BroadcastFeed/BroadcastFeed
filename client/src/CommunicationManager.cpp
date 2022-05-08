@@ -25,9 +25,6 @@ CommunicationManager::CommunicationManager(char* ipAddress, unsigned int port){
     this->serverAddress.sin_family    = AF_INET; // ipv4 family
     this->serverAddress.sin_addr.s_addr = inet_addr(ipAddress); 
     this->serverAddress.sin_port = htons(port); 
-    
-    this->running = false;
-    listeningThread = new std::thread(&CommunicationManager::listen, this);
 }
 
 CommunicationManager::~CommunicationManager(){
@@ -38,6 +35,7 @@ CommunicationManager::~CommunicationManager(){
 }
 
 void CommunicationManager::send(Packet packet){
+    this->waitingAcknowledge = true;
     std::string message = packet.serialize();
     sendto(socketDescriptor, message.data(), message.length(),
         MSG_CONFIRM, (struct sockaddr*) &serverAddress,
@@ -46,25 +44,11 @@ void CommunicationManager::send(Packet packet){
 
 void CommunicationManager::startListening(){
     running = true;
+    listeningThread = new std::thread(&CommunicationManager::listen, this);
 }
 
 void CommunicationManager::waitAcknowledge(){
-    char buffer[MAXSIZE] = "";
-    unsigned int serverStructLength = sizeof(this->serverAddress);
-    bool waiting = true;
-    while(waiting){
-        recvfrom(
-            this->socketDescriptor,
-            buffer,
-            MAXSIZE,
-            MSG_WAITALL,
-            (struct sockaddr*) &serverAddress,
-            &serverStructLength
-        );
-        Packet receivedPacket(buffer);
-        if(receivedPacket.getType() == ACKNOWLEDGE)
-            waiting = false;
-    }
+    while(waitingAcknowledge){}
 }
 
 void CommunicationManager::listen(){    
@@ -79,10 +63,20 @@ void CommunicationManager::listen(){
             (struct sockaddr *) &serverAddress,
             &serverStructLength
         );
-        if(buffer != "" && running){
-            Packet received(buffer);
-            std::cout << std::endl << received.getUsername() << " says " << received.getMessage() << "\n> ";
-            std::cout.flush();
+        if(running){
+            Packet receivedPacket(buffer);
+            switch(receivedPacket.getType()){
+                case PacketType::SEND:
+                    std::cout.flush();
+                    std::cout << std::endl 
+                        << "[@" << receivedPacket.getUsername() 
+                        << "] " << receivedPacket.getMessage() << "\n> ";
+                    std::cout.flush();
+                    break;
+                case PacketType::ACKNOWLEDGE:
+                    this->waitingAcknowledge = false;
+                    break;
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ class CommunicationManager{
         struct sockaddr_in serverAddress{};
         std::thread* listeningThread;
         bool running;
+        bool waitingAcknowledge = false;
         void listen();
 
     public:

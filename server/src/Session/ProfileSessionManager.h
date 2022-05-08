@@ -36,6 +36,8 @@ public:
 
     static bool validateProfileSession(const string &username, const Address &address);
 
+    static bool userCanConnect(string username);
+
     static vector<Session *> getOpenedSessions(const string &username);
 
     static bool hasOpenedSessions(const string &username);

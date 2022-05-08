@@ -89,6 +89,12 @@ bool ProfileSessionManager::validateProfileSession(const string &username, const
     return false;
 }
 
+bool ProfileSessionManager::userCanConnect(string username) {
+    if(userToSessionsMap.contains(username)){
+        return userToSessionsMap.at(username).size() < 2;
+    } else return true;
+}
+
 vector<Session *> ProfileSessionManager::getOpenedSessions(const string &username) {
     return (hasOpenedSessions(username)) ? userToSessionsMap.at(username) : vector<Session *>();
 }
