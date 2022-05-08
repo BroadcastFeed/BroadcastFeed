@@ -34,6 +34,7 @@ int main(int argc, char** argv) {
 
     Interface interface;
     interface.startSession(username);
+    communicationManager.startListening();
 
     Packet startPacket = Packet(PacketType::CONNECT, username, username);
 
@@ -41,7 +42,7 @@ int main(int argc, char** argv) {
     interface.showWaitConnection();
     communicationManager.waitAcknowledge();
     interface.successfulConnection();
-    communicationManager.startListening();
+
     
     std::string message;
     while(interface.requestMessage(message) && RUNNING) {
@@ -49,6 +50,7 @@ int main(int argc, char** argv) {
             PacketType type = tokenizeStringToParamType(message);
             Packet packet = Packet(type, message, username);
             communicationManager.send(packet);
+            communicationManager.waitAcknowledge();
         }
         catch(std::out_of_range){
             interface.commandNotFound();

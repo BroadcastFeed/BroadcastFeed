@@ -26,6 +26,8 @@ public:
     int getLength();
 
     string getMessage();
+    
+    string getSender();
 
     int getLastReadBySession();
 

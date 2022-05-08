@@ -26,6 +26,15 @@ Packet::Packet(std::string serializedPacket) {
 
 }
 
+Packet::Packet(Notification notification) {
+    this->type = PacketType::SEND;
+    this->seqNum = -1;
+    this->length = notification.getMessage().length();
+    this->timestamp = -1;
+    this->username = notification.getSender();
+    this->message = notification.getMessage();
+}
+
 void Packet::parseFromString(const std::string &serializedPacket) {
     std::stringstream ss(serializedPacket);
     std::string section;

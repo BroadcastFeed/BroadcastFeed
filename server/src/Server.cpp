@@ -9,48 +9,52 @@ void Server::listen(int seqn, int64_t timestamp) {
 }
 
 void Server::handlePacket(Packet packet, Address received) {
+    bool successful = false;
 
     switch (packet.getType()) {
         case CONNECT: {
-            std::cout << "User " << packet.getUsername() << " attempts to CONNECT" << std::endl;
-            bool registered = ProfileSessionManager::registerNewSession(
-                    packet.getMessage(),
-                    received,
-                    communicationManager.getAddress(),
-                    communicationManager.getDescriptor());
-            if (registered){
-                std::cout << "User new session successfully connected" << std::endl;
+            std::cout << "User " << packet.getUsername() << " requests to CONNECT" << std::endl;
+            if(ProfileSessionManager::userCanConnect(packet.getUsername())) {
+                successful = ProfileSessionManager::registerNewSession(
+                        packet.getMessage(),
+                        received,
+                        communicationManager.getAddress(),
+                        communicationManager.getDescriptor());
                 communicationManager.sendAcknowledge(received);
             }
             break;
         }
         case SEND: {
-            std::cout << packet.getUsername() << " SEND: " << packet.getMessage() << std::endl;
+            std::cout << "User " << packet.getUsername() << " requests to SEND: " << packet.getMessage() << std::endl;
             Notification notification(packet.getSeqNum(), packet.getTimestamp(),
                                       packet.getLength(), packet.getUsername(),
                                       packet.getMessage());
-            ProfileSessionManager::addNotification(packet.getUsername(), notification);
+            successful = ProfileSessionManager::addNotification(packet.getUsername(), notification);
+            communicationManager.sendAcknowledge(received);
 
             break;
         }
 
         case FOLLOW:
-            std::cout << packet.getUsername() << " FOLLOWED: " << packet.getMessage() << std::endl;
-            ProfileSessionManager::addFollower(packet.getMessage(), packet.getUsername());
+            std::cout << packet.getUsername() << " requests to FOLLOW: " << packet.getMessage() << std::endl;
+            successful = ProfileSessionManager::addFollower(packet.getMessage(), packet.getUsername());
+            communicationManager.sendAcknowledge(received);
 
             break;
 
         case DISCONNECT:
-            std::cout << "User " << packet.getUsername() << " attempts to DISCONNECT" << std::endl;
-            if (ProfileSessionManager::removeSession(packet.getUsername(), received))
-                std::cout << "User DISCONNECTED, now has "
-                          << ProfileSessionManager::getOpenedSessions(packet.getUsername()).size()
-                          << " sessions" << std::endl;
+            std::cout << "User " << packet.getUsername() << " requests to DISCONNECT" << std::endl;
+            successful = ProfileSessionManager::removeSession(packet.getUsername(), received);
             break;
 
         default:
             std::cout << "Command not found" << std::endl;
+            communicationManager.sendAcknowledge(received);
             return;
+    }
+
+    if(successful){
+        std::cout << "User " << packet.getUsername() << " request successful" << std::endl;
     }
 }
 

@@ -29,6 +29,10 @@ std::string Notification::getMessage() {
     return this->message;
 }
 
+std::string Notification::getSender() {
+    return this->sender;
+}
+
 int Notification::getLastReadBySession() {
     return this->lastReadBySession;
 }

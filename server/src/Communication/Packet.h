@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "../Notification/Notification.h"
+
 enum PacketType {
     ACKNOWLEDGE, CONNECT, SEND, FOLLOW, DISCONNECT
 };
@@ -21,6 +23,8 @@ public:
     Packet(PacketType type, std::string message, std::string username);
 
     Packet(std::string serializedPacket);
+    
+    Packet(Notification notification);
 
     void setTimestamp(int64_t timestamp);
 

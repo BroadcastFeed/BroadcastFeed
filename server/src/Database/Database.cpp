@@ -89,12 +89,15 @@ Database::operator std::string() const {
 }
 
 
-void Database::addNotification(const string &username, const Notification &notification) {
-    if (userExists(username)) { getUser(username)->addNotificationToProducerBuffer(notification); }
+bool Database::addNotification(const string &username, const Notification &notification) {
+    if (userExists(username)) { 
+        getUser(username)->addNotificationToProducerBuffer(notification); 
+        return true;
+    } else return false;
 }
 
 
-void Database::addFollower(const string &followedUsername, const string &followerUsername) {
+bool Database::addFollower(const string &followedUsername, const string &followerUsername) {
     Profile *followedProfile = getUser(followedUsername);
     Profile *followerProfile = getUser(followerUsername);
     if (followedProfile == nullptr) {
@@ -102,9 +105,11 @@ void Database::addFollower(const string &followedUsername, const string &followe
     } else if (userIsFollowed(followedProfile, followerProfile)) {
         std::cout << "User " << followedUsername
                   << " already follows " << followerUsername << std::endl;
-    } else {
-        if (followerProfile != nullptr) { followedProfile->addFollower(followerProfile); }
+    } else if (followerProfile != nullptr) { 
+        followedProfile->addFollower(followerProfile); 
+        return true;
     }
+    return false;
 }
 
 bool Database::userIsFollowed(Profile *followed, Profile *follower) {
