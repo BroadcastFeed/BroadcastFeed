@@ -55,7 +55,7 @@ void CommunicationManager::sendAcknowledge(Address address) {
     Packet ackPacket = Packet(PacketType::ACKNOWLEDGE, "", ""); //add username later
     std::string message = ackPacket.serialize();
     sendto(this->socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &address,
+        0, (struct sockaddr*) &address,
         sizeof(address));
 }
 

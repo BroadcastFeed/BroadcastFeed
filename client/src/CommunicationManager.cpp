@@ -38,7 +38,7 @@ void CommunicationManager::send(Packet packet){
     this->waitingAcknowledge = true;
     std::string message = packet.serialize();
     sendto(socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &serverAddress,
+        0, (struct sockaddr*) &serverAddress,
         sizeof(serverAddress));
 }
 
