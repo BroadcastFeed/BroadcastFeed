@@ -10,6 +10,7 @@
 #include "../Profile/Profile.h"
 #include "../Notification/Notification.h"
 #include "../Session/Session.h"
+#include "../Communication/Address.h"
 
 using std::vector;
 using std::string;
@@ -18,8 +19,6 @@ using std::map;
 using std::thread;
 
 class ProfileSessionManager {
-    typedef sockaddr_in Address;
-
 private:
     inline static Database database = Database();
     inline static map<string, vector<Session *>> userToSessionsMap = {};

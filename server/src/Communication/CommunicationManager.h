@@ -3,12 +3,11 @@
 #include <string>
 #include "Packet.h"
 #include "../Notification/Notification.h"
+#include "Address.h"
 #include <netinet/in.h>
 #include <utility>
 
 using std::string;
-
-typedef sockaddr_in Address;
 
 class CommunicationManager {
 private:

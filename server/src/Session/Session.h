@@ -16,7 +16,6 @@ using std::condition_variable;
 using std::lock_guard;
 
 class Session {
-    typedef sockaddr_in Address;
 
 public:
     Session(Profile *profile, Address address, unsigned int socketDescriptor, unsigned int sessionNum);
