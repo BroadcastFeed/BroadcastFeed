@@ -47,6 +47,14 @@ void Server::handlePacket(Packet packet, Address received) {
             successful = ProfileSessionManager::removeSession(packet.getUsername(), received);
             break;
 
+        case PING:
+            communicationManager.sendPong(received);
+            break;
+
+        case PONG:
+            communicationManager.receivePong(received);
+            break;
+
         default:
             std::cout << "Command not found" << std::endl;
             communicationManager.sendAcknowledge(received);

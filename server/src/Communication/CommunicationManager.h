@@ -6,6 +6,9 @@
 #include "Address.h"
 #include <netinet/in.h>
 #include <utility>
+#include <thread>
+#include <chrono>
+#include <arpa/inet.h>
 
 using std::string;
 
@@ -14,13 +17,27 @@ private:
     unsigned int socketDescriptor;
     Address serverAddress;
 
+    std::thread *waitingPongThread;
+    bool isPingRunning = false;
+    Address pingedAddress;
+    bool waitingPong = false;
+
+    void sendPing(Address testedServerAddress);
+    void waitForPong(int timeout);
+
 public:
     CommunicationManager(char *ipAddress, unsigned int port);
 
     std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
-    void sendAcknowledge(Address address);
+    static Address createDestinationAddress(char *ipAddress, unsigned int port);
+    void sendAcknowledge(Address clientAddress);
+    bool isReachable(Address testedServerAddress, int timeout = 10000);
+    void sendPong(Address testedServerAddress);
+    void receivePong(Address testedServerAddress);
 
     unsigned int getDescriptor();
 
     Address getAddress();
+
+
 };

@@ -7,11 +7,12 @@
 #include <arpa/inet.h>
 #include <string>
 #include <iostream>
+#include <bits/socket.h>
 
 #define MAXSIZE 1024
 
 CommunicationManager::CommunicationManager(char *ipAddress, unsigned int port) {
-    //instanciate UDP socket
+    // instantiate UDP socket
     this->socketDescriptor = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (this->socketDescriptor < 0) {
         perror("socket creation failed");
@@ -48,17 +49,63 @@ std::pair<Packet, Address> CommunicationManager::listen(int seqn, int64_t timest
     Packet packet = Packet(buffer);
     packet.setTimestamp(timestamp);
     packet.setSeqNum(seqn);
-    return std::pair(packet, clientAddress);
+    return {packet, clientAddress};
 }
 
-void CommunicationManager::sendAcknowledge(Address address) {
+void CommunicationManager::sendAcknowledge(Address clientAddress) {
     Packet ackPacket = Packet(PacketType::ACKNOWLEDGE, "", ""); //add username later
     std::string message = ackPacket.serialize();
     sendto(this->socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &address,
-        sizeof(address));
+        MSG_CONFIRM, (struct sockaddr*) &clientAddress,
+        sizeof(clientAddress));
 }
 
+bool CommunicationManager::isReachable(Address testedServerAddress, int timeout) {
+    if (!isPingRunning){
+        this->isPingRunning = true;
+        this->pingedAddress = testedServerAddress;
+        sendPing(testedServerAddress);
+//        this->waitingPongThread = new std::thread(&CommunicationManager::waitForPong, this, timeout);
+        waitForPong(timeout);
+        this->isPingRunning = false;
+        bool result = !this->waitingPong;
+        return result;
+    }
+}
+
+ void CommunicationManager::sendPing(Address testedServerAddress) {
+     std::cout << "PING " << testedServerAddress << std::endl;
+     Packet pingPacket = Packet(PING, "", ""); //add username later
+    std::string message = pingPacket.serialize();
+    sendto(socketDescriptor, message.data(), message.length(),
+           MSG_CONFIRM, (struct sockaddr*) &testedServerAddress,
+           sizeof(testedServerAddress));
+}
+
+void CommunicationManager::sendPong(Address testedServerAddress) {
+    std::cout << "PONG SENT: " << testedServerAddress << std::endl;
+    Packet pingPacket = Packet(PONG, "", ""); //add username later
+    std::string message = pingPacket.serialize();
+    sendto(socketDescriptor, message.data(), message.length(),
+           MSG_CONFIRM, (struct sockaddr*) &testedServerAddress,
+           sizeof(testedServerAddress));
+}
+
+ void CommunicationManager::waitForPong(int timeout) {
+    this->waitingPong = true;
+    int elapsedTime = 0;
+    while (waitingPong && (elapsedTime < timeout)) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        elapsedTime++;
+    }
+}
+
+void CommunicationManager::receivePong(Address testedServerAddress) {
+    if (this->pingedAddress == testedServerAddress) {
+        std::cout << "PONG RCVD " << std::endl;
+        this->waitingPong = false;
+    }
+}
 
 unsigned int CommunicationManager::getDescriptor() {
     return socketDescriptor;
@@ -66,4 +113,12 @@ unsigned int CommunicationManager::getDescriptor() {
 
 Address CommunicationManager::getAddress() {
     return serverAddress;
+}
+
+Address CommunicationManager::createDestinationAddress(char *ipAddress, unsigned int port) {
+    Address destination;
+    destination.sin_family = AF_INET;
+    destination.sin_port = htons(port);
+    destination.sin_addr.s_addr = inet_addr(ipAddress);
+    return destination;
 }

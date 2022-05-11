@@ -5,7 +5,7 @@
 #include "../Notification/Notification.h"
 
 enum PacketType {
-    ACKNOWLEDGE, CONNECT, SEND, FOLLOW, DISCONNECT
+    ACKNOWLEDGE, CONNECT, SEND, FOLLOW, DISCONNECT, PING, PONG, ELECTION, ELECTED
 };
 
 class Packet {
