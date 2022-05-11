@@ -51,12 +51,21 @@ std::pair<Packet, Address> CommunicationManager::listen(int seqn, int64_t timest
     return std::pair(packet, clientAddress);
 }
 
-void CommunicationManager::sendAcknowledge(Address address) {
-    Packet ackPacket = Packet(PacketType::ACKNOWLEDGE, "", ""); //add username later
-    std::string message = ackPacket.serialize();
+void CommunicationManager::sendPacket(Packet packet, Address destinationAddress) {
+    std::string message = packet.serialize();
     sendto(this->socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &address,
-        sizeof(address));
+        MSG_CONFIRM, (struct sockaddr*) &destinationAddress,
+        sizeof(destinationAddress));
+}
+
+void CommunicationManager::sendAcknowledge(Address clientAddress) {
+    Packet ackPacket = Packet(PacketType::ACKNOWLEDGE, "", ""); //add username later
+    sendPacket(ackPacket, clientAddress);
+}
+
+void CommunicationManager::sendServerSwitchToClient(Address clientAddress) {
+    Packet serverSwitchPacket = Packet(PacketType::SERVER_SWITCH, "", "");
+    sendPacket(serverSwitchPacket, clientAddress);
 }
 
 

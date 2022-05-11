@@ -3,6 +3,9 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <cstring>
+
+#include <arpa/inet.h> //test line
 
 #include "Communication/Packet.h"
 #include "Server.h"
@@ -17,9 +20,15 @@ void handleInterruption(int signal) {
     server->halt();
 }
 
-//the syntax is ./server <IP ADDRESS> <PORT>
+// Usage:
+//   ./server <IP ADDRESS> <PORT> [optional: <PRIMARY IP ADDRESS> <PRIMARY PORT>]
+//
+//   When given the optional arguments <PRIMARY IP ADDRESS> and <PRIMARY PORT>
+//   the server will start as a backup to the primary server 
+//   specified in the address.
+
 int main(int argc, char **argv) {
-    if (argc != 3) {
+    if (argc < 3 || argc > 5 || argc == 4) {
         exit(EXIT_FAILURE);
     }
 
@@ -27,9 +36,23 @@ int main(int argc, char **argv) {
     signal(SIGINT, handleInterruption);
     signal(SIGTERM, handleInterruption);
 
-    char *ipAddress = argv[1];
+    char* ipAddress = argv[1];
     unsigned int port = atoi(argv[2]);
-    server = new Server(ipAddress, port);
+    bool serverIsBackup = false;
+
+    if (argc == 5) { //server is a backup server
+        char* primaryIpAddress = argv[3];
+        unsigned int primaryPort = atoi(argv[4]);
+        serverIsBackup = true;
+        Address primaryAddress;
+        memset(&(primaryAddress), 0, sizeof(primaryAddress));
+        primaryAddress.sin_family    = AF_INET; 
+        primaryAddress.sin_addr.s_addr = inet_addr(primaryIpAddress); 
+        primaryAddress.sin_port = htons(primaryPort); 
+        server = new Server(ipAddress, port, serverIsBackup, primaryAddress);
+    } else {
+        server = new Server(ipAddress, port, serverIsBackup);
+    }
     int seqNum = 0;
 
     std::cout << "Server running, press Ctrl-C to save and exit." << std::endl;
