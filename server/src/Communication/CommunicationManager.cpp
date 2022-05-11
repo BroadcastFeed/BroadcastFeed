@@ -68,6 +68,12 @@ void CommunicationManager::sendServerSwitchToClient(Address clientAddress) {
     sendPacket(serverSwitchPacket, clientAddress);
 }
 
+void CommunicationManager::connectAsBackupServer(Address primaryServerAddress) {
+    Packet connectionPacket = Packet(PacketType::CONNECT_BACKUP, "", "");
+    sendPacket(connectionPacket, primaryServerAddress);
+    //todo: wait for ACK!
+}
+
 
 unsigned int CommunicationManager::getDescriptor() {
     return socketDescriptor;

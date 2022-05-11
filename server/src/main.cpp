@@ -38,20 +38,18 @@ int main(int argc, char **argv) {
 
     char* ipAddress = argv[1];
     unsigned int port = atoi(argv[2]);
-    bool serverIsBackup = false;
 
     if (argc == 5) { //server is a backup server
         char* primaryIpAddress = argv[3];
         unsigned int primaryPort = atoi(argv[4]);
-        serverIsBackup = true;
         Address primaryAddress;
         memset(&(primaryAddress), 0, sizeof(primaryAddress));
         primaryAddress.sin_family    = AF_INET; 
         primaryAddress.sin_addr.s_addr = inet_addr(primaryIpAddress); 
         primaryAddress.sin_port = htons(primaryPort); 
-        server = new Server(ipAddress, port, serverIsBackup, primaryAddress);
+        server = new Server(ipAddress, port, primaryAddress);
     } else {
-        server = new Server(ipAddress, port, serverIsBackup);
+        server = new Server(ipAddress, port);
     }
     int seqNum = 0;
 

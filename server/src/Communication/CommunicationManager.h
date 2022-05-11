@@ -23,6 +23,7 @@ public:
     std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
     void sendAcknowledge(Address address);
     void sendServerSwitchToClient(Address clientAddress);
+    void connectAsBackupServer(Address primaryServer);
 
     unsigned int getDescriptor();
     Address getAddress();
