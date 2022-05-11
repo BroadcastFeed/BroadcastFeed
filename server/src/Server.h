@@ -8,14 +8,14 @@
 class Server {
 
 private:
+    bool isBackup;
     CommunicationManager communicationManager;
 
     void handlePacket(Packet packet, Address received);
 
 public:
-    Server(char *ipAddress, unsigned int port);
-
+    Server(char *ipAddress, unsigned int port, 
+        bool serverIsBackup, Address primaryServerAddress = {});
     void listen(int seqn, int64_t timestamp);
-
     void halt();
 };

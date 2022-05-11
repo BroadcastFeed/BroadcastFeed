@@ -1,10 +1,17 @@
 #include <iostream>
 #include "Server.h"
 
-Server::Server(char *ipAddress, unsigned int port) : communicationManager(ipAddress, port) {}
+Server::Server(char *ipAddress, unsigned int port, bool serverIsBackup, Address primaryServerAddress) 
+: isBackup(serverIsBackup), communicationManager(ipAddress, port) {
+    this->isBackup = serverIsBackup;
+    if(serverIsBackup) {
+        //TODO: do stuff
+    }
+}
 
 void Server::listen(int seqn, int64_t timestamp) {
     std::pair<Packet, Address> received = this->communicationManager.listen(seqn, timestamp);
+    std::cout << (string) ProfileSessionManager::getSessionsString() << std::endl;
     handlePacket(received.first, received.second);
 }
 
