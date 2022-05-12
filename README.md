@@ -10,7 +10,7 @@ The following setups were used:
  - Arch Linux, kernel: 5.16.13-arch1-1, processador Intel i3-6100 @ 3.700GHz (2 Cores/4 Threads), 8GB RAM.  Compilador GCC 11.2.0
 
 ### Source
-The both source projects can be found into "server/src/" and "client/src/".
+Source projects can be found in "server/src/" and "client/src/".
 
 ## Dependencies
  - CMake 3.16.3+
@@ -48,15 +48,16 @@ Then you can execute both of the binaries with their arguments as illustrated be
 
 ```bash
 > .../client
-./client [client_username] [server_ipaddress] [server_port] 
+./client <username> <server_ip> <server_port> 
 ```
 
 
 ```bash
 > .../server
-./server [server_ipaddress] [server_port] 
+./server <server_ip> <server_port> [optional:<primary_server_ip> <primary_server_port>]
 ```
-
+When given the optional parameters <primary_server_ip> and <primary_server_port> the server will start as a backup to the primary server that is specified.
+ 
 ### Authors
 - Ernesto Vaz de Oliveira
 - Maria Flávia Tondo
