@@ -52,12 +52,28 @@ std::pair<Packet, Address> CommunicationManager::listen(int seqn, int64_t timest
     return {packet, clientAddress};
 }
 
+
+void CommunicationManager::sendPacket(Packet packet, Address destinationAddress) {
+    std::string message = packet.serialize();
+    sendto(this->socketDescriptor, message.data(), message.length(),
+        0, (struct sockaddr*) &destinationAddress,
+        sizeof(destinationAddress));
+}
+
 void CommunicationManager::sendAcknowledge(Address clientAddress) {
     Packet ackPacket = Packet(PacketType::ACKNOWLEDGE, "", ""); //add username later
-    std::string message = ackPacket.serialize();
-    sendto(this->socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &clientAddress,
-        sizeof(clientAddress));
+    sendPacket(ackPacket, clientAddress);
+}
+
+void CommunicationManager::sendServerSwitchToClient(Address clientAddress) {
+    Packet serverSwitchPacket = Packet(PacketType::SERVER_SWITCH, "", "");
+    sendPacket(serverSwitchPacket, clientAddress);
+}
+
+void CommunicationManager::connectAsBackupServer(Address primaryServerAddress) {
+    Packet connectionPacket = Packet(PacketType::CONNECT_BACKUP, "", "");
+    sendPacket(connectionPacket, primaryServerAddress);
+    //todo: wait for ACK!
 }
 
 bool CommunicationManager::isReachable(Address testedServerAddress, int timeout) {

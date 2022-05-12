@@ -38,7 +38,7 @@ void CommunicationManager::send(Packet packet){
     this->waitingAcknowledge = true;
     std::string message = packet.serialize();
     sendto(socketDescriptor, message.data(), message.length(),
-        MSG_CONFIRM, (struct sockaddr*) &serverAddress,
+        0, (struct sockaddr*) &serverAddress,
         sizeof(serverAddress));
 }
 
@@ -54,7 +54,7 @@ void CommunicationManager::waitAcknowledge(){
 void CommunicationManager::listen(){    
     while(running){
         char buffer[MAXSIZE] = "";
-        unsigned int serverStructLength = sizeof(this->serverAddress);
+        unsigned int serverStructLength = sizeof(struct sockaddr);
         recvfrom(
             this->socketDescriptor, 
             buffer, 
@@ -76,6 +76,10 @@ void CommunicationManager::listen(){
                 case PacketType::ACKNOWLEDGE:
                     this->waitingAcknowledge = false;
                     break;
+                case PacketType::SERVER_SWITCH:
+                    //TODO: debug lines
+                    Packet startPacket = Packet(PacketType::CONNECT, "denis", "denis"); 
+                    send(startPacket);
             }
         }
     }

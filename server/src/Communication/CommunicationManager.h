@@ -16,6 +16,8 @@ class CommunicationManager {
 private:
     unsigned int socketDescriptor;
     Address serverAddress;
+    
+    void sendPacket(Packet packet, Address destinationAddress);
 
     std::thread *waitingPongThread;
     bool isPingRunning = false;
@@ -34,9 +36,10 @@ public:
     bool isReachable(Address testedServerAddress, int timeout = 10000);
     void sendPong(Address testedServerAddress);
     void receivePong(Address testedServerAddress);
+    void sendServerSwitchToClient(Address clientAddress);
+    void connectAsBackupServer(Address primaryServer);
 
     unsigned int getDescriptor();
-
     Address getAddress();
 
 

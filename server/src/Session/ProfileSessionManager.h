@@ -41,7 +41,7 @@ public:
 
     static bool hasOpenedSessions(const string &username);
 
-    explicit operator std::string() const;
+    static std::string getSessionsString();
 
     ~ProfileSessionManager();
 };
