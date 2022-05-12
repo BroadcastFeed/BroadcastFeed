@@ -37,6 +37,22 @@ bool ProfileSessionManager::addFollower(const string &followed, const string &fo
     return ProfileSessionManager::database.addFollower(followed, follower);
 }
 
+ProfileSessionManager::operator std::string() const {
+    std::string str;
+    str += "Sessions: \n";
+    for (auto const &x: this->userToSessionsMap) {
+        str += "    Profile: " + x.first + "\n    Addresses:";
+        for (Session *s: x.second) {
+            char stringAddr[INET_ADDRSTRLEN];
+            Address address = s->getAddress();
+            inet_ntop(AF_INET, &address.sin_addr, stringAddr, INET_ADDRSTRLEN);
+            str += " " + (string) stringAddr + ":";
+            str += std::to_string(s->getAddress().sin_port);
+        }
+        str += "\n\n";
+    }
+    return str;
+
 constexpr bool operator==(const Address &lhs, const Address &rhs) {
     return lhs.sin_port == rhs.sin_port && lhs.sin_addr.s_addr == rhs.sin_addr.s_addr
            && lhs.sin_family == rhs.sin_family;

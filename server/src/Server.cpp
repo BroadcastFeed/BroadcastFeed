@@ -59,6 +59,14 @@ void Server::handlePacket(Packet packet, Address address) {
             serverAddresses.push_back(address);
             break;
 
+        case PING:
+            communicationManager.sendPong(received);
+            break;
+
+        case PONG:
+            communicationManager.receivePong(received);
+            break;
+
         default:
             std::cout << "Command not found" << std::endl;
             communicationManager.sendAcknowledge(address);
