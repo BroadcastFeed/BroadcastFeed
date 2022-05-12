@@ -1,24 +1,27 @@
 #pragma once
 
 #include <string>
-#include "Packet.h"
-#include "../Notification/Notification.h"
-#include "Address.h"
 #include <netinet/in.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
 #include <utility>
 #include <thread>
 #include <chrono>
 #include <arpa/inet.h>
 
+#include "Packet.h"
+#include "../Notification/Notification.h"
+#include "Address.h"
+
 using std::string;
 
 class CommunicationManager {
 private:
-    unsigned int socketDescriptor;
-    Address serverAddress;
     
-    void sendPacket(Packet packet, Address destinationAddress);
-
     std::thread *waitingPongThread;
     bool isPingRunning = false;
     Address pingedAddress;
@@ -28,6 +31,9 @@ private:
     void waitForPong(int timeout);
 
 public:
+    inline static unsigned int socketDescriptor = 0;
+    inline static Address serverAddress = {};
+
     CommunicationManager(char *ipAddress, unsigned int port);
 
     std::pair<Packet, Address> listen(int seqn, int64_t timestamp);
@@ -36,6 +42,7 @@ public:
     bool isReachable(Address testedServerAddress, int timeout = 10000);
     void sendPong(Address testedServerAddress);
     void receivePong(Address testedServerAddress);
+    static void sendPacket(Packet packet, Address destinationAddress);
     void sendServerSwitchToClient(Address clientAddress);
     void connectAsBackupServer(Address primaryServer);
 

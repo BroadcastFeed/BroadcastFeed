@@ -1,6 +1,5 @@
 #include "Packet.h"
 
-#include <sstream>
 
 Packet::Packet(PacketType type, int seqNum, int length, int64_t timestamp, std::string message, std::string username) {
     this->type = type;
@@ -27,7 +26,7 @@ Packet::Packet(std::string serializedPacket) {
 }
 
 Packet::Packet(Notification notification) {
-    this->type = PacketType::SEND;
+    this->type = PacketType::NOTIFICATION;
     this->seqNum = -1;
     this->length = notification.getMessage().length();
     this->timestamp = -1;

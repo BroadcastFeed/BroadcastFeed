@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include <iostream>
+
 Profile::Profile(std::string username) {
     this->username = std::move(username);
     this->activeSessions = 0;
@@ -55,6 +57,7 @@ void Profile::addNotificationToProducerBuffer(const Notification &notification) 
 void Profile::addPendingNotification(const Notification &notification) {
     std::lock_guard<mutex> lock(*(this->notificationsQueueMutex));
     this->pendingNotifications.push_back(notification);
+    std::cout << (string) *this << std::endl;
 }
 
 void Profile::markTopAsRead() {
@@ -79,7 +82,7 @@ Profile::operator std::string() const {
     std::string str;
     str += "Username: " + this->username + "\n";
     str += "Followers: " + std::to_string(this->followers.size()) + "\n";
-    str += "Notifications to be sent: " + std::to_string(this->producerBuffer.size()) + "\n";
+    str += "Notifications to be sent: " + std::to_string(this->pendingNotifications.size()) + "\n";
     return str;
 }
 

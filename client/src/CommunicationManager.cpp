@@ -66,7 +66,7 @@ void CommunicationManager::listen(){
         if(running){
             Packet receivedPacket(buffer);
             switch(receivedPacket.getType()){
-                case PacketType::SEND:
+                case PacketType::NOTIFICATION:
                     std::cout.flush();
                     std::cout << std::endl 
                         << "[@" << receivedPacket.getUsername() 
@@ -78,7 +78,7 @@ void CommunicationManager::listen(){
                     break;
                 case PacketType::SERVER_SWITCH:
                     //TODO: debug lines
-                    Packet startPacket = Packet(PacketType::CONNECT, "denis", "denis"); 
+                    Packet startPacket = Packet(PacketType::CONNECT, "test", "test"); 
                     send(startPacket);
             }
         }

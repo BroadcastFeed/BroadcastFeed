@@ -24,6 +24,7 @@ public:
     std::vector<Profile> getUsers() const;
 
     bool addNotification(const string &username, const Notification &notification);
+    void popNotification(const string &username);
 
     bool addFollower(const string &followedUsername, const string &followerUsername);
 

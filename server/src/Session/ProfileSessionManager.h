@@ -6,6 +6,7 @@
 #include <map>
 #include <thread>
 #include <netinet/in.h>
+
 #include "../Database/Database.h"
 #include "../Profile/Profile.h"
 #include "../Notification/Notification.h"
@@ -25,25 +26,19 @@ private:
 
 public:
     static bool registerNewSession(const string &user, Address sessionAddress, Address serverAddress,
-                                   unsigned int socketDescriptor);
-
+                                   unsigned int socketDescriptor, bool shouldBeActive);
     static bool removeSession(const string &user, Address sessionsAddress);
+    static bool validateProfileSession(const string &username, const Address &address);
+    static vector<Session *> getOpenedSessions(const string &username);
+    static bool hasOpenedSessions(const string &username);
+    static std::string getSessionsString();
+    static std::string getProfilesString();
 
     static bool addNotification(const string &username, const Notification &notification);
-
+    static void popNotification(const string &username);
     static bool addFollower(const string &followed, const string &follower);
 
-    static bool validateProfileSession(const string &username, const Address &address);
-
     static bool userCanConnect(string username);
-
-    static vector<Session *> getOpenedSessions(const string &username);
-
-    static bool hasOpenedSessions(const string &username);
-
-    static std::string getSessionsString();
-
-    explicit operator std::string() const;
 
     ~ProfileSessionManager();
 };

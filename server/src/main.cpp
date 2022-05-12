@@ -5,9 +5,8 @@
 #include <chrono>
 #include <cstring>
 
-#include <arpa/inet.h> //test line
+#include <arpa/inet.h> 
 
-#include "Communication/Packet.h"
 #include "Server.h"
 
 using namespace std::chrono;
@@ -52,8 +51,8 @@ int main(int argc, char **argv) {
         server = new Server(ipAddress, port);
     }
     int seqNum = 0;
+    
 
-    std::cout << ((argc == 3) ? "Primary" : "Backup") << " Server running, press Ctrl-C to save and exit." << std::endl;
     while (RUNNING) {
         int64_t timestampMilliseconds = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         try {

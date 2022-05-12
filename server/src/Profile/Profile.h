@@ -4,6 +4,7 @@
 #include <queue>
 #include <string>
 #include <mutex>
+
 #include "../Notification/Notification.h"
 
 using std::string;

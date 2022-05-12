@@ -96,6 +96,10 @@ bool Database::addNotification(const string &username, const Notification &notif
     } else return false;
 }
 
+void Database::popNotification(const string &username) {
+    getUser(username)->popPendingNotification(); 
+}
+
 
 bool Database::addFollower(const string &followedUsername, const string &followerUsername) {
     Profile *followedProfile = getUser(followedUsername);
@@ -103,8 +107,8 @@ bool Database::addFollower(const string &followedUsername, const string &followe
     if (followedProfile == nullptr) {
         std::cout << "User " << followedUsername << " doesnt exists!" << std::endl;
     } else if (userIsFollowed(followedProfile, followerProfile)) {
-        std::cout << "User " << followedUsername
-                  << " already follows " << followerUsername << std::endl;
+        std::cout << "User " << followerUsername
+                  << " already follows " << followedUsername << std::endl;
     } else if (followerProfile != nullptr) { 
         followedProfile->addFollower(followerProfile); 
         return true;

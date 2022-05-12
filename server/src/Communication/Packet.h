@@ -1,12 +1,18 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 
 #include "../Notification/Notification.h"
 
 enum PacketType {
-    ACKNOWLEDGE, CONNECT, SEND, FOLLOW, DISCONNECT, PING, PONG, SERVER_SWITCH, //client-server packets
-    CONNECT_BACKUP  //server-server packets
+    ACKNOWLEDGE, CONNECT, SEND, FOLLOW, DISCONNECT, NOTIFICATION, SERVER_SWITCH, //client-server and server-server packets
+    CONNECT_BACKUP, PING, PONG,  //server-server packets
+};
+    
+const std::string PACKET_TYPE_NAMES[] = {
+    "ACKNOWLEDGE", "CONNECT", "SEND", "FOLLOW", "DISCONNECT", "NOTIFICATION", "SWITCH MAIN SERVER", 
+    "CONNECT BACKUP SERVER"
 };
 
 class Packet {
@@ -48,6 +54,6 @@ public:
     std::string serialize();
 
     std::string getUsername();
-
+    
     operator std::string() const;
 };

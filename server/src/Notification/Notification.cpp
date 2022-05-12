@@ -33,6 +33,10 @@ std::string Notification::getSender() {
     return this->sender;
 }
 
+void Notification::setSender(std::string sender) {
+    this->sender = sender;
+}
+
 int Notification::getLastReadBySession() {
     return this->lastReadBySession;
 }

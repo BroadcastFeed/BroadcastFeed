@@ -28,6 +28,7 @@ public:
     string getMessage();
     
     string getSender();
+    void setSender(string sender);
 
     int getLastReadBySession();
 

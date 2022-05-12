@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     interface.startSession(username);
     communicationManager.startListening();
 
-    Packet startPacket = Packet(PacketType::CONNECT, username, username);
+    Packet startPacket = Packet(PacketType::CONNECT, "", username);
 
     communicationManager.send(startPacket);
     interface.showWaitConnection();

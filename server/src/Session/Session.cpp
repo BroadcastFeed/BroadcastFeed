@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "Session.h"
 
 Session::Session(Profile *profile, Address address, unsigned int socketDescriptor, unsigned int sessionNum) :
@@ -7,9 +8,16 @@ Session::Session(Profile *profile, Address address, unsigned int socketDescripto
         socketDescriptor(socketDescriptor),
         sessionNum(sessionNum),
         isOnlySession(false),
-        isActive(false) {};
+        isActive(false),
+        shouldSendNotifications(false){
+        };
 
 void Session::initSession() {
+    start();
+    shouldSendNotifications = true;
+}
+
+void Session::initSecondarySession() {
     start();
 }
 
@@ -21,11 +29,10 @@ void Session::closeSession() {
 
 void Session::start() {
     isActive = true;
-    producerThread = new thread(&Session::produce, this);
     consumerThread = new thread(&Session::consume, this);
-
-    producerThread->detach();
+    producerThread = new thread(&Session::produce, this);
     consumerThread->detach();
+    producerThread->detach();
 }
 
 void Session::stop() {
@@ -34,20 +41,27 @@ void Session::stop() {
 
 void Session::consume() {
     std::unique_lock<mutex> lock(notificationsMutex);
-    while (isActive) {
+    while (isActive && shouldSendNotifications) {
         conditionVariable.wait(lock, [this] { return !this->isActive || this->profile->hasPendingNotification(); });
         while (profile->hasPendingNotification()) {
             Notification notification = profile->getTopPendingNotification();
             if (isOnlySession) {
                 profile->popPendingNotification();
                 sendNotification(notification);
+                if(BackupManager::isPrimaryServer()) {
+                    notification.setSender(profile->getName());
+                    BackupManager::replicateToBackups(Packet(notification));
+                }
             } else {
                 int assignedTo = profile->getTopPendingNotification().getLastReadBySession();
                 if (assignedTo == this->sessionNum) {
                     sendNotification(notification);
-                    if (assignedTo == 1)
+                    if (assignedTo == 1) {
                         profile->popPendingNotification();
-                    else {
+                        if(BackupManager::isPrimaryServer()) {
+                            BackupManager::replicateToBackups(Packet(notification));
+                        }
+                    } else {
                         profile->markTopAsRead();
                     }
                 }

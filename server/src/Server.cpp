@@ -1,38 +1,51 @@
 #include <iostream>
+
 #include "Server.h"
 
 Server::Server(char *ipAddress, unsigned int port) 
-: isPrimary(true), communicationManager(ipAddress, port) {}
+: communicationManager(ipAddress, port) {
+    BackupManager::setServerAsPrimary();
+    Interface::serverStart(isPrimary());
+}
 
 Server::Server(char *ipAddress, unsigned int port, Address primaryServerAddress) 
-: isPrimary(false), communicationManager(ipAddress, port), 
-primaryServerAddress(primaryServerAddress) {
+: communicationManager(ipAddress, port) {
+    Interface::serverStart(isPrimary());
+    BackupManager::setPrimaryServerAddress(primaryServerAddress);
     communicationManager.connectAsBackupServer(primaryServerAddress);
+}
+
+bool Server::isPrimary() {
+    return BackupManager::isPrimaryServer();    
+}
+
+void Server::setAsPrimary() {
+    BackupManager::setServerAsPrimary();
 }
 
 void Server::listen(int seqn, int64_t timestamp) {
     std::pair<Packet, Address> received = this->communicationManager.listen(seqn, timestamp);
-    std::cout << (string) ProfileSessionManager::getSessionsString() << std::endl;
+    //std::cout << ProfileSessionManager::getProfilesString() << std::endl;
     handlePacket(received.first, received.second);
 }
 
 void Server::handlePacket(Packet packet, Address address) {
     bool successful = false;
+    Interface::informReceivedPacket(packet, address, isPrimary());
     switch (packet.getType()) {
         case CONNECT: {
-            std::cout << "User " << packet.getUsername() << " requests to CONNECT" << std::endl;
             if(ProfileSessionManager::userCanConnect(packet.getUsername())) {
                 successful = ProfileSessionManager::registerNewSession(
-                        packet.getMessage(),
+                        packet.getUsername(),
                         address,
-                        communicationManager.getAddress(),
-                        communicationManager.getDescriptor());
+                        CommunicationManager::serverAddress,
+                        CommunicationManager::socketDescriptor, 
+                        isPrimary());
                 communicationManager.sendAcknowledge(address);
             }
             break;
         }
         case SEND: {
-            std::cout << "User " << packet.getUsername() << " requests to SEND: " << packet.getMessage() << std::endl;
             Notification notification(packet.getSeqNum(), packet.getTimestamp(),
                                       packet.getLength(), packet.getUsername(),
                                       packet.getMessage());
@@ -43,21 +56,30 @@ void Server::handlePacket(Packet packet, Address address) {
         }
 
         case FOLLOW:
-            std::cout << packet.getUsername() << " requests to FOLLOW: " << packet.getMessage() << std::endl;
             successful = ProfileSessionManager::addFollower(packet.getMessage(), packet.getUsername());
             communicationManager.sendAcknowledge(address);
 
             break;
 
         case DISCONNECT:
-            std::cout << "User " << packet.getUsername() << " requests to DISCONNECT" << std::endl;
             successful = ProfileSessionManager::removeSession(packet.getUsername(), address);
             break;
             
-        case CONNECT_BACKUP:
-            std::cout << "New server CONNECTED AS BACKUP" << std::endl;
-            serverAddresses.push_back(address);
+        case NOTIFICATION:
+            if (!isPrimary()) {
+                ProfileSessionManager::popNotification(packet.getUsername());
+                communicationManager.sendAcknowledge(address);
+            }
             break;
+            
+        case CONNECT_BACKUP:
+            BackupManager::newBackupServer(address);
+            break;
+            
+        case ACKNOWLEDGE:
+            //do something
+            break;
+                    
 
         case PING:
             communicationManager.sendPong(address);
@@ -72,11 +94,12 @@ void Server::handlePacket(Packet packet, Address address) {
             communicationManager.sendAcknowledge(address);
             return;
     }
-    if(successful){
-        std::cout << "User " << packet.getUsername() << " request successful" << std::endl;
+    if(successful && isPrimary()){
+        Interface::informSuccessfulRequest(packet);
+        BackupManager::replicateToBackups(packet); 
     }
 }
 
 void Server::halt() {
-    shutdown(communicationManager.getDescriptor(), SHUT_RDWR);
+    shutdown(CommunicationManager::socketDescriptor, SHUT_RDWR);
 }

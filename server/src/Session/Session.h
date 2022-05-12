@@ -5,9 +5,10 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+
 #include "../Profile/Profile.h"
 #include "../Notification/Notification.h"
-#include "../Communication/CommunicationManager.h"
+#include "../BackupManager.h"
 
 using std::pair;
 using std::thread;
@@ -29,6 +30,7 @@ public:
     int getSessionNum();
 
     void initSession();
+    void initSecondarySession();
 
     void closeSession();
 
@@ -47,6 +49,7 @@ private:
     volatile bool isOnlySession; //indicates if is the only active session
     unsigned int socketDescriptor;
     volatile bool isActive;
+    volatile bool shouldSendNotifications;
 
     thread *producerThread;
     thread *consumerThread;

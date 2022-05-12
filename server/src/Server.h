@@ -2,18 +2,17 @@
 
 #include <vector>
 
-#include "Session/ProfileSessionManager.h"
-#include "Communication/CommunicationManager.h"
 #include "Notification/Notification.h"
 #include "Database/Database.h"
+#include "Session/ProfileSessionManager.h"
+#include "Communication/CommunicationManager.h"
+#include "Communication/Address.h"
+#include "BackupManager.h"
+#include "Interface.h"
 
 class Server {
 
 private:
-    bool isPrimary;
-    vector<Address> serverAddresses; 
-    Address primaryServerAddress;
-    
     CommunicationManager communicationManager;
     void handlePacket(Packet packet, Address address);
 
@@ -23,6 +22,9 @@ public:
     //construct backup server
     Server(char *ipAddress, unsigned int port, Address primaryServerAddress);
 
+    bool isPrimary();
+    void setAsPrimary();
+    
     void listen(int seqn, int64_t timestamp);
     void checkConnection(char *ipAddress, unsigned int port) {
         std::thread pingThread([this, ipAddress, port] {

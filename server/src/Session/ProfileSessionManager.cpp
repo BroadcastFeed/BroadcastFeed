@@ -6,31 +6,36 @@ bool ProfileSessionManager::registerNewSession(
         const string &user,
         Address sessionAddress,
         Address serverAddress,
-        unsigned int socketDescriptor
+        unsigned int socketDescriptor,
+        bool shouldBeActive
 ) {
     database.addUser(user);
     Profile *profile = database.getUser(user);
     if (profile != nullptr) {
+        Session* session;
         if (!userToSessionsMap.contains(user)) {
-            Session *session = new Session(profile, sessionAddress, socketDescriptor, 0);
-            session->initSession();
+            session = new Session(profile, sessionAddress, socketDescriptor, 0);
             session->setAsOnlySession();
             userToSessionsMap[user] = {session};
-            return true;
         } else if (userToSessionsMap[user].size() < 2) {
-            Session *session = new Session(profile, sessionAddress, socketDescriptor,
+            session = new Session(profile, sessionAddress, socketDescriptor,
                                            !userToSessionsMap[user][0]->getSessionNum());
             userToSessionsMap[user][0]->unsetAsOnlySession();
             userToSessionsMap[user].push_back(session);
-            session->initSession();
-            return true;
         }
+        if (shouldBeActive) session->initSession();
+        else session->initSecondarySession();
+        return true;
     }
     return false;
 }
 
 bool ProfileSessionManager::addNotification(const string &username, const Notification &notification) {
     return ProfileSessionManager::database.addNotification(username, notification);
+}
+
+void ProfileSessionManager::popNotification(const string &username) {
+    ProfileSessionManager::database.popNotification(username);
 }
 
 bool ProfileSessionManager::addFollower(const string &followed, const string &follower) {
@@ -121,4 +126,8 @@ std::string ProfileSessionManager::getSessionsString() {
         str += "\n\n";
     }
     return str;
+}
+
+std::string ProfileSessionManager::getProfilesString() {
+   return (std::string) database; 
 }
