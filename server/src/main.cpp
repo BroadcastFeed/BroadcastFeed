@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
     }
     int seqNum = 0;
 
-    std::cout << "Server running, press Ctrl-C to save and exit." << std::endl;
+    std::cout << ((argc == 3) ? "Primary" : "Backup") << " Server running, press Ctrl-C to save and exit." << std::endl;
     while (RUNNING) {
         int64_t timestampMilliseconds = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         try {

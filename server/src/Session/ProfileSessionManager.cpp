@@ -52,10 +52,6 @@ ProfileSessionManager::operator std::string() const {
         str += "\n\n";
     }
     return str;
-
-constexpr bool operator==(const Address &lhs, const Address &rhs) {
-    return lhs.sin_port == rhs.sin_port && lhs.sin_addr.s_addr == rhs.sin_addr.s_addr
-           && lhs.sin_family == rhs.sin_family;
 }
 
 bool ProfileSessionManager::removeSession(const string &user, Address sessionAddress) {

@@ -87,6 +87,8 @@ bool CommunicationManager::isReachable(Address testedServerAddress, int timeout)
         bool result = !this->waitingPong;
         return result;
     }
+
+    return false;
 }
 
  void CommunicationManager::sendPing(Address testedServerAddress) {

@@ -60,11 +60,11 @@ void Server::handlePacket(Packet packet, Address address) {
             break;
 
         case PING:
-            communicationManager.sendPong(received);
+            communicationManager.sendPong(address);
             break;
 
         case PONG:
-            communicationManager.receivePong(received);
+            communicationManager.receivePong(address);
             break;
 
         default:

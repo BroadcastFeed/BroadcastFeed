@@ -43,5 +43,7 @@ public:
 
     static std::string getSessionsString();
 
+    explicit operator std::string() const;
+
     ~ProfileSessionManager();
 };
