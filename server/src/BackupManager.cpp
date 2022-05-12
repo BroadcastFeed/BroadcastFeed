@@ -13,7 +13,7 @@ void BackupManager::newBackupServer(Address serverAddress) {
 void BackupManager::removeBackupServer(Address serverAddress) {
     for (int i = 0; i<serverAddresses.size(); i++) {
         if (serverAddresses[i] == serverAddress) 
-            getBackupServerAddresses.erase(serverAddresses.begin() + i);
+            getBackupServerAddresses().erase(serverAddresses.begin() + i);
     }
 }
 
@@ -37,11 +37,13 @@ vector<Address> BackupManager::getBackupServerAddresses() {
     return BackupManager::serverAddresses;
 }
 
-string<Address> getBackupServers(){
-    for (auto it = getBackupServerAddresses.begin(); it != getBackupServerAddresses.end(); it++) {
-        if (it == getBackupServerAddresses.begin())
-            line += addressToString(it);
+string BackupManager::getBackupServers(){
+    string line;
+    for (auto & serverAddress : serverAddresses) {
+        if (serverAddress == serverAddresses[0])
+            line += addressToString(serverAddress);
         else
-            line += "," + addressToString(it);
+            line += "," + addressToString(serverAddress);
     }
+    return line;
 }

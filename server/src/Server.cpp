@@ -1,22 +1,23 @@
 #include <iostream>
 
 #include "Server.h"
+#include "Communication/ServerPingService.h"
 
-Server::Server(char *ipAddress, unsigned int port) 
-: communicationManager(ipAddress, port) {
+Server::Server(char *ipAddress, unsigned int port)
+        : communicationManager(ipAddress, port) {
     BackupManager::setServerAsPrimary();
     Interface::serverStart(isPrimary());
 }
 
-Server::Server(char *ipAddress, unsigned int port, Address primaryServerAddress) 
-: communicationManager(ipAddress, port) {
+Server::Server(char *ipAddress, unsigned int port, Address primaryServerAddress)
+        : communicationManager(ipAddress, port) {
     Interface::serverStart(isPrimary());
     BackupManager::setPrimaryServerAddress(primaryServerAddress);
     communicationManager.connectAsBackupServer(primaryServerAddress);
 }
 
 bool Server::isPrimary() {
-    return BackupManager::isPrimaryServer();    
+    return BackupManager::isPrimaryServer();
 }
 
 void Server::setAsPrimary() {
@@ -33,12 +34,12 @@ void Server::handlePacket(Packet packet, Address address) {
     Interface::informReceivedPacket(packet, address, isPrimary());
     switch (packet.getType()) {
         case CONNECT: {
-            if(ProfileSessionManager::userCanConnect(packet.getUsername())) {
+            if (ProfileSessionManager::userCanConnect(packet.getUsername())) {
                 successful = ProfileSessionManager::registerNewSession(
                         packet.getUsername(),
                         address,
                         CommunicationManager::serverAddress,
-                        CommunicationManager::socketDescriptor, 
+                        CommunicationManager::socketDescriptor,
                         isPrimary());
                 communicationManager.sendAcknowledge(address);
             }
@@ -63,22 +64,22 @@ void Server::handlePacket(Packet packet, Address address) {
         case DISCONNECT:
             successful = ProfileSessionManager::removeSession(packet.getUsername(), address);
             break;
-            
+
         case NOTIFICATION:
             if (!isPrimary()) {
                 ProfileSessionManager::popNotification(packet.getUsername());
                 communicationManager.sendAcknowledge(address);
             }
             break;
-            
+
         case CONNECT_BACKUP:
             BackupManager::newBackupServer(address);
             break;
-            
+
         case ACKNOWLEDGE:
             //do something
             break;
-                    
+
 
         case PING:
             communicationManager.sendPong(address);
@@ -93,9 +94,9 @@ void Server::handlePacket(Packet packet, Address address) {
             communicationManager.sendAcknowledge(address);
             return;
     }
-    if(successful && isPrimary()){
+    if (successful && isPrimary()) {
         Interface::informSuccessfulRequest(packet);
-        BackupManager::replicateToBackups(packet); 
+        BackupManager::replicateToBackups(packet);
     }
 }
 
@@ -103,30 +104,16 @@ void Server::halt() {
     shutdown(CommunicationManager::socketDescriptor, SHUT_RDWR);
 }
 
-void Server::election(){
+void Server::election() {
     std::cout << "Not implemented yet" << std::endl;
 }
 
-void checkPrimaryServer() {
-    std::thread pingThread([this, primaryServer] {
-            bool reachable = this->communicationManager.isReachable(primaryServer);
-            // std::cout << primaryServer << " reachability " << reachable << std::endl;
-            if (!reachable){
-                this->election();
-            }
-        });
+void Server::startCheckingPrimary(int frequency) {
+    ServerPingService serverPingService(communicationManager, *this);
+    serverPingService.startCheckingPrimary(frequency);
 }
 
-void Server::checkBackupNodes() {
-    for (auto address = getBackupServerAddresses.begin(); address != getBackupServerAddresses.end(); address++) {
-        std::thread pingThread([this, address] {
-            bool reachable = this->communicationManager.isReachable(address);
-            if (!reachable) {
-                std::cout << "The server " << address << " was not reachable... Updating it!" << std::endl;
-                removeBackupServer(address);
-            }
-        });
-    }
-
-    std::cout << "Topology after: " << BackupManager::getBackupServers() << std::endl;
+void Server::startCheckingBackups(int frequency) {
+    ServerPingService serverPingService(communicationManager, *this);
+    serverPingService.startCheckingBackups(frequency);
 }

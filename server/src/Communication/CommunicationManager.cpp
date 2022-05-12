@@ -72,7 +72,6 @@ bool CommunicationManager::isReachable(Address testedServerAddress, int timeout)
         this->isPingRunning = true;
         this->pingedAddress = testedServerAddress;
         sendPing(testedServerAddress);
-//        this->waitingPongThread = new std::thread(&CommunicationManager::waitForPong, this, timeout);
         waitForPong(timeout);
         this->isPingRunning = false;
         bool result = !this->waitingPong;

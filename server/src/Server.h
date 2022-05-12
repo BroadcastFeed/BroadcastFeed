@@ -14,25 +14,24 @@ class Server {
 
 private:
     CommunicationManager communicationManager;
+    Server nextNode();
+
     void handlePacket(Packet packet, Address address);
-    
-    void checkPrimaryServer();
-    void checkBackupNodes();
 
 public:
     //construct primary server
     Server(char *ipAddress, unsigned int port);     
     //construct backup server
     Server(char *ipAddress, unsigned int port, Address primaryServerAddress);
-    Server nextNode;
+
 
     bool isPrimary();
     void setAsPrimary();
     
     
     void listen(int seqn, int64_t timestamp);
-    void startCheckingPrimary();
-    void startCheckingBackups();
+    void startCheckingPrimary(int frequency);
+    void startCheckingBackups(int frequency);
 
     void halt();
     void election();

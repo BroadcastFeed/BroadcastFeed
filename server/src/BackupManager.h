@@ -25,5 +25,5 @@ public:
     static void setPrimaryServerAddress(Address address);
     static Address getPrimaryServerAddress();
     static vector<Address> getBackupServerAddresses();
-    static string<Address> getBackupServers();
+    static string getBackupServers();
 };
