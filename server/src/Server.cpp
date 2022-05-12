@@ -25,7 +25,6 @@ void Server::setAsPrimary() {
 
 void Server::listen(int seqn, int64_t timestamp) {
     std::pair<Packet, Address> received = this->communicationManager.listen(seqn, timestamp);
-    //std::cout << ProfileSessionManager::getProfilesString() << std::endl;
     handlePacket(received.first, received.second);
 }
 
@@ -102,4 +101,32 @@ void Server::handlePacket(Packet packet, Address address) {
 
 void Server::halt() {
     shutdown(CommunicationManager::socketDescriptor, SHUT_RDWR);
+}
+
+void Server::election(){
+    std::cout << "Not implemented yet" << std::endl;
+}
+
+void checkPrimaryServer() {
+    std::thread pingThread([this, primaryServer] {
+            bool reachable = this->communicationManager.isReachable(primaryServer);
+            // std::cout << primaryServer << " reachability " << reachable << std::endl;
+            if (!reachable){
+                this->election();
+            }
+        });
+}
+
+void Server::checkBackupNodes() {
+    for (auto address = getBackupServerAddresses.begin(); address != getBackupServerAddresses.end(); address++) {
+        std::thread pingThread([this, address] {
+            bool reachable = this->communicationManager.isReachable(address);
+            if (!reachable) {
+                std::cout << "The server " << address << " was not reachable... Updating it!" << std::endl;
+                removeBackupServer(address);
+            }
+        });
+    }
+
+    std::cout << "Topology after: " << BackupManager::getBackupServers() << std::endl;
 }

@@ -11,7 +11,10 @@ void BackupManager::newBackupServer(Address serverAddress) {
 }
 
 void BackupManager::removeBackupServer(Address serverAddress) {
-    //TODO: implement
+    for (int i = 0; i<serverAddresses.size(); i++) {
+        if (serverAddresses[i] == serverAddress) 
+            getBackupServerAddresses.erase(serverAddresses.begin() + i);
+    }
 }
 
 bool BackupManager::isPrimaryServer() {
@@ -28,4 +31,17 @@ void BackupManager::setPrimaryServerAddress(Address address) {
 
 Address BackupManager::getPrimaryServerAddress() {
     return BackupManager::primaryServerAddress;
+}
+
+vector<Address> BackupManager::getBackupServerAddresses() {
+    return BackupManager::serverAddresses;
+}
+
+string<Address> getBackupServers(){
+    for (auto it = getBackupServerAddresses.begin(); it != getBackupServerAddresses.end(); it++) {
+        if (it == getBackupServerAddresses.begin())
+            line += addressToString(it);
+        else
+            line += "," + addressToString(it);
+    }
 }

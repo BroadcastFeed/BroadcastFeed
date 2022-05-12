@@ -7,12 +7,12 @@
 
 enum PacketType {
     ACKNOWLEDGE, CONNECT, SEND, FOLLOW, DISCONNECT, NOTIFICATION, SERVER_SWITCH, //client-server and server-server packets
-    CONNECT_BACKUP, PING, PONG,  //server-server packets
+    CONNECT_BACKUP, PING, PONG, UPDATE_TOPO //server-server packets
 };
     
 const std::string PACKET_TYPE_NAMES[] = {
     "ACKNOWLEDGE", "CONNECT", "SEND", "FOLLOW", "DISCONNECT", "NOTIFICATION", "SWITCH MAIN SERVER", 
-    "CONNECT BACKUP SERVER"
+    "CONNECT BACKUP SERVER", "PING", "PONG", "UPDATE_TOPO"
 };
 
 class Packet {

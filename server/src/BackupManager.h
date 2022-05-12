@@ -6,6 +6,7 @@
 #include "Communication/CommunicationManager.h"
 
 using std::vector;
+using std::string;
 
 class BackupManager {
 private:
@@ -23,4 +24,6 @@ public:
     static void setServerAsPrimary();
     static void setPrimaryServerAddress(Address address);
     static Address getPrimaryServerAddress();
+    static vector<Address> getBackupServerAddresses();
+    static string<Address> getBackupServers();
 };

@@ -87,7 +87,7 @@ bool CommunicationManager::isReachable(Address testedServerAddress, int timeout)
      Packet pingPacket = Packet(PING, "", ""); //add username later
     std::string message = pingPacket.serialize();
     sendto(socketDescriptor, message.data(), message.length(),
-           MSG_CONFIRM, (struct sockaddr*) &testedServerAddress,
+           0, (struct sockaddr*) &testedServerAddress,
            sizeof(testedServerAddress));
 }
 
@@ -96,7 +96,7 @@ void CommunicationManager::sendPong(Address testedServerAddress) {
     Packet pingPacket = Packet(PONG, "", ""); //add username later
     std::string message = pingPacket.serialize();
     sendto(socketDescriptor, message.data(), message.length(),
-           MSG_CONFIRM, (struct sockaddr*) &testedServerAddress,
+           0, (struct sockaddr*) &testedServerAddress,
            sizeof(testedServerAddress));
 }
 
